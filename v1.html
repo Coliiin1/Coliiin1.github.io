@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Web | Colin</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: #fff;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 25px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            scroll-margin-top: 80px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            display: inline-block;
+            margin-top: 0;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, var(--primary-color), #34495e);
+            color: #fff;
+            border-radius: 0;
+            margin: 0;
+            box-shadow: none;
+        }
+
+        .hero h2 {
+            color: #fff;
+            border: none;
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .card {
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            padding: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background-color: #fff;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background: #e1f0fa;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background-color: var(--primary-color);
+            color: #fff;
+            margin-top: 40px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary-color);
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: var(--secondary-color);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body style="background-color: #33475B;">
+
+    <header>
+        <nav>
+            <h1>Portafolio | Daniel Colin</h1>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#sobre-mi">Sobre Mí</a></li>
+                <li><a href="#proyectos">Proyectos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="inicio" class="hero">
+        <h2>Hola, soy Daniel Colin</h2>
+        <p>Estudiante de Ingeniería en Software y desarrollador de soluciones tecnológicas, desde aplicaciones robustas
+            hasta sistemas de bajo nivel.</p>
+    </section>
+
+    <section id="sobre-mi">
+        <h2>Sobre Mí</h2>
+        <p>Actualmente estudio Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco. Me apasiona el
+            desarrollo backend, la creación de aplicaciones de escritorio y la arquitectura de bases de datos. Disfruto
+            enfrentando retos técnicos, como el diseño de sistemas médicos o la configuración de servidores utilizando
+            herramientas de red.</p>
+        <p>Mi entorno de trabajo principal es Fedora Linux, y dedico parte de mi tiempo al desarrollo de la iniciativa
+            tecnológica <strong>NeuraSoft</strong>, bajo la cual diseño soluciones de software.</p>
+
+        <h3>Tecnologías y Conocimientos</h3>
+        <div class="skills">
+            <span class="skill-tag">Java (Swing, JavaFX)</span>
+            <span class="skill-tag">C & Ensamblador (PIC18F4550)</span>
+            <span class="skill-tag">PostgreSQL & MariaDB</span>
+            <span class="skill-tag">HTML, CSS, JavaScript</span>
+            <span class="skill-tag">Linux (Fedora)</span>
+            <span class="skill-tag">Git & Control de Versiones</span>
+            <span class="skill-tag">Ingeniería de Requisitos</span>
+        </div>
+    </section>
+
+    <section id="proyectos">
+        <h2>Proyectos</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Gestor de Citas Médicas</h3>
+                <p>Análisis y diseño de un sistema de gestión médica con una arquitectura sólida. Incluye la formulación
+                    de requerimientos, diseño de esquemas de bases de datos y desarrollo de interfaces gráficas (GUI).
+                </p>
+                <div class="skills">
+                    <span class="skill-tag">JavaFX</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">MariaDB</span>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Catálogo de Productos</h3>
+                <p>Aplicación desarrollada con arquitectura en capas y principios de programación orientada a objetos
+                    (POO). Gestiona distintos niveles de acceso para administradores y usuarios con persistencia en base
+                    de datos.</p>
+                <div class="skills">
+                    <span class="skill-tag">Java (JFrame, JPanel)</span>
+                    <span class="skill-tag">Bases de Datos</span>
+                </div>
+            </div>
+            <div class="card">
+                <h3>Sistemas Embebidos</h3>
+                <p>Desarrollo a bajo nivel con rutinas en lenguaje ensamblador para microcontroladores PIC.
+                    Implementación de lógicas de retardo y control de displays de 7 segmentos simulados en Proteus.</p>
+                <div class="skills">
+                    <span class="skill-tag">Ensamblador</span>
+                    <span class="skill-tag">C</span>
+                    <span class="skill-tag">MPLAB X</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto">
+        <h2>Contacto</h2>
+        <p style="text-align: center; margin-bottom: 20px;">¿Tienes una propuesta o quieres colaborar en un proyecto?
+            ¡Hablemos!</p>
+        <form action="#" method="POST">
+            <input type="text" name="nombre" placeholder="Tu Nombre" required>
+            <input type="email" name="correo" placeholder="Tu Correo Electrónico" required>
+            <textarea name="mensaje" rows="5" placeholder="Tu Mensaje" required></textarea>
+            <button type="submit">Enviar Mensaje</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Daniel Colin. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+
+</html>
