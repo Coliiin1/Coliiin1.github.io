@@ -1,0 +1,3237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Portafolio Web Profesional de Carlos Daniel Ávila Colin, estudiante de Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco.">
+    <meta name="author" content="Carlos Daniel Ávila Colin">
+    <meta name="theme-color" content="#1b2836">
+    <title>Portafolio Web | Daniel Colin — V2.0</title>
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f6fb2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Segoe UI,Arial' font-weight='700' font-size='28' fill='%23fff'%3EDC%3C/text%3E%3C/svg%3E">
+
+    <!--
+        ============================================================
+        PORTAFOLIO WEB PROFESIONAL — VERSIÓN 2.0 (Core Release)
+        Plan de referencia: Iteraciones.md (v2.0.0)
+        ------------------------------------------------------------
+        Documento único (SPA estática nativa): HTML5 semántico +
+        CSS Mobile-First + JavaScript vanilla modular, sin
+        dependencias externas.
+
+        Mapa de componentes DEV → bloques de este archivo:
+          DEV-FE-01  Marcado semántico (secciones #inicio, #mi-informacion,
+                     #mis-proyectos, #tecnologias, #contacto)
+          DEV-FE-02  Hoja de estilos (bloque <style>)
+          DEV-FE-03  Carrusel + modales           (módulos Carousel / Modal)
+          DEV-FE-04  Sección "Mi información" + CTA de CV
+          DEV-FE-09  Navegación SPA               (módulo Nav)
+          DEV-FE-12  Arquitectura i18n base       (módulo I18n)
+          DEV-AST-01 Imágenes: <img loading="lazy" decoding="async">
+                     con aspect-ratio 16:9 (marcadores SVG sustituibles por WebP)
+          DEV-BE-01  Endpoint SMTP (server/contact.php) — consumido vía Fetch
+        ============================================================
+    -->
+
+    <style>
+        /* =========================================================
+           DEV-FE-02 · TOKENS DE DISEÑO (contraste WCAG 2.1 AA — RNF-10)
+           ========================================================= */
+        :root {
+            --sidebar-w: 240px;
+            --content-offset: 260px;
+            --topbar-h: 56px;
+
+            --c-bg: #f3f6f9;
+            --c-surface: #ffffff;
+            --c-text: #1f2933;
+            /* 14.7:1 sobre blanco */
+            --c-muted: #4a5868;
+            /* 7.4:1 sobre blanco */
+            --c-primary: #2c3e50;
+            /* identidad heredada de V1 */
+            --c-accent: #1f6fb2;
+            /* 5.3:1 con texto blanco */
+            --c-accent-hover: #185a91;
+            --c-accent-soft: #e3eef8;
+            --c-accent-ink: #174a77;
+            /* 8.1:1 sobre --c-accent-soft */
+            --c-sidebar: #1b2836;
+            --c-sidebar-text: #e6edf3;
+            --c-sidebar-muted: #a9b8c7;
+            /* 7.9:1 sobre --c-sidebar */
+            --c-border: #dde4eb;
+            --c-border-strong: #6b7b8c;
+            /* 4.4:1 (no-texto ≥ 3:1) */
+            --c-focus: #f59e0b;
+            --c-success: #1e7e34;
+            --c-error: #b42318;
+            /* 6.2:1 sobre blanco */
+
+            --radius: 12px;
+            --shadow-sm: 0 1px 2px rgba(16, 24, 40, .06), 0 2px 8px rgba(16, 24, 40, .06);
+            --shadow-md: 0 8px 24px rgba(16, 24, 40, .12);
+            --shadow-lg: 0 20px 48px rgba(16, 24, 40, .22);
+
+            /* RNF-13: animaciones < 300 ms, curva cubic-bezier global */
+            --dur: 250ms;
+            --ease: cubic-bezier(.4, 0, .2, 1);
+        }
+
+        /* =========================================================
+           BASE (Mobile-First — RNF-07)
+           ========================================================= */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--c-text);
+            background: var(--c-bg);
+        }
+
+        body.nav-open,
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        [hidden] {
+            display: none !important;
+        }
+
+        img,
+        svg {
+            display: block;
+            max-width: 100%;
+        }
+
+        img {
+            height: auto;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+            color: inherit;
+        }
+
+        a {
+            color: var(--c-accent);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4 {
+            line-height: 1.25;
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--c-focus);
+            outline-offset: 2px;
+        }
+
+        [tabindex="-1"]:focus {
+            outline: none;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .skip-link {
+            position: fixed;
+            left: 8px;
+            top: 8px;
+            z-index: 4000;
+            padding: 12px 18px;
+            background: var(--c-surface);
+            color: var(--c-primary);
+            font-weight: 700;
+            border-radius: 8px;
+            box-shadow: var(--shadow-md);
+            transform: translateY(-200%);
+            transition: transform var(--dur) var(--ease);
+        }
+
+        .skip-link:focus {
+            transform: none;
+        }
+
+        /* =========================================================
+           BARRA SUPERIOR MÓVIL (RF-11: menú adaptado < 768px)
+           ========================================================= */
+        .topbar {
+            position: fixed;
+            inset: 0 0 auto 0;
+            height: var(--topbar-h);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4px 0 16px;
+            background: var(--c-sidebar);
+            color: #fff;
+            z-index: 1100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+        }
+
+        .topbar__brand {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-decoration: none;
+            letter-spacing: .3px;
+        }
+
+        .icon-btn {
+            width: 48px;
+            height: 48px;
+            display: inline-grid;
+            place-items: center;
+            border: 0;
+            border-radius: 10px;
+            background: transparent;
+            color: inherit;
+            cursor: pointer;
+        }
+
+        .icon-btn svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        /* =========================================================
+           RF-10 · MENÚ LATERAL FIJO
+           ========================================================= */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            height: 100dvh;
+            width: var(--sidebar-w);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 16px 16px;
+            background: var(--c-sidebar);
+            color: var(--c-sidebar-text);
+            z-index: 1200;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform var(--dur) var(--ease);
+        }
+
+        .sidebar.is-open {
+            transform: none;
+        }
+
+        .nav-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 32, .55);
+            z-index: 1150;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity var(--dur) var(--ease);
+        }
+
+        .nav-overlay.is-visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .profile {
+            text-align: center;
+            padding-bottom: 20px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, .12);
+        }
+
+        .avatar {
+            width: 88px;
+            height: 88px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, .12);
+        }
+
+        .profile__name {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .profile__role {
+            margin: 2px 0 0;
+            font-size: .85rem;
+            color: var(--c-sidebar-muted);
+        }
+
+        .nav-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-height: 48px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            color: var(--c-sidebar-text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            flex: none;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, .08);
+            color: #fff;
+        }
+
+        /* Estado activo reactivo (TC-010) */
+        .nav-item-active,
+        .nav-item-active:hover {
+            background: var(--c-accent);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* RF-14 · Redes profesionales al pie del menú */
+        .sidebar__social {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, .12);
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .social-link {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            color: var(--c-sidebar-muted);
+            transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease);
+        }
+
+        .social-link svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .social-link:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, .08);
+        }
+
+        .sidebar__version {
+            margin: 12px 0 0;
+            text-align: center;
+            font-size: .75rem;
+            color: var(--c-sidebar-muted);
+        }
+
+        /* =========================================================
+           RF-11 · CONTENEDOR PRINCIPAL (sin superposición)
+           ========================================================= */
+        main {
+            margin-left: 0;
+            padding: calc(var(--topbar-h) + 16px) 16px 24px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Vistas SPA (RNF-02: transición de opacidad 250 ms) */
+        .view {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity var(--dur) ease-in-out, transform var(--dur) ease-in-out;
+        }
+
+        .view.is-active {
+            opacity: 1;
+            transform: none;
+        }
+
+        .section-head {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            position: relative;
+            margin: 0 0 14px;
+            padding-bottom: 10px;
+            font-size: clamp(1.6rem, 1.2rem + 1.3vw, 2.2rem);
+            color: var(--c-primary);
+        }
+
+        .section-title::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 56px;
+            height: 4px;
+            border-radius: 4px;
+            background: var(--c-accent);
+        }
+
+        .section-lead {
+            margin: 0;
+            max-width: 70ch;
+            color: var(--c-muted);
+        }
+
+        .sub-title {
+            margin: 40px 0 16px;
+            font-size: 1.35rem;
+            color: var(--c-primary);
+        }
+
+        .surface {
+            background: var(--c-surface);
+            border: 1px solid var(--c-border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* =========================================================
+           BOTONES Y BADGES
+           ========================================================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 48px;
+            padding: 12px 24px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+            flex: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn[disabled] {
+            opacity: .7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-primary {
+            background: var(--c-accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--c-accent-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--c-accent);
+            border-color: var(--c-accent);
+        }
+
+        .btn-outline:hover {
+            background: var(--c-accent-soft);
+        }
+
+        .btn-light {
+            background: #fff;
+            color: var(--c-primary);
+        }
+
+        .btn-ghost-light {
+            background: transparent;
+            color: #fff;
+            border-color: rgba(255, 255, 255, .75);
+        }
+
+        .btn-ghost-light:hover {
+            background: rgba(255, 255, 255, .12);
+        }
+
+        /* RF-13 · CTA de primer orden para descarga de CV */
+        .btn-primary-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            background: var(--c-accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-decoration: none;
+            box-shadow: 0 6px 16px rgba(31, 111, 178, .35);
+            transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background-color var(--dur) var(--ease);
+        }
+
+        .btn-primary-cta svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .btn-primary-cta:hover {
+            transform: translateY(-2px);
+            background: var(--c-accent-hover);
+            box-shadow: 0 10px 22px rgba(31, 111, 178, .4);
+        }
+
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: var(--c-accent-soft);
+            color: var(--c-accent-ink);
+            font-size: .78rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge--cat {
+            background: var(--c-primary);
+            color: #fff;
+        }
+
+        .tag-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag-list li {
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--c-accent-soft);
+            color: var(--c-accent-ink);
+            font-size: .85rem;
+            font-weight: 600;
+        }
+
+        /* =========================================================
+           INICIO · HERO (RF-01)
+           ========================================================= */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 40px;
+            padding: 40px 24px;
+            border-radius: var(--radius);
+            color: #fff;
+            background: linear-gradient(135deg, #2c3e50 0%, #1f4e79 100%);
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            right: -120px;
+            top: -120px;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(79, 179, 255, .35), transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero>* {
+            position: relative;
+        }
+
+        .hero__kicker {
+            display: inline-block;
+            margin-bottom: 10px;
+            font-size: .82rem;
+            font-weight: 600;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: #cfe3f5;
+        }
+
+        .hero h1 {
+            margin: 0 0 14px;
+            font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem);
+            line-height: 1.12;
+        }
+
+        .hero p {
+            margin: 0 0 24px;
+            max-width: 62ch;
+            font-size: 1.1rem;
+            color: #e3ecf5;
+        }
+
+        .hero__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero__areas {
+            margin-top: 28px;
+        }
+
+        .hero__areas .tag-list li {
+            background: rgba(255, 255, 255, .12);
+            color: #fff;
+        }
+
+        /* =========================================================
+           RF-01 / DEV-FE-03 · CARRUSEL DE PROYECTOS DESTACADOS
+           ========================================================= */
+        .carousel {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel__viewport {
+            overflow: hidden;
+        }
+
+        .carousel__track {
+            display: flex;
+            touch-action: pan-y;
+            will-change: transform;
+            transition: transform 280ms var(--ease);
+        }
+
+        .carousel__slide {
+            flex: 0 0 100%;
+            min-width: 0;
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .carousel__media {
+            display: block;
+            width: 100%;
+            padding: 0;
+            border: 0;
+            background: #e8eef4;
+            cursor: pointer;
+        }
+
+        .carousel__media img,
+        .media-16x9 {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+        }
+
+        .carousel__body {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px 20px 80px;
+        }
+
+        .carousel__body h3 {
+            margin: 0;
+            font-size: 1.35rem;
+            color: var(--c-primary);
+        }
+
+        .carousel__body p {
+            margin: 0;
+            color: var(--c-muted);
+        }
+
+        .carousel__body .btn {
+            align-self: flex-start;
+        }
+
+        .carousel__controls {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .carousel__arrow {
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--c-border);
+            border-radius: 50%;
+            background: var(--c-surface);
+            color: var(--c-primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .carousel__arrow svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .carousel__dots {
+            display: flex;
+        }
+
+        .carousel__dot {
+            width: 32px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .carousel__dot::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--c-border-strong);
+            transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+        }
+
+        .carousel__dot[aria-current="true"]::before {
+            background: var(--c-accent);
+            transform: scale(1.35);
+        }
+
+        /* =========================================================
+           RF-03 · MI INFORMACIÓN
+           ========================================================= */
+        .info-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .info-block {
+            padding: 24px;
+        }
+
+        .info-block h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 16px;
+            font-size: 1.3rem;
+            color: var(--c-primary);
+        }
+
+        .info-block h3 svg {
+            width: 26px;
+            height: 26px;
+            color: var(--c-accent);
+            flex: none;
+        }
+
+        .info-block p {
+            margin: 0 0 12px;
+        }
+
+        .bio {
+            display: grid;
+            gap: 20px;
+        }
+
+        .cv-box {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 20px;
+            border-radius: var(--radius);
+            background: var(--c-accent-soft);
+        }
+
+        .cv-box small {
+            color: var(--c-accent-ink);
+            font-weight: 600;
+        }
+
+        .timeline {
+            list-style: none;
+            margin: 0;
+            padding: 0 0 0 20px;
+            border-left: 3px solid var(--c-border);
+        }
+
+        .timeline li {
+            position: relative;
+            padding: 0 0 20px 16px;
+        }
+
+        .timeline li:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline li::before {
+            content: "";
+            position: absolute;
+            left: -29px;
+            top: 6px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--c-accent);
+            box-shadow: 0 0 0 4px var(--c-surface);
+        }
+
+        .timeline h4 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--c-primary);
+        }
+
+        .timeline__meta {
+            display: block;
+            margin: 2px 0 8px;
+            font-size: .9rem;
+            font-weight: 600;
+            color: var(--c-accent-ink);
+        }
+
+        .competency-grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        .competency {
+            padding: 16px;
+            border: 1px solid var(--c-border);
+            border-radius: 10px;
+        }
+
+        .competency h4 {
+            margin: 0 0 10px;
+            font-size: 1rem;
+            color: var(--c-primary);
+        }
+
+        .competency ul {
+            margin: 0;
+            padding-left: 18px;
+            color: var(--c-muted);
+            font-size: .95rem;
+        }
+
+        /* =========================================================
+           RF-04 / RF-16 · MIS PROYECTOS (grid + filtros)
+           ========================================================= */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .filter-btn {
+            min-height: 48px;
+            padding: 8px 18px;
+            border: 2px solid var(--c-border-strong);
+            border-radius: 999px;
+            background: var(--c-surface);
+            color: var(--c-primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .filter-btn[aria-pressed="true"] {
+            background: var(--c-primary);
+            border-color: var(--c-primary);
+            color: #fff;
+        }
+
+        .results-count {
+            margin: 0 0 20px;
+            font-size: .9rem;
+            color: var(--c-muted);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        .project-card {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .project-card.is-entering {
+            animation: cardIn 200ms var(--ease);
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: scale(.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        .project-card__body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 16px;
+        }
+
+        .project-card__title {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--c-primary);
+        }
+
+        .project-card__desc {
+            margin: 0;
+            font-size: .92rem;
+            color: var(--c-muted);
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Altura uniforme: botón alineado al fondo (TC-004) */
+        .project-card .btn {
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .empty-state {
+            padding: 32px;
+            text-align: center;
+            color: var(--c-muted);
+        }
+
+        /* =========================================================
+           RF-15 · TECNOLOGÍAS (tarjetas + tooltip de dominio)
+           ========================================================= */
+        .tech-group+.tech-group {
+            margin-top: 32px;
+        }
+
+        .tech-group h3 {
+            margin: 0 0 16px;
+            font-size: 1.2rem;
+            color: var(--c-primary);
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 16px;
+        }
+
+        .tech-card {
+            position: relative;
+            width: 100%;
+            min-height: 132px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+        }
+
+        .tech-card:hover,
+        .tech-card.is-open {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tech-card__icon svg {
+            width: 52px;
+            height: 52px;
+        }
+
+        .tech-card__name {
+            font-weight: 600;
+            color: var(--c-primary);
+            line-height: 1.3;
+        }
+
+        .tooltip {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: calc(100% + 10px);
+            z-index: 20;
+            padding: 12px;
+            border-radius: 10px;
+            background: #14202c;
+            color: #f1f5f9;
+            font-size: .85rem;
+            line-height: 1.45;
+            text-align: left;
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transform: translateY(6px);
+            pointer-events: none;
+            transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            margin-left: -7px;
+            border: 7px solid transparent;
+            border-top-color: #14202c;
+        }
+
+        .tech-card:hover .tooltip,
+        .tech-card:focus-visible .tooltip,
+        .tech-card.is-open .tooltip {
+            opacity: 1;
+            transform: none;
+        }
+
+        .tooltip__level {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+
+        .meter {
+            height: 6px;
+            margin: 6px 0 8px;
+            border-radius: 99px;
+            background: rgba(255, 255, 255, .2);
+            overflow: hidden;
+        }
+
+        .meter span {
+            display: block;
+            height: 100%;
+            width: var(--lvl, 33%);
+            border-radius: inherit;
+            background: #4fb3ff;
+        }
+
+        /* =========================================================
+           RF-06..RF-09 · CONTACTO
+           ========================================================= */
+        .contact-layout {
+            display: grid;
+            gap: 24px;
+        }
+
+        .contact-aside,
+        .contact-form {
+            padding: 24px;
+        }
+
+        .contact-aside h3 {
+            margin: 0 0 12px;
+            color: var(--c-primary);
+        }
+
+        .contact-aside ul {
+            list-style: none;
+            margin: 20px 0 0;
+            padding: 0;
+            display: grid;
+            gap: 12px;
+        }
+
+        .contact-aside li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--c-muted);
+        }
+
+        .contact-aside li svg {
+            width: 22px;
+            height: 22px;
+            color: var(--c-accent);
+            flex: none;
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 18px;
+        }
+
+        .form-row {
+            display: grid;
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .field label {
+            font-weight: 600;
+            color: var(--c-primary);
+        }
+
+        .req {
+            color: var(--c-error);
+        }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+            min-height: 48px;
+            padding: 12px 14px;
+            border: 2px solid var(--c-border-strong);
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: var(--c-accent);
+            box-shadow: 0 0 0 3px rgba(31, 111, 178, .25);
+        }
+
+        .field.is-invalid input,
+        .field.is-invalid textarea {
+            border-color: var(--c-error);
+            box-shadow: 0 0 0 3px rgba(180, 35, 24, .15);
+        }
+
+        .field__error {
+            min-height: 1.3em;
+            margin: 0;
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--c-error);
+        }
+
+        .field__counter {
+            align-self: flex-end;
+            font-size: .8rem;
+            color: var(--c-muted);
+        }
+
+        .form-note {
+            margin: 0;
+            font-size: .85rem;
+            color: var(--c-muted);
+        }
+
+        /* RF-09 · Aviso de privacidad antes del botón de envío */
+        .privacy-note {
+            margin: 0;
+            padding: 12px 14px;
+            border-left: 4px solid var(--c-accent);
+            border-radius: 8px;
+            background: #eef3f8;
+            font-size: .88rem;
+            color: var(--c-text);
+        }
+
+        .hp-field {
+            position: absolute !important;
+            left: -9999px !important;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
+
+        .contact-form .btn-primary {
+            justify-self: start;
+            min-width: 200px;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, .4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 700ms linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* =========================================================
+           RF-02 / RF-05 · MODALES
+           ========================================================= */
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: grid;
+            place-items: center;
+            padding: 16px;
+        }
+
+        .modal__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 32, .55);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity var(--dur) var(--ease);
+        }
+
+        .modal__dialog {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            max-height: calc(100vh - 32px);
+            max-height: calc(100dvh - 32px);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            border-radius: 16px;
+            background: var(--c-surface);
+            box-shadow: var(--shadow-lg);
+            opacity: 0;
+            transform: translateY(16px) scale(.98);
+            transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+        }
+
+        .modal--detail .modal__dialog {
+            max-width: 980px;
+        }
+
+        .modal.is-open .modal__backdrop {
+            opacity: 1;
+        }
+
+        .modal.is-open .modal__dialog {
+            opacity: 1;
+            transform: none;
+        }
+
+        .modal__close {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 2;
+            width: 48px;
+            height: 48px;
+            display: grid;
+            place-items: center;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .94);
+            color: var(--c-primary);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .modal__close svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .modal__content {
+            display: grid;
+            gap: 14px;
+            padding: 24px;
+        }
+
+        .modal__content h2,
+        .modal__content h3 {
+            margin: 0;
+            color: var(--c-primary);
+        }
+
+        .modal__content p {
+            margin: 0;
+        }
+
+        .modal__label {
+            margin: 0 0 6px;
+            font-size: .8rem;
+            font-weight: 700;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            color: var(--c-muted);
+        }
+
+        .modal__actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 4px;
+        }
+
+        .gallery__thumbs {
+            display: flex;
+            gap: 8px;
+            padding: 12px 24px 0;
+            overflow-x: auto;
+        }
+
+        .gallery__thumb {
+            flex: none;
+            width: 104px;
+            padding: 0;
+            border: 3px solid transparent;
+            border-radius: 8px;
+            overflow: hidden;
+            background: none;
+            cursor: pointer;
+            opacity: .75;
+            transition: opacity var(--dur) var(--ease);
+        }
+
+        .gallery__thumb[aria-current="true"] {
+            border-color: var(--c-accent);
+            opacity: 1;
+        }
+
+        .gallery__caption {
+            margin: 8px 24px 0;
+            font-size: .85rem;
+            color: var(--c-muted);
+        }
+
+        .detail-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .detail-grid h3 {
+            margin: 0 0 10px;
+            font-size: 1.1rem;
+        }
+
+        .detail-grid ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .spec-list {
+            display: grid;
+            grid-template-columns: max-content 1fr;
+            gap: 8px 16px;
+            margin: 0;
+            font-size: .95rem;
+        }
+
+        .spec-list dt {
+            font-weight: 700;
+            color: var(--c-primary);
+        }
+
+        .spec-list dd {
+            margin: 0;
+            color: var(--c-muted);
+        }
+
+        .deps-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .9rem;
+        }
+
+        .deps-table th,
+        .deps-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--c-border);
+            text-align: left;
+        }
+
+        .deps-table th {
+            color: var(--c-primary);
+            background: #f6f8fb;
+        }
+
+        /* =========================================================
+           RF-12 · TOAST
+           ========================================================= */
+        .toast-region {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            left: 16px;
+            z-index: 3000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            pointer-events: none;
+        }
+
+        .toast {
+            pointer-events: auto;
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 8px 14px 16px;
+            border-left: 5px solid var(--c-success);
+            border-radius: 12px;
+            background: var(--c-surface);
+            box-shadow: var(--shadow-lg);
+            animation: slideInFromRight 250ms var(--ease) both;
+        }
+
+        .toast.is-leaving {
+            animation: slideOutToRight 200ms var(--ease) forwards;
+        }
+
+        .toast--error {
+            border-left-color: var(--c-error);
+        }
+
+        .toast__icon {
+            flex: none;
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--c-success);
+            color: #fff;
+        }
+
+        .toast--error .toast__icon {
+            background: var(--c-error);
+        }
+
+        .toast__icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .toast__body {
+            flex: 1;
+        }
+
+        .toast__body strong {
+            display: block;
+            color: var(--c-primary);
+        }
+
+        .toast__body p {
+            margin: 2px 0 0;
+            font-size: .9rem;
+            color: var(--c-muted);
+        }
+
+        .toast .icon-btn {
+            width: 40px;
+            height: 40px;
+            color: var(--c-muted);
+        }
+
+        .toast .icon-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @keyframes slideInFromRight {
+            from {
+                opacity: 0;
+                transform: translateX(110%);
+            }
+
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        @keyframes slideOutToRight {
+            to {
+                opacity: 0;
+                transform: translateX(110%);
+            }
+        }
+
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+        .site-footer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 56px;
+            padding: 24px 0 8px;
+            border-top: 1px solid var(--c-border);
+            font-size: .9rem;
+            color: var(--c-muted);
+        }
+
+        .site-footer p {
+            margin: 0;
+        }
+
+        /* =========================================================
+           BREAKPOINTS PROGRESIVOS (solo min-width — RNF-07)
+           ========================================================= */
+        @media (min-width: 768px) {
+            .topbar {
+                display: none;
+            }
+
+            .nav-overlay {
+                display: none;
+            }
+
+            .sidebar {
+                transform: none;
+            }
+
+            main {
+                margin-left: var(--content-offset);
+                padding: 32px 24px;
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .competency-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .form-row--2 {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .hero {
+                padding: 48px 40px;
+            }
+
+            .toast-region {
+                left: auto;
+                width: 400px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            main {
+                padding: 40px 32px;
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .carousel__slide {
+                grid-template-columns: 1.25fr 1fr;
+                align-items: center;
+            }
+
+            .carousel__body {
+                padding: 32px 32px 88px;
+            }
+
+            .carousel__controls {
+                left: auto;
+                right: 24px;
+                bottom: 20px;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .info-block--bio {
+                grid-column: 1 / -1;
+            }
+
+            .bio {
+                grid-template-columns: 1fr auto;
+                align-items: start;
+            }
+
+            .contact-layout {
+                grid-template-columns: 1fr 1.7fr;
+                align-items: start;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1.3fr 1fr;
+            }
+
+            .hero {
+                padding: 64px 56px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            main {
+                padding: 48px;
+            }
+        }
+
+        /* Accesibilidad: respeto de movimiento reducido */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a class="skip-link" href="#main" data-i18n="skip">Saltar al contenido principal</a>
+
+    <!-- ===================== BARRA SUPERIOR (móvil) ===================== -->
+    <header class="topbar">
+        <a class="topbar__brand" href="#inicio" data-nav="inicio">Portafolio | Daniel Colin</a>
+        <button class="icon-btn" id="menu-toggle" type="button" aria-controls="sidebar" aria-expanded="false"
+            aria-label="Abrir menú de navegación" data-i18n-aria="nav.menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                aria-hidden="true" focusable="false">
+                <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+    </header>
+
+    <!-- ===================== RF-10 · MENÚ LATERAL FIJO ===================== -->
+    <aside class="sidebar" id="sidebar">
+        <div class="profile">
+            <svg class="avatar" viewBox="0 0 88 88" role="img" aria-label="Avatar de Daniel Colin">
+                <defs>
+                    <linearGradient id="avatar-g" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0" stop-color="#1f6fb2" />
+                        <stop offset="1" stop-color="#2a9d8f" />
+                    </linearGradient>
+                </defs>
+                <circle cx="44" cy="44" r="44" fill="url(#avatar-g)" />
+                <text x="44" y="54" text-anchor="middle" font-family="Segoe UI, Arial, sans-serif" font-size="30"
+                    font-weight="700" fill="#fff">DC</text>
+            </svg>
+            <p class="profile__name">Daniel Colin</p>
+            <p class="profile__role" data-i18n="profile.role">Ingeniería en Software</p>
+        </div>
+
+        <nav aria-label="Navegación principal" data-i18n-aria="nav.label">
+            <ul class="nav-list">
+                <li>
+                    <a class="nav-item" href="#inicio" data-nav="inicio">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z" />
+                        </svg>
+                        <span data-i18n="nav.home">Inicio</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-item" href="#mi-informacion" data-nav="mi-informacion">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21a8 8 0 0 1 16 0" />
+                        </svg>
+                        <span data-i18n="nav.about">Mi información</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-item" href="#mis-proyectos" data-nav="mis-proyectos">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                        </svg>
+                        <span data-i18n="nav.projects">Mis proyectos</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-item" href="#tecnologias" data-nav="tecnologias">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <rect x="6" y="6" width="12" height="12" rx="2" />
+                            <path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" />
+                        </svg>
+                        <span data-i18n="nav.tech">Tecnologías</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-item" href="#contacto" data-nav="contacto">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
+                            <path d="m3 7 9 6 9-6" />
+                        </svg>
+                        <span data-i18n="nav.contact">Contacto</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- RF-14 · Iconografía vectorial (viewBox 0 0 24 24, fill: currentColor) -->
+        <div class="sidebar__social">
+            <a class="social-link" href="https://github.com/Coliiin1" target="_blank" rel="noopener noreferrer"
+                aria-label="Perfil de GitHub (se abre en una pestaña nueva)" data-i18n-aria="social.github">
+                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+                    <path
+                        d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z" />
+                </svg>
+            </a>
+            <!-- TODO: sustituir por la URL real del perfil de LinkedIn -->
+            <a class="social-link" href="https://www.linkedin.com/in/daniel-colin" target="_blank"
+                rel="noopener noreferrer" aria-label="Perfil de LinkedIn (se abre en una pestaña nueva)"
+                data-i18n-aria="social.linkedin">
+                <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+                    <path
+                        d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z" />
+                </svg>
+            </a>
+        </div>
+        <p class="sidebar__version">Portafolio V2.0</p>
+    </aside>
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <!-- ===================== RF-11 · CONTENIDO PRINCIPAL ===================== -->
+    <main id="main" tabindex="-1">
+        <div class="container">
+
+            <!-- ============ VISTA: INICIO (RF-01) ============ -->
+            <section id="inicio" class="view" aria-labelledby="inicio-title">
+                <div class="hero">
+                    <span class="hero__kicker" data-i18n="hero.kicker">Estudiante de Ingeniería en Software · UAEMex
+                        Tianguistenco</span>
+                    <h1 id="inicio-title" tabindex="-1" data-i18n="hero.title">Hola, soy Daniel Colin</h1>
+                    <p data-i18n="hero.text">Desarrollo soluciones tecnológicas que van desde aplicaciones de escritorio
+                        robustas y bases de datos relacionales hasta sistemas embebidos de bajo nivel.</p>
+                    <div class="hero__actions">
+                        <a class="btn btn-light" href="#mis-proyectos" data-nav="mis-proyectos">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                            </svg>
+                            <span data-i18n="hero.ctaProjects">Explorar proyectos</span>
+                        </a>
+                        <a class="btn btn-ghost-light" href="assets/docs/CV_Carlos_Daniel_Avila.pdf"
+                            download="CV_Carlos_Daniel_Avila.pdf">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="M12 3v12m0 0-4-4m4 4 4-4M5 21h14" />
+                            </svg>
+                            <span data-i18n="hero.ctaCv">Descargar CV</span>
+                        </a>
+                    </div>
+                    <div class="hero__areas">
+                        <ul class="tag-list" aria-label="Áreas de especialidad">
+                            <li>Java · POO</li>
+                            <li>Bases de datos</li>
+                            <li>Ingeniería de requisitos</li>
+                            <li>Sistemas embebidos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="section-head">
+                    <h2 class="section-title" data-i18n="featured.title">Proyectos destacados</h2>
+                    <p class="section-lead" data-i18n="featured.lead">Una selección de mis desarrollos más
+                        representativos. Haz clic o toca una tarjeta para abrir una vista rápida.</p>
+                </div>
+
+                <div class="carousel surface" id="featured-carousel" role="region" aria-roledescription="carrusel"
+                    aria-label="Carrusel de proyectos destacados" data-i18n-aria="carousel.label">
+                    <div class="carousel__viewport">
+                        <div class="carousel__track" id="carousel-track"></div>
+                    </div>
+                    <div class="carousel__controls">
+                        <button class="carousel__arrow" type="button" data-dir="-1" aria-label="Proyecto anterior"
+                            data-i18n-aria="carousel.prev">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m15 18-6-6 6-6" />
+                            </svg>
+                        </button>
+                        <div class="carousel__dots" id="carousel-dots"></div>
+                        <button class="carousel__arrow" type="button" data-dir="1" aria-label="Proyecto siguiente"
+                            data-i18n-aria="carousel.next">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m9 18 6-6-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ VISTA: MI INFORMACIÓN (RF-03 · RF-13) ============ -->
+            <section id="mi-informacion" class="view" aria-labelledby="info-title" hidden>
+                <div class="section-head">
+                    <h2 class="section-title" id="info-title" tabindex="-1" data-i18n="about.title">Mi información</h2>
+                    <p class="section-lead" data-i18n="about.lead">Conoce mi trayectoria, mi formación académica y las
+                        competencias que he desarrollado como futuro Ingeniero en Software.</p>
+                </div>
+
+                <div class="info-grid">
+                    <!-- Bloque 1: Biografía -->
+                    <article class="info-block info-block--bio surface">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 21a8 8 0 0 1 16 0" />
+                            </svg>
+                            <span data-i18n="about.bioTitle">Biografía</span>
+                        </h3>
+                        <div class="bio">
+                            <div>
+                                <p>Soy <strong>Carlos Daniel Ávila Colin</strong>, estudiante de la Licenciatura en
+                                    Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco. Me apasiona
+                                    el desarrollo backend, la creación de aplicaciones de escritorio y la arquitectura
+                                    de
+                                    bases de datos.</p>
+                                <p>Disfruto enfrentando retos técnicos, como el diseño de sistemas médicos o la
+                                    configuración de servidores utilizando herramientas de red. Mi entorno de trabajo
+                                    principal es <strong>Fedora Linux</strong>, y dedico parte de mi tiempo a la
+                                    iniciativa tecnológica <strong>NeuraSoft</strong>, bajo la cual diseño soluciones de
+                                    software.</p>
+                            </div>
+                            <!-- RF-13 · CTA de descarga directa del CV -->
+                            <div class="cv-box">
+                                <a class="btn-primary-cta" href="assets/docs/CV_Carlos_Daniel_Avila.pdf"
+                                    download="CV_Carlos_Daniel_Avila.pdf" type="application/pdf">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                                        focusable="false">
+                                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                                        <path d="M14 3v5h5" />
+                                        <path d="M12 11v6m0 0-2.5-2.5M12 17l2.5-2.5" />
+                                    </svg>
+                                    <span data-i18n="about.cv">Descargar CV (PDF)</span>
+                                </a>
+                                <small data-i18n="about.cvHint">Archivo PDF · descarga directa</small>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Bloque 2: Formación académica -->
+                    <article class="info-block surface">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m2 9 10-5 10 5-10 5z" />
+                                <path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" />
+                            </svg>
+                            <span data-i18n="about.eduTitle">Formación académica</span>
+                        </h3>
+                        <ol class="timeline">
+                            <li>
+                                <h4>Licenciatura en Ingeniería en Software</h4>
+                                <span class="timeline__meta">Centro Universitario UAEMex Tianguistenco · En curso</span>
+                                <p>Formación integral en el ciclo de vida del software: análisis y especificación de
+                                    requisitos, diseño orientado a objetos, bases de datos, métodos de desarrollo y
+                                    programación de sistemas de bajo nivel.</p>
+                            </li>
+                            <li>
+                                <h4>Unidades de aprendizaje destacadas</h4>
+                                <span class="timeline__meta">Plan de estudios</span>
+                                <ul class="tag-list">
+                                    <li>Programación Orientada a Objetos</li>
+                                    <li>Bases de Datos</li>
+                                    <li>Ingeniería de Requisitos</li>
+                                    <li>Métodos y Modelos de Desarrollo de Software</li>
+                                    <li>Microcontroladores</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </article>
+
+                    <!-- Bloque 3: Competencias profesionales (conceptuales, sin herramientas) -->
+                    <article class="info-block surface">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m12 2 3 6.5 7 .9-5.2 4.8 1.4 7L12 17.8 5.8 21.2l1.4-7L2 9.4l7-.9z" />
+                            </svg>
+                            <span data-i18n="about.skillsTitle">Competencias profesionales</span>
+                        </h3>
+                        <div class="competency-grid">
+                            <div class="competency">
+                                <h4 data-i18n="skills.dev">Desarrollo de software</h4>
+                                <ul>
+                                    <li>Programación orientada a objetos</li>
+                                    <li>Arquitectura en capas y MVC</li>
+                                    <li>Interfaces gráficas de escritorio</li>
+                                    <li>Automatización de tareas</li>
+                                </ul>
+                            </div>
+                            <div class="competency">
+                                <h4 data-i18n="skills.db">Bases de datos</h4>
+                                <ul>
+                                    <li>Modelado entidad-relación</li>
+                                    <li>Normalización (hasta 3FN)</li>
+                                    <li>Consultas SQL y restricciones</li>
+                                    <li>Integración con aplicaciones</li>
+                                </ul>
+                            </div>
+                            <div class="competency">
+                                <h4 data-i18n="skills.req">Requisitos y modelado UML</h4>
+                                <ul>
+                                    <li>Elicitación y especificación RF/RNF</li>
+                                    <li>Casos de uso</li>
+                                    <li>Diagramas de clases y secuencia</li>
+                                    <li>Trazabilidad de requisitos</li>
+                                </ul>
+                            </div>
+                            <div class="competency">
+                                <h4 data-i18n="skills.emb">Sistemas embebidos</h4>
+                                <ul>
+                                    <li>Programación a bajo nivel</li>
+                                    <li>Puertos de E/S y temporizadores</li>
+                                    <li>Rutinas de retardo e interrupciones</li>
+                                    <li>Simulación de circuitos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ============ VISTA: MIS PROYECTOS (RF-04 · RF-05 · RF-16) ============ -->
+            <section id="mis-proyectos" class="view" aria-labelledby="projects-title" hidden>
+                <div class="section-head">
+                    <h2 class="section-title" id="projects-title" tabindex="-1" data-i18n="projects.title">Mis proyectos
+                    </h2>
+                    <p class="section-lead" data-i18n="projects.lead">Catálogo de desarrollos realizados durante mi
+                        formación. Filtra por tecnología y abre cada ficha para ver capturas, arquitectura, dependencias
+                        y el repositorio.</p>
+                </div>
+
+                <div class="filters" role="group" aria-label="Filtrar proyectos por tecnología"
+                    data-i18n-aria="filters.label">
+                    <button class="filter-btn" type="button" data-filter="todos" aria-pressed="true"
+                        data-i18n="filter.todos">Todos</button>
+                    <button class="filter-btn" type="button" data-filter="web" aria-pressed="false"
+                        data-i18n="filter.web">Web</button>
+                    <button class="filter-btn" type="button" data-filter="escritorio" aria-pressed="false"
+                        data-i18n="filter.escritorio">Escritorio</button>
+                    <button class="filter-btn" type="button" data-filter="microcontroladores" aria-pressed="false"
+                        data-i18n="filter.microcontroladores">Microcontroladores</button>
+                    <button class="filter-btn" type="button" data-filter="bd" aria-pressed="false"
+                        data-i18n="filter.bd">Bases de Datos</button>
+                </div>
+                <p class="results-count" id="results-count" aria-live="polite"></p>
+
+                <div class="projects-grid" id="projects-grid"></div>
+                <p class="empty-state surface" id="projects-empty" data-i18n="projects.empty" hidden>No hay proyectos en
+                    esta categoría todavía.</p>
+            </section>
+
+            <!-- ============ VISTA: TECNOLOGÍAS (RF-15) ============ -->
+            <section id="tecnologias" class="view" aria-labelledby="tech-title" hidden>
+                <div class="section-head">
+                    <h2 class="section-title" id="tech-title" tabindex="-1" data-i18n="tech.title">Tecnologías</h2>
+                    <p class="section-lead" data-i18n="tech.lead">Herramientas, bases de datos y entornos con los que
+                        trabajo. Pasa el cursor, enfoca con el teclado o toca una tarjeta para ver mi nivel de dominio.
+                    </p>
+                </div>
+                <div id="tech-groups"></div>
+            </section>
+
+            <!-- ============ VISTA: CONTACTO (RF-06 · RF-07 · RF-08 · RF-09 · RF-12) ============ -->
+            <section id="contacto" class="view" aria-labelledby="contact-title" hidden>
+                <div class="section-head">
+                    <h2 class="section-title" id="contact-title" tabindex="-1" data-i18n="contact.title">Contacto</h2>
+                    <p class="section-lead" data-i18n="contact.lead">¿Tienes una propuesta, una vacante o quieres
+                        colaborar en un proyecto? Escríbeme directamente desde este formulario.</p>
+                </div>
+
+                <div class="contact-layout">
+                    <aside class="contact-aside surface">
+                        <h3 data-i18n="contact.asideTitle">Hablemos</h3>
+                        <p data-i18n="contact.asideText">Estoy abierto a prácticas profesionales, proyectos de
+                            desarrollo y colaboraciones académicas.</p>
+                        <ul>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" />
+                                    <circle cx="12" cy="9.5" r="2.5" />
+                                </svg>
+                                <span data-i18n="contact.location">Tianguistenco, Estado de México</span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M12 7v5l3 2" />
+                                </svg>
+                                <span data-i18n="contact.response">Tiempo de respuesta estimado: 24–48 h</span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                                    <path
+                                        d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z" />
+                                </svg>
+                                <a href="https://github.com/Coliiin1" target="_blank"
+                                    rel="noopener noreferrer">github.com/Coliiin1</a>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <!-- RF-06 · Formulario nativo (sin iframes ni servicios de terceros) -->
+                    <form class="contact-form surface" id="contact-form" action="server/contact.php" method="POST"
+                        novalidate>
+                        <p class="form-note"><span class="req" aria-hidden="true">*</span> <span
+                                data-i18n="form.required">Campos obligatorios</span></p>
+
+                        <div class="form-row form-row--2">
+                            <div class="field">
+                                <label for="f-nombre"><span data-i18n="form.name">Nombre</span> <span class="req"
+                                        aria-hidden="true">*</span></label>
+                                <input id="f-nombre" name="nombre" type="text" autocomplete="name" required
+                                    minlength="2" maxlength="100" aria-describedby="err-nombre"
+                                    placeholder="Tu nombre completo" data-i18n-placeholder="form.namePh">
+                                <p class="field__error" id="err-nombre"></p>
+                            </div>
+                            <div class="field">
+                                <label for="f-correo"><span data-i18n="form.email">Correo electrónico</span> <span
+                                        class="req" aria-hidden="true">*</span></label>
+                                <input id="f-correo" name="correo" type="email" autocomplete="email" inputmode="email"
+                                    required minlength="2" maxlength="150" aria-describedby="err-correo"
+                                    placeholder="tucorreo@ejemplo.com" data-i18n-placeholder="form.emailPh">
+                                <p class="field__error" id="err-correo"></p>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="f-asunto"><span data-i18n="form.subject">Asunto</span> <span class="req"
+                                    aria-hidden="true">*</span></label>
+                            <input id="f-asunto" name="asunto" type="text" required minlength="2" maxlength="120"
+                                aria-describedby="err-asunto" placeholder="Motivo del mensaje"
+                                data-i18n-placeholder="form.subjectPh">
+                            <p class="field__error" id="err-asunto"></p>
+                        </div>
+
+                        <div class="field">
+                            <label for="f-mensaje"><span data-i18n="form.message">Mensaje</span> <span class="req"
+                                    aria-hidden="true">*</span></label>
+                            <textarea id="f-mensaje" name="mensaje" rows="6" required minlength="2" maxlength="1000"
+                                aria-describedby="err-mensaje msg-counter" placeholder="Cuéntame sobre tu propuesta…"
+                                data-i18n-placeholder="form.messagePh"></textarea>
+                            <span class="field__counter" id="msg-counter">0 / 1000</span>
+                            <p class="field__error" id="err-mensaje"></p>
+                        </div>
+
+                        <!-- Honeypot anti-spam (oculto a usuarios y lectores de pantalla) -->
+                        <div class="hp-field" aria-hidden="true">
+                            <label for="f-website">Website</label>
+                            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <!-- RF-09 · Aviso de privacidad inmediatamente antes del botón -->
+                        <p class="privacy-note" id="privacy-note">
+                            <strong data-i18n="form.privacyTitle">Aviso de privacidad:</strong>
+                            <span data-i18n="form.privacy">los datos que proporciones (nombre, correo, asunto y mensaje)
+                                se utilizarán exclusivamente para establecer comunicación profesional contigo. No se
+                                almacenan en bases de datos ni se comparten con terceros. Al enviar este formulario
+                                aceptas dicho uso.</span>
+                        </p>
+
+                        <button class="btn btn-primary" id="contact-submit" type="submit"
+                            aria-describedby="privacy-note">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m22 2-7 20-4-9-9-4z" />
+                                <path d="M22 2 11 13" />
+                            </svg>
+                            <span class="btn-label" data-i18n="form.submit">Enviar Mensaje</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <footer class="site-footer">
+                <p data-i18n="footer.rights">© 2026 Daniel Colin. Todos los derechos reservados.</p>
+                <p data-i18n="footer.version">Portafolio Web Profesional · Versión 2.0</p>
+            </footer>
+        </div>
+    </main>
+
+    <!-- ===================== RF-02 · MODAL DE VISTA RÁPIDA ===================== -->
+    <div class="modal" id="quick-modal" role="dialog" aria-modal="true" aria-labelledby="quick-title" hidden>
+        <div class="modal__backdrop" data-close></div>
+        <div class="modal__dialog">
+            <button class="modal__close" type="button" data-close aria-label="Cerrar" data-i18n-aria="detail.close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="M6 6l12 12M18 6 6 18" />
+                </svg>
+            </button>
+            <img class="media-16x9" id="quick-img" src="" alt="" width="640" height="360" loading="lazy"
+                decoding="async">
+            <div class="modal__content">
+                <div class="badges" id="quick-cats"></div>
+                <h2 id="quick-title"></h2>
+                <p id="quick-desc"></p>
+                <div>
+                    <p class="modal__label" data-i18n="quick.stack">Stack tecnológico</p>
+                    <div class="badges" id="quick-stack"></div>
+                </div>
+                <div class="modal__actions">
+                    <button class="btn btn-primary" type="button" id="quick-full">
+                        <span data-i18n="quick.full">Ver proyecto completo</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <path d="M5 12h14m-6-6 6 6-6 6" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== RF-05 · MODAL DE FICHA TÉCNICA DETALLADA ===================== -->
+    <div class="modal modal--detail" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title"
+        hidden>
+        <div class="modal__backdrop" data-close></div>
+        <div class="modal__dialog" id="detail-dialog"></div>
+    </div>
+
+    <!-- ===================== RF-12 · REGIÓN DE NOTIFICACIONES ===================== -->
+    <div class="toast-region" id="toast-region" role="status" aria-live="polite" aria-atomic="false"></div>
+
+    <script>
+        (() => {
+            'use strict';
+
+            /* =====================================================
+               UTILIDADES
+               ===================================================== */
+            const $ = (sel, ctx = document) => ctx.querySelector(sel);
+            const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const desktopMQ = window.matchMedia('(min-width: 768px)');
+
+            /** RNF-06 · Escape estricto de caracteres peligrosos antes de insertar en el DOM. */
+            const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (ch) => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[ch]));
+
+            const ICONS = {
+                close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+                check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 5 5 9-10"/></svg>',
+                alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 7v6M12 17h.01"/></svg>',
+                github: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>'
+            };
+
+            /* =====================================================
+               DEV-FE-12 · ARQUITECTURA i18n BASE (RNF-14)
+               Textos desacoplados del marcado mediante data-i18n,
+               data-i18n-placeholder y data-i18n-aria.
+               V2.0: diccionarios embebidos (es/en). En V2.1 se moverán
+               a i18n/es.json e i18n/en.json y se añadirá el conmutador.
+               Prueba rápida: abrir el archivo con ?lang=en
+               ===================================================== */
+            const DICTIONARIES = {
+                es: {
+                    'skip': 'Saltar al contenido principal',
+                    'profile.role': 'Ingeniería en Software',
+                    'nav.menu': 'Abrir menú de navegación',
+                    'nav.menuClose': 'Cerrar menú de navegación',
+                    'nav.label': 'Navegación principal',
+                    'nav.home': 'Inicio', 'nav.about': 'Mi información', 'nav.projects': 'Mis proyectos',
+                    'nav.tech': 'Tecnologías', 'nav.contact': 'Contacto',
+                    'social.github': 'Perfil de GitHub (se abre en una pestaña nueva)',
+                    'social.linkedin': 'Perfil de LinkedIn (se abre en una pestaña nueva)',
+                    'hero.kicker': 'Estudiante de Ingeniería en Software · UAEMex Tianguistenco',
+                    'hero.title': 'Hola, soy Daniel Colin',
+                    'hero.text': 'Desarrollo soluciones tecnológicas que van desde aplicaciones de escritorio robustas y bases de datos relacionales hasta sistemas embebidos de bajo nivel.',
+                    'hero.ctaProjects': 'Explorar proyectos', 'hero.ctaCv': 'Descargar CV',
+                    'featured.title': 'Proyectos destacados',
+                    'featured.lead': 'Una selección de mis desarrollos más representativos. Haz clic o toca una tarjeta para abrir una vista rápida.',
+                    'carousel.label': 'Carrusel de proyectos destacados',
+                    'carousel.prev': 'Proyecto anterior', 'carousel.next': 'Proyecto siguiente',
+                    'carousel.goto': 'Ir al proyecto {n}: {title}', 'carousel.slide': '{n} de {total}',
+                    'carousel.quick': 'Vista rápida',
+                    'about.title': 'Mi información',
+                    'about.lead': 'Conoce mi trayectoria, mi formación académica y las competencias que he desarrollado como futuro Ingeniero en Software.',
+                    'about.bioTitle': 'Biografía', 'about.eduTitle': 'Formación académica',
+                    'about.skillsTitle': 'Competencias profesionales',
+                    'about.cv': 'Descargar CV (PDF)', 'about.cvHint': 'Archivo PDF · descarga directa',
+                    'skills.dev': 'Desarrollo de software', 'skills.db': 'Bases de datos',
+                    'skills.req': 'Requisitos y modelado UML', 'skills.emb': 'Sistemas embebidos',
+                    'projects.title': 'Mis proyectos',
+                    'projects.lead': 'Catálogo de desarrollos realizados durante mi formación. Filtra por tecnología y abre cada ficha para ver capturas, arquitectura, dependencias y el repositorio.',
+                    'projects.count': 'Mostrando {n} de {total} proyectos',
+                    'projects.details': 'Ver detalles',
+                    'projects.empty': 'No hay proyectos en esta categoría todavía.',
+                    'filters.label': 'Filtrar proyectos por tecnología',
+                    'filter.todos': 'Todos', 'filter.web': 'Web', 'filter.escritorio': 'Escritorio',
+                    'filter.microcontroladores': 'Microcontroladores', 'filter.bd': 'Bases de Datos',
+                    'img.preview': 'Vista previa de {title}',
+                    'quick.stack': 'Stack tecnológico', 'quick.full': 'Ver proyecto completo',
+                    'detail.close': 'Cerrar', 'detail.gallery': 'Galería de capturas',
+                    'detail.shot': 'Captura {n}: {caption}',
+                    'detail.about': 'Descripción', 'detail.features': 'Funcionalidades clave',
+                    'detail.spec': 'Ficha técnica', 'detail.arch': 'Arquitectura', 'detail.langs': 'Lenguajes',
+                    'detail.category': 'Categoría', 'detail.stack': 'Stack',
+                    'detail.deps': 'Dependencias y versiones', 'detail.dep': 'Dependencia', 'detail.version': 'Versión',
+                    'detail.repo': 'Ver repositorio en GitHub',
+                    'tech.title': 'Tecnologías',
+                    'tech.lead': 'Herramientas, bases de datos y entornos con los que trabajo. Pasa el cursor, enfoca con el teclado o toca una tarjeta para ver mi nivel de dominio.',
+                    'tech.group.db': 'Bases de datos', 'tech.group.env': 'Sistemas operativos y entornos',
+                    'tech.group.lang': 'Lenguajes y herramientas', 'tech.level': 'Nivel de dominio',
+                    'level.basico': 'Básico', 'level.medio': 'Medio', 'level.avanzado': 'Avanzado',
+                    'contact.title': 'Contacto',
+                    'contact.lead': '¿Tienes una propuesta, una vacante o quieres colaborar en un proyecto? Escríbeme directamente desde este formulario.',
+                    'contact.asideTitle': 'Hablemos',
+                    'contact.asideText': 'Estoy abierto a prácticas profesionales, proyectos de desarrollo y colaboraciones académicas.',
+                    'contact.location': 'Tianguistenco, Estado de México',
+                    'contact.response': 'Tiempo de respuesta estimado: 24–48 h',
+                    'form.required': 'Campos obligatorios',
+                    'form.name': 'Nombre', 'form.email': 'Correo electrónico', 'form.subject': 'Asunto', 'form.message': 'Mensaje',
+                    'form.namePh': 'Tu nombre completo', 'form.emailPh': 'tucorreo@ejemplo.com',
+                    'form.subjectPh': 'Motivo del mensaje', 'form.messagePh': 'Cuéntame sobre tu propuesta…',
+                    'form.privacyTitle': 'Aviso de privacidad:',
+                    'form.privacy': 'los datos que proporciones (nombre, correo, asunto y mensaje) se utilizarán exclusivamente para establecer comunicación profesional contigo. No se almacenan en bases de datos ni se comparten con terceros. Al enviar este formulario aceptas dicho uso.',
+                    'form.submit': 'Enviar Mensaje', 'form.sending': 'Enviando…',
+                    'err.required': 'Este campo es obligatorio.',
+                    'err.min': 'Debe contener al menos {n} caracteres.',
+                    'err.max': 'Excede el máximo de {n} caracteres.',
+                    'err.email': 'Introduce un correo electrónico válido (ej. nombre@dominio.com).',
+                    'err.html': 'Por seguridad, no se permiten etiquetas HTML ni scripts.',
+                    'toast.okTitle': '¡Mensaje enviado!',
+                    'toast.okText': 'Gracias por escribir. Te responderé a la brevedad.',
+                    'toast.demo': 'Modo demostración local: el formulario es válido, pero no se envió ningún correo.',
+                    'toast.errTitle': 'No se pudo enviar el mensaje',
+                    'toast.errText': 'Ocurrió un problema de conexión. Inténtalo de nuevo en unos minutos.',
+                    'toast.invalidTitle': 'Revisa el formulario',
+                    'toast.invalidText': 'Hay campos marcados en rojo que necesitan tu atención.',
+                    'toast.close': 'Cerrar notificación',
+                    'footer.rights': '© 2026 Daniel Colin. Todos los derechos reservados.',
+                    'footer.version': 'Portafolio Web Profesional · Versión 2.0'
+                },
+                en: {
+                    'skip': 'Skip to main content',
+                    'profile.role': 'Software Engineering',
+                    'nav.menu': 'Open navigation menu',
+                    'nav.menuClose': 'Close navigation menu',
+                    'nav.label': 'Main navigation',
+                    'nav.home': 'Home', 'nav.about': 'About me', 'nav.projects': 'My projects',
+                    'nav.tech': 'Technologies', 'nav.contact': 'Contact',
+                    'social.github': 'GitHub profile (opens in a new tab)',
+                    'social.linkedin': 'LinkedIn profile (opens in a new tab)',
+                    'hero.kicker': 'Software Engineering Student · UAEMex Tianguistenco',
+                    'hero.title': "Hi, I'm Daniel Colin",
+                    'hero.text': 'I build technology solutions ranging from robust desktop applications and relational databases to low-level embedded systems.',
+                    'hero.ctaProjects': 'Explore projects', 'hero.ctaCv': 'Download CV',
+                    'featured.title': 'Featured projects',
+                    'featured.lead': 'A selection of my most representative work. Click or tap a card to open a quick view.',
+                    'carousel.label': 'Featured projects carousel',
+                    'carousel.prev': 'Previous project', 'carousel.next': 'Next project',
+                    'carousel.goto': 'Go to project {n}: {title}', 'carousel.slide': '{n} of {total}',
+                    'carousel.quick': 'Quick view',
+                    'about.title': 'About me',
+                    'about.lead': 'Learn about my background, academic education and the skills I have developed as a future Software Engineer.',
+                    'about.bioTitle': 'Biography', 'about.eduTitle': 'Education',
+                    'about.skillsTitle': 'Professional skills',
+                    'about.cv': 'Download CV (PDF)', 'about.cvHint': 'PDF file · direct download',
+                    'skills.dev': 'Software development', 'skills.db': 'Databases',
+                    'skills.req': 'Requirements & UML modeling', 'skills.emb': 'Embedded systems',
+                    'projects.title': 'My projects',
+                    'projects.lead': 'Catalog of projects built during my studies. Filter by technology and open each card to see screenshots, architecture, dependencies and the repository.',
+                    'projects.count': 'Showing {n} of {total} projects',
+                    'projects.details': 'View details',
+                    'projects.empty': 'There are no projects in this category yet.',
+                    'filters.label': 'Filter projects by technology',
+                    'filter.todos': 'All', 'filter.web': 'Web', 'filter.escritorio': 'Desktop',
+                    'filter.microcontroladores': 'Microcontrollers', 'filter.bd': 'Databases',
+                    'img.preview': 'Preview of {title}',
+                    'quick.stack': 'Tech stack', 'quick.full': 'View full project',
+                    'detail.close': 'Close', 'detail.gallery': 'Screenshot gallery',
+                    'detail.shot': 'Screenshot {n}: {caption}',
+                    'detail.about': 'Description', 'detail.features': 'Key features',
+                    'detail.spec': 'Technical sheet', 'detail.arch': 'Architecture', 'detail.langs': 'Languages',
+                    'detail.category': 'Category', 'detail.stack': 'Stack',
+                    'detail.deps': 'Dependencies & versions', 'detail.dep': 'Dependency', 'detail.version': 'Version',
+                    'detail.repo': 'View repository on GitHub',
+                    'tech.title': 'Technologies',
+                    'tech.lead': 'Tools, databases and environments I work with. Hover, focus with the keyboard or tap a card to see my proficiency level.',
+                    'tech.group.db': 'Databases', 'tech.group.env': 'Operating systems & environments',
+                    'tech.group.lang': 'Languages & tools', 'tech.level': 'Proficiency level',
+                    'level.basico': 'Basic', 'level.medio': 'Intermediate', 'level.avanzado': 'Advanced',
+                    'contact.title': 'Contact',
+                    'contact.lead': 'Do you have a proposal, a job opening or want to collaborate on a project? Write to me directly using this form.',
+                    'contact.asideTitle': "Let's talk",
+                    'contact.asideText': 'I am open to internships, development projects and academic collaborations.',
+                    'contact.location': 'Tianguistenco, State of Mexico',
+                    'contact.response': 'Estimated response time: 24–48 h',
+                    'form.required': 'Required fields',
+                    'form.name': 'Name', 'form.email': 'Email', 'form.subject': 'Subject', 'form.message': 'Message',
+                    'form.namePh': 'Your full name', 'form.emailPh': 'you@example.com',
+                    'form.subjectPh': 'Reason for your message', 'form.messagePh': 'Tell me about your proposal…',
+                    'form.privacyTitle': 'Privacy notice:',
+                    'form.privacy': 'the data you provide (name, email, subject and message) will be used exclusively to establish professional communication with you. It is not stored in databases or shared with third parties. By submitting this form you accept this use.',
+                    'form.submit': 'Send Message', 'form.sending': 'Sending…',
+                    'err.required': 'This field is required.',
+                    'err.min': 'Must contain at least {n} characters.',
+                    'err.max': 'Exceeds the maximum of {n} characters.',
+                    'err.email': 'Enter a valid email address (e.g. name@domain.com).',
+                    'err.html': 'For security reasons, HTML tags and scripts are not allowed.',
+                    'toast.okTitle': 'Message sent!',
+                    'toast.okText': 'Thanks for reaching out. I will reply shortly.',
+                    'toast.demo': 'Local demo mode: the form is valid, but no email was sent.',
+                    'toast.errTitle': 'The message could not be sent',
+                    'toast.errText': 'A connection problem occurred. Please try again in a few minutes.',
+                    'toast.invalidTitle': 'Check the form',
+                    'toast.invalidText': 'Some fields highlighted in red need your attention.',
+                    'toast.close': 'Close notification',
+                    'footer.rights': '© 2026 Daniel Colin. All rights reserved.',
+                    'footer.version': 'Professional Web Portfolio · Version 2.0'
+                }
+            };
+
+            const I18n = {
+                lang: 'es',
+                t(key, vars = {}) {
+                    const dict = DICTIONARIES[this.lang] || DICTIONARIES.es;
+                    let str = dict[key] ?? DICTIONARIES.es[key] ?? key;
+                    Object.keys(vars).forEach((k) => { str = str.split('{' + k + '}').join(vars[k]); });
+                    return str;
+                },
+                apply(lang) {
+                    if (!DICTIONARIES[lang]) return;
+                    this.lang = lang;
+                    document.documentElement.lang = lang;
+                    $$('[data-i18n]').forEach((el) => { el.textContent = this.t(el.dataset.i18n); });
+                    $$('[data-i18n-placeholder]').forEach((el) => { el.placeholder = this.t(el.dataset.i18nPlaceholder); });
+                    $$('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', this.t(el.dataset.i18nAria)); });
+                    document.dispatchEvent(new CustomEvent('i18n:change', { detail: { lang } }));
+                }
+            };
+            const t = (key, vars) => I18n.t(key, vars);
+
+            /* =====================================================
+               DATOS · PROYECTOS (DEV-FE-05 / DEV-FE-06)
+               Para usar capturas reales en WebP, añade a cada proyecto:
+               images: ['assets/img/<id>-1.webp', ...]  (mismo orden que shots)
+               ===================================================== */
+            const GITHUB = 'https://github.com/Coliiin1';
+
+            const PROJECTS = [
+                {
+                    id: 'gestor-citas', title: 'Gestor de Citas Médicas', category: ['escritorio', 'bd'], featured: true,
+                    short: 'Sistema de escritorio para administrar pacientes, médicos y agenda de citas, con persistencia en bases de datos relacionales.',
+                    description: 'Análisis y diseño de un sistema de gestión médica con una arquitectura sólida. Incluye la formulación de requerimientos, el diseño de esquemas de bases de datos y el desarrollo de interfaces gráficas (GUI) en JavaFX, con soporte para PostgreSQL.',
+                    stack: ['Java', 'JavaFX', 'PostgreSQL', 'JDBC'], langs: ['Java', 'SQL'],
+                    arch: 'MVC en capas (Vista FXML · Controlador · Servicio · DAO)',
+                    features: ['Registro y búsqueda de pacientes y médicos', 'Agenda de citas con validación de horarios', 'Esquema relacional normalizado (3FN)', 'Especificación de requisitos funcionales y no funcionales'],
+                    deps: [['Java SE', '17 LTS'], ['OpenJFX', '17'], ['PostgreSQL JDBC Driver', '42']],
+                    repo: GITHUB, palette: ['#1f4e79', '#2a9d8f'], glyph: '+',
+                    shots: ['Interfaz principal', 'Modelo entidad-relación', 'Controlador JavaFX']
+                },
+                {
+                    id: 'catalogo-productos', title: 'Catálogo de Productos', category: ['escritorio', 'bd'], featured: true,
+                    short: 'Aplicación con arquitectura en capas y POO que gestiona niveles de acceso para administradores y usuarios.',
+                    description: 'Aplicación desarrollada con arquitectura en capas y principios de programación orientada a objetos (POO). Gestiona distintos niveles de acceso para administradores y usuarios, con persistencia en base de datos e interfaces construidas con Swing (JFrame, JPanel).',
+                    stack: ['Java', 'Swing'], langs: ['Java'],
+                    arch: 'Arquitectura en capas (Presentación · Lógica de negocio · Acceso a datos)',
+                    features: ['Inicio de sesión con roles (administrador / usuario)', 'Altas, bajas y cambios de productos y categorías', 'Búsqueda y filtrado del catálogo', 'Encapsulamiento, herencia y polimorfismo aplicados'],
+                    deps: [['Java SE', '17 LTS'], ['Swing (JFrame, JPanel)', 'JDK']],
+                    repo: GITHUB, palette: ['#5b3a8c', '#1f6fb2'], glyph: '{ }',
+                    shots: ['Panel de administración', 'Diagrama de clases', 'Capa de acceso a datos']
+                },
+
+                {
+                    id: 'pic-c', title: 'Control Embebido con PIC18F4550 en C', category: ['microcontroladores'], featured: false,
+                    short: 'Firmware en C para el PIC18F4550 orientado al manejo de puertos, temporizadores e interrupciones.',
+                    description: 'Programas en lenguaje C para el microcontrolador PIC18F4550 enfocados en el manejo de puertos de entrada/salida, temporizadores e interrupciones, validados en simulación antes de su implementación física.',
+                    stack: ['C', 'PIC18F4550', 'XC8', 'MPLAB X'], langs: ['C'],
+                    arch: 'Firmware basado en interrupciones y máquina de estados',
+                    features: ['Configuración de puertos de E/S', 'Uso de temporizadores e interrupciones', 'Lectura de entradas digitales y control de salidas', 'Validación en simulación previa al montaje'],
+                    deps: [['MPLAB X IDE', '6.x'], ['Compilador MPLAB XC8', '2.x'], ['Proteus Design Suite', '8.x']],
+                    repo: GITHUB, palette: ['#264653', '#c8553d'], glyph: 'C',
+                    shots: ['Simulación del circuito', 'Máquina de estados', 'Rutina de interrupción']
+                },
+                {
+                    id: 'scripts-python', title: 'Cerberus IDE', category: ['escritorio'], featured: true,
+                    short: 'Cerberus es un lenguaje de programación educativo, escrito en español, diseñado para facilitar el aprendizaje de programación y de programación orientada a objetos.',
+                    description: 'Cerberus es un lenguaje de programación educativo, escrito en español, diseñado para facilitar el aprendizaje de programación y de programación orientada a objetos.Su sintaxis toma como referencia conceptos y formas de escritura presentes en Java, pero adapta los elementos principales al español y busca una sintaxis más sencilla y comprensible para estudiantes con conocimientos básicos de programación.',
+                    stack: ['Java', 'JavaFX', 'Maven'], langs: ['Java'],
+                    arch: 'Arquitectura en capas (Presentación · Lógica de negocio · Acceso a datos)',
+                    features: ['Funciones y tipos de datos en español', 'Control de flujo con palabras reservadas en español (ej: si/entonces, mientras/hacer)', 'Soporte para clases(En desarrollo), métodos con sintaxis adaptada'],
+                    deps: [['Java', '25'], ['Biblioteca estándar (Maven)', '—']],
+                    repo: GITHUB, palette: ['#306998', '#b8860b'], glyph: 'IDE',
+                    shots: ['Ejecución en terminal', 'Estructura de módulos', 'Fragmento de código']
+                },
+                {
+                    id: 'modelado-bd', title: 'Diseño de Bases de Datos Relacionales', category: ['bd'], featured: false,
+                    short: 'Modelado, normalización e implementación de esquemas relacionales en PostgreSQL y MariaDB.',
+                    description: 'Proyectos de diseño de bases de datos que abarcan desde el modelo entidad-relación y la normalización hasta la implementación física en PostgreSQL y MariaDB, incluyendo restricciones de integridad, vistas y consultas complejas.',
+                    stack: ['PostgreSQL', 'MariaDB', 'SQL'], langs: ['SQL'],
+                    arch: 'Modelo relacional normalizado (3FN) con integridad referencial',
+                    features: ['Diagramas entidad-relación', 'Normalización hasta tercera forma normal', 'Restricciones, llaves foráneas y vistas', 'Consultas con JOIN y subconsultas'],
+                    deps: [['PostgreSQL', '16'], ['MariaDB', '11'], ['pgAdmin / DBeaver', '—']],
+                    repo: GITHUB, palette: ['#336791', '#003545'], glyph: 'SQL',
+                    shots: ['Diagrama entidad-relación', 'Esquema físico', 'Consultas SQL']
+                },
+                {
+                    id: 'portafolio-web', title: 'Portafolio Web Profesional V2.0', category: ['web'], featured: true,
+                    short: 'Este mismo sitio: SPA estática a la medida con HTML5 semántico, CSS Mobile-First y JavaScript vanilla.',
+                    description: 'Reingeniería integral del portafolio publicado originalmente en Google Sites. SPA estática sin dependencias externas, con menú lateral fijo, carrusel, modales, filtrado dinámico, formulario de contacto nativo con backend SMTP, accesibilidad WCAG 2.1 AA y arquitectura i18n.',
+                    stack: ['HTML5', 'CSS3', 'JavaScript', 'PHP'], langs: ['HTML', 'CSS', 'JavaScript', 'PHP'],
+                    arch: 'SPA estática modular (vistas en memoria) + endpoint PHP SMTP sin persistencia',
+                    features: ['Navegación SPA con transiciones < 300 ms', 'Carrusel con pausa al hover y soporte táctil', 'Formulario con validación en cliente y notificación toast', 'Diseño Mobile-First y contraste WCAG 2.1 AA'],
+                    deps: [['JavaScript vanilla (ES2020)', '—'], ['PHP', '8.x'], ['Hosting NVMe + SSL', '—']],
+                    repo: 'https://github.com/Coliiin1/PWebPersonal', palette: ['#2c3e50', '#1f6fb2'], glyph: '</>',
+                    shots: ['Vista de inicio', 'Arquitectura de vistas', 'Módulo de navegación']
+                }
+            ];
+            const projectById = (id) => PROJECTS.find((p) => p.id === id);
+
+            /* =====================================================
+               DATOS · TECNOLOGÍAS (RF-15)
+               Nivel: 'basico' | 'medio' | 'avanzado'
+               ===================================================== */
+            const TECH = [
+                { group: 'db', name: 'PostgreSQL', abbr: 'PG', bg: '#336791', level: 'medio', note: 'Modelado relacional, consultas SQL, vistas y restricciones de integridad.' },
+                { group: 'db', name: 'MariaDB', abbr: 'MDB', bg: '#003545', level: 'medio', note: 'Creación de esquemas, consultas e integración con Java vía JDBC.' },
+                { group: 'db', name: 'SQL', abbr: 'SQL', bg: '#4a5868', level: 'medio', note: 'DDL/DML, JOIN, subconsultas y normalización.' },
+                { group: 'env', name: 'Fedora Linux', abbr: 'FED', bg: '#294172', level: 'avanzado', note: 'Entorno de trabajo principal: terminal, paquetes y configuración de servicios.' },
+                { group: 'env', name: 'Git y GitHub', abbr: 'GIT', bg: '#b8401f', level: 'medio', note: 'Ramas feature/, pull requests y control de versiones.' },
+                { group: 'env', name: 'MPLAB X', abbr: 'MPX', bg: '#a50e26', level: 'medio', note: 'Compilación, depuración y simulación de firmware para PIC.' },
+                { group: 'env', name: 'Proteus', abbr: 'PRO', bg: '#1d3557', level: 'medio', note: 'Simulación de circuitos con microcontroladores y periféricos.' },
+                { group: 'lang', name: 'Java', abbr: 'JV', bg: '#8a5a12', level: 'avanzado', note: 'POO, Swing, JavaFX, JDBC y arquitectura en capas / MVC.' },
+                { group: 'lang', name: 'C', abbr: 'C', bg: '#3d4a57', level: 'medio', note: 'Programación estructurada y firmware para microcontroladores.' },
+                { group: 'lang', name: 'Ensamblador PIC', abbr: 'ASM', bg: '#0b6e4f', level: 'medio', note: 'Manejo de registros, puertos y rutinas de retardo.' },
+                { group: 'lang', name: 'Python', abbr: 'PY', bg: '#306998', level: 'medio', note: 'Scripts de automatización y procesamiento de datos.' },
+                { group: 'lang', name: 'HTML, CSS y JS', abbr: 'WEB', bg: '#b5381a', level: 'medio', note: 'Maquetación semántica, CSS responsivo y JavaScript vanilla.' },
+                { group: 'lang', name: 'UML', abbr: 'UML', bg: '#2c3e50', level: 'medio', note: 'Casos de uso, diagramas de clases y de secuencia.' }
+            ];
+            const LEVEL_WIDTH = { basico: '33%', medio: '66%', avanzado: '100%' };
+
+            /* =====================================================
+               DEV-AST-01 · Marcadores gráficos 16:9 (SVG ligero)
+               Se reemplazan automáticamente por WebP si el proyecto
+               define el arreglo `images`.
+               ===================================================== */
+            function projectImage(p, variant = 0) {
+                if (Array.isArray(p.images) && p.images[variant]) return p.images[variant];
+                const [c1, c2] = p.palette;
+                const caption = p.shots[variant] || '';
+                const decor = [
+                    // 0 · ventana de interfaz
+                    '<rect x="40" y="34" width="560" height="196" rx="12" fill="rgba(255,255,255,.14)"/>' +
+                    '<rect x="40" y="34" width="560" height="28" rx="12" fill="rgba(255,255,255,.22)"/>' +
+                    '<circle cx="62" cy="48" r="5" fill="#fff" opacity=".75"/><circle cx="80" cy="48" r="5" fill="#fff" opacity=".55"/><circle cx="98" cy="48" r="5" fill="#fff" opacity=".35"/>' +
+                    '<rect x="62" y="80" width="150" height="130" rx="8" fill="rgba(255,255,255,.18)"/>' +
+                    '<rect x="232" y="84" width="330" height="14" rx="7" fill="rgba(255,255,255,.35)"/>' +
+                    '<rect x="232" y="112" width="270" height="14" rx="7" fill="rgba(255,255,255,.25)"/>' +
+                    '<rect x="232" y="140" width="300" height="14" rx="7" fill="rgba(255,255,255,.25)"/>' +
+                    '<rect x="232" y="176" width="120" height="30" rx="8" fill="rgba(255,255,255,.4)"/>',
+                    // 1 · diagrama de bloques
+                    '<g fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.55)" stroke-width="2">' +
+                    '<rect x="60" y="50" width="150" height="80" rx="10"/><rect x="430" y="50" width="150" height="80" rx="10"/>' +
+                    '<rect x="245" y="150" width="150" height="80" rx="10"/></g>' +
+                    '<g stroke="rgba(255,255,255,.7)" stroke-width="3" fill="none"><path d="M210 90h220"/><path d="M135 130v60h110"/><path d="M505 130v60H395"/></g>',
+                    // 2 · código
+                    '<rect x="40" y="34" width="560" height="196" rx="12" fill="rgba(0,0,0,.22)"/>' +
+                    '<g fill="rgba(255,255,255,.45)">' +
+                    '<rect x="64" y="58" width="120" height="10" rx="5"/><rect x="196" y="58" width="200" height="10" rx="5" opacity=".6"/>' +
+                    '<rect x="88" y="84" width="240" height="10" rx="5" opacity=".8"/><rect x="88" y="110" width="320" height="10" rx="5" opacity=".6"/>' +
+                    '<rect x="112" y="136" width="180" height="10" rx="5" opacity=".8"/><rect x="112" y="162" width="260" height="10" rx="5" opacity=".6"/>' +
+                    '<rect x="88" y="188" width="140" height="10" rx="5" opacity=".8"/><rect x="64" y="210" width="60" height="10" rx="5"/></g>'
+                ][variant % 3];
+
+                const svg =
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">' +
+                    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">' +
+                    '<stop offset="0" stop-color="' + c1 + '"/><stop offset="1" stop-color="' + c2 + '"/></linearGradient></defs>' +
+                    '<rect width="640" height="360" fill="url(#g)"/>' + decor +
+                    '<text x="600" y="320" text-anchor="end" font-family="Consolas,monospace" font-size="56" font-weight="700" fill="rgba(255,255,255,.22)">' + escapeHTML(p.glyph) + '</text>' +
+                    '<text x="40" y="290" font-family="Segoe UI,Arial,sans-serif" font-size="30" font-weight="700" fill="#fff">' + escapeHTML(p.title) + '</text>' +
+                    '<text x="40" y="322" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="rgba(255,255,255,.88)">' + escapeHTML(caption) + '</text>' +
+                    '</svg>';
+                return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+            }
+
+            const imgTag = (src, alt, cls = 'media-16x9') =>
+                '<img class="' + cls + '" src="' + src + '" alt="' + escapeHTML(alt) + '" width="640" height="360" loading="lazy" decoding="async">';
+
+            const catBadges = (p) => p.category.map((c) => '<span class="badge badge--cat">' + escapeHTML(t('filter.' + c)) + '</span>').join('');
+            const stackBadges = (list) => list.map((s) => '<span class="badge">' + escapeHTML(s) + '</span>').join('');
+
+            /* =====================================================
+               RF-12 · TOAST
+               ===================================================== */
+            const Toast = (() => {
+                const region = $('#toast-region');
+                function dismiss(el) {
+                    if (!el.isConnected || el.classList.contains('is-leaving')) return;
+                    el.classList.add('is-leaving');
+                    setTimeout(() => el.remove(), reducedMotion ? 0 : 200);
+                }
+                function show({ type = 'success', title, message, duration = 4000 }) {
+                    const el = document.createElement('div');
+                    el.className = 'toast' + (type === 'error' ? ' toast--error' : '');
+                    el.innerHTML =
+                        '<span class="toast__icon">' + (type === 'error' ? ICONS.alert : ICONS.check) + '</span>' +
+                        '<div class="toast__body"><strong>' + escapeHTML(title) + '</strong><p>' + escapeHTML(message) + '</p></div>' +
+                        '<button type="button" class="icon-btn" aria-label="' + escapeHTML(t('toast.close')) + '">' + ICONS.close + '</button>';
+                    el.querySelector('button').addEventListener('click', () => dismiss(el));
+                    region.appendChild(el);
+                    setTimeout(() => dismiss(el), duration);
+                }
+                return { show };
+            })();
+
+            /* =====================================================
+               RF-02 / RF-05 · MODALES
+               Backdrop blur(8px), cierre con Escape (keyCode 27) o
+               clic en backdrop, bloqueo de scroll y foco atrapado.
+               ===================================================== */
+            const Modal = (() => {
+                let current = null;
+                let returnFocus = null;
+                const hideTimers = new WeakMap();
+                const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])';
+
+                function open(modal, opener) {
+                    if (current && current !== modal) close({ restoreFocus: false });
+                    if (!current) returnFocus = opener || document.activeElement;
+                    clearTimeout(hideTimers.get(modal));
+                    modal.hidden = false;
+                    void modal.offsetWidth; // reflow para disparar la transición
+                    modal.classList.add('is-open');
+                    document.body.classList.add('modal-open');
+                    current = modal;
+                    const dialog = $('.modal__dialog', modal);
+                    dialog.scrollTop = 0;
+                    const closeBtn = $('.modal__close', modal);
+                    if (closeBtn) closeBtn.focus({ preventScroll: true });
+                    Carousel.pause('modal');
+                }
+
+                function close({ restoreFocus = true } = {}) {
+                    if (!current) return;
+                    const modal = current;
+                    current = null;
+                    modal.classList.remove('is-open');
+                    hideTimers.set(modal, setTimeout(() => { modal.hidden = true; }, reducedMotion ? 0 : 250));
+                    if (restoreFocus) {
+                        document.body.classList.remove('modal-open');
+                        Carousel.resume('modal');
+                        if (returnFocus && document.contains(returnFocus)) returnFocus.focus({ preventScroll: true });
+                        returnFocus = null;
+                    }
+                }
+
+                function trapFocus(e) {
+                    const items = $$(FOCUSABLE, current).filter((el) => el.offsetParent !== null);
+                    if (!items.length) return;
+                    const first = items[0];
+                    const last = items[items.length - 1];
+                    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+                    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+                }
+
+                $$('.modal').forEach((modal) => {
+                    modal.addEventListener('click', (e) => {
+                        if (e.target.closest('[data-close]')) close();
+                    });
+                });
+
+                return {
+                    open, close, trapFocus,
+                    get isOpen() { return current !== null; }
+                };
+            })();
+
+            /* =====================================================
+               DEV-FE-03 · CARRUSEL (RF-01)
+               Rotación cíclica 5000 ms, pausa en mouseenter/focus,
+               reanudación en mouseleave, soporte touch-swipe.
+               ===================================================== */
+            const Carousel = (() => {
+                const INTERVAL = 5000;
+                const SWIPE_THRESHOLD = 50;
+                const root = $('#featured-carousel');
+                const track = $('#carousel-track');
+                const dotsWrap = $('#carousel-dots');
+                const featured = PROJECTS.filter((p) => p.featured).slice(0, 5); // 3 a 5 tarjetas
+                const pauseReasons = new Set();
+                let index = 0;
+                let timer = null;
+                let slides = [];
+                let dots = [];
+
+                function render() {
+                    track.innerHTML = featured.map((p, i) =>
+                        '<div class="carousel__slide" role="group" aria-roledescription="diapositiva" aria-label="' +
+                        escapeHTML(t('carousel.slide', { n: i + 1, total: featured.length })) + '">' +
+                        '<button type="button" class="carousel__media" data-quick="' + p.id + '" aria-label="' +
+                        escapeHTML(t('carousel.quick') + ': ' + p.title) + '">' +
+                        imgTag(projectImage(p, 0), t('img.preview', { title: p.title }), '') + '</button>' +
+                        '<div class="carousel__body">' +
+                        '<div class="badges">' + catBadges(p) + '</div>' +
+                        '<h3>' + escapeHTML(p.title) + '</h3>' +
+                        '<p>' + escapeHTML(p.short) + '</p>' +
+                        '<div class="badges">' + stackBadges(p.stack.slice(0, 4)) + '</div>' +
+                        '<button type="button" class="btn btn-primary" data-quick="' + p.id + '">' + escapeHTML(t('carousel.quick')) + '</button>' +
+                        '</div></div>'
+                    ).join('');
+
+                    dotsWrap.innerHTML = featured.map((p, i) =>
+                        '<button type="button" class="carousel__dot" data-index="' + i + '" aria-label="' +
+                        escapeHTML(t('carousel.goto', { n: i + 1, title: p.title })) + '"></button>'
+                    ).join('');
+
+                    slides = $$('.carousel__slide', track);
+                    dots = $$('.carousel__dot', dotsWrap);
+                    go(index, false);
+                }
+
+                function go(i, userInitiated = true) {
+                    const n = slides.length;
+                    if (!n) return;
+                    index = (i + n) % n;
+                    track.style.transform = 'translateX(' + (-index * 100) + '%)';
+                    slides.forEach((s, k) => {
+                        const active = k === index;
+                        s.inert = !active;
+                        s.setAttribute('aria-hidden', String(!active));
+                    });
+                    dots.forEach((d, k) => d.setAttribute('aria-current', String(k === index)));
+                    if (userInitiated) restart();
+                }
+
+                function stop() { clearInterval(timer); timer = null; }
+                function start() {
+                    stop();
+                    if (pauseReasons.size === 0 && slides.length > 1) {
+                        timer = setInterval(() => go(index + 1, false), INTERVAL);
+                    }
+                }
+                function restart() { start(); }
+                function pause(reason) { pauseReasons.add(reason); stop(); }
+                function resume(reason) { pauseReasons.delete(reason); start(); }
+
+                // Controles
+                root.addEventListener('click', (e) => {
+                    const arrow = e.target.closest('.carousel__arrow');
+                    const dot = e.target.closest('.carousel__dot');
+                    const quick = e.target.closest('[data-quick]');
+                    if (arrow) go(index + Number(arrow.dataset.dir));
+                    else if (dot) go(Number(dot.dataset.index));
+                    else if (quick) Projects.openQuick(quick.dataset.quick, quick);
+                });
+
+                root.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+                    if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+                });
+
+                // Pausa al hover / foco (WCAG 2.2.2)
+                root.addEventListener('mouseenter', () => pause('hover'));
+                root.addEventListener('mouseleave', () => resume('hover'));
+                root.addEventListener('focusin', () => pause('focus'));
+                root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) resume('focus'); });
+
+                // Touch-swipe
+                let touchX = null;
+                let touchY = null;
+                track.addEventListener('touchstart', (e) => {
+                    touchX = e.touches[0].clientX;
+                    touchY = e.touches[0].clientY;
+                    pause('touch');
+                }, { passive: true });
+                track.addEventListener('touchend', (e) => {
+                    if (touchX !== null) {
+                        const dx = e.changedTouches[0].clientX - touchX;
+                        const dy = e.changedTouches[0].clientY - touchY;
+                        if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
+                    }
+                    touchX = touchY = null;
+                    resume('touch');
+                }, { passive: true });
+
+                document.addEventListener('visibilitychange', () => {
+                    document.hidden ? pause('tab') : resume('tab');
+                });
+
+                if (reducedMotion) pauseReasons.add('reduced-motion');
+
+                return { render, pause, resume };
+            })();
+
+            /* =====================================================
+               RF-04 / RF-05 / RF-16 · PROYECTOS
+               ===================================================== */
+            const Projects = (() => {
+                const grid = $('#projects-grid');
+                const countEl = $('#results-count');
+                const emptyEl = $('#projects-empty');
+                const quickModal = $('#quick-modal');
+                const detailModal = $('#detail-modal');
+                const detailDialog = $('#detail-dialog');
+                let currentFilter = 'todos';
+
+                function render() {
+                    grid.innerHTML = PROJECTS.map((p) =>
+                        '<article class="project-card surface" data-category="' + p.category.join(' ') + '" data-id="' + p.id + '">' +
+                        imgTag(projectImage(p, 0), t('img.preview', { title: p.title })) +
+                        '<div class="project-card__body">' +
+                        '<div class="badges">' + catBadges(p) + '</div>' +
+                        '<h3 class="project-card__title">' + escapeHTML(p.title) + '</h3>' +
+                        '<p class="project-card__desc">' + escapeHTML(p.short) + '</p>' +
+                        '<div class="badges">' + stackBadges(p.stack.slice(0, 3)) + '</div>' +
+                        '<button type="button" class="btn btn-outline" data-detail="' + p.id + '">' + escapeHTML(t('projects.details')) + '</button>' +
+                        '</div></article>'
+                    ).join('');
+                    applyFilter(currentFilter, false);
+                }
+
+                /** RF-16 · Filtrado instantáneo en cliente (data-filter ↔ data-category). */
+                function applyFilter(filter, animate = true) {
+                    currentFilter = filter;
+                    $$('.filter-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+                    let visible = 0;
+                    $$('.project-card', grid).forEach((card) => {
+                        const match = filter === 'todos' || card.dataset.category.split(' ').includes(filter);
+                        if (match) {
+                            visible++;
+                            if (card.hidden || animate) {
+                                card.hidden = false;
+                                card.classList.remove('is-entering');
+                                if (animate) { void card.offsetWidth; card.classList.add('is-entering'); }
+                            }
+                        } else {
+                            card.hidden = true;
+                        }
+                    });
+                    countEl.textContent = t('projects.count', { n: visible, total: PROJECTS.length });
+                    emptyEl.hidden = visible > 0;
+                }
+
+                function openQuick(id, opener) {
+                    const p = projectById(id);
+                    if (!p) return;
+                    const img = $('#quick-img');
+                    img.src = projectImage(p, 0);
+                    img.alt = t('img.preview', { title: p.title });
+                    $('#quick-cats').innerHTML = catBadges(p);
+                    $('#quick-title').textContent = p.title;
+                    $('#quick-desc').textContent = p.short;
+                    $('#quick-stack').innerHTML = stackBadges(p.stack);
+                    $('#quick-full').dataset.project = p.id;
+                    Modal.open(quickModal, opener);
+                }
+
+                function openDetail(id, opener) {
+                    const p = projectById(id);
+                    if (!p) return;
+                    detailDialog.dataset.project = p.id;
+                    const thumbs = p.shots.map((caption, i) =>
+                        '<button type="button" class="gallery__thumb" data-shot="' + i + '" aria-current="' + (i === 0) + '" aria-label="' +
+                        escapeHTML(t('detail.shot', { n: i + 1, caption })) + '">' +
+                        '<img src="' + projectImage(p, i) + '" alt="" width="640" height="360" loading="lazy" decoding="async"></button>'
+                    ).join('');
+
+                    detailDialog.innerHTML =
+                        '<button class="modal__close" type="button" data-close aria-label="' + escapeHTML(t('detail.close')) + '">' + ICONS.close + '</button>' +
+                        '<div class="gallery" aria-label="' + escapeHTML(t('detail.gallery')) + '" role="group">' +
+                        '<img class="media-16x9" id="gallery-main" src="' + projectImage(p, 0) + '" alt="' +
+                        escapeHTML(t('detail.shot', { n: 1, caption: p.shots[0] })) + '" width="640" height="360" loading="lazy" decoding="async">' +
+                        '<p class="gallery__caption" id="gallery-caption">' + escapeHTML(p.shots[0]) + '</p>' +
+                        '<div class="gallery__thumbs">' + thumbs + '</div>' +
+                        '</div>' +
+                        '<div class="modal__content">' +
+                        '<div class="badges">' + catBadges(p) + '</div>' +
+                        '<h2 id="detail-title">' + escapeHTML(p.title) + '</h2>' +
+                        '<div class="detail-grid">' +
+                        '<div>' +
+                        '<h3>' + escapeHTML(t('detail.about')) + '</h3>' +
+                        '<p>' + escapeHTML(p.description) + '</p>' +
+                        '<h3 style="margin-top:20px">' + escapeHTML(t('detail.features')) + '</h3>' +
+                        '<ul>' + p.features.map((f) => '<li>' + escapeHTML(f) + '</li>').join('') + '</ul>' +
+                        '</div>' +
+                        '<div>' +
+                        '<h3>' + escapeHTML(t('detail.spec')) + '</h3>' +
+                        '<dl class="spec-list">' +
+                        '<dt>' + escapeHTML(t('detail.arch')) + '</dt><dd>' + escapeHTML(p.arch) + '</dd>' +
+                        '<dt>' + escapeHTML(t('detail.langs')) + '</dt><dd>' + escapeHTML(p.langs.join(', ')) + '</dd>' +
+                        '<dt>' + escapeHTML(t('detail.category')) + '</dt><dd>' + escapeHTML(p.category.map((c) => t('filter.' + c)).join(', ')) + '</dd>' +
+                        '<dt>' + escapeHTML(t('detail.stack')) + '</dt><dd>' + escapeHTML(p.stack.join(', ')) + '</dd>' +
+                        '</dl>' +
+                        '<h3 style="margin-top:20px">' + escapeHTML(t('detail.deps')) + '</h3>' +
+                        '<table class="deps-table"><thead><tr><th scope="col">' + escapeHTML(t('detail.dep')) + '</th><th scope="col">' +
+                        escapeHTML(t('detail.version')) + '</th></tr></thead><tbody>' +
+                        p.deps.map(([n, v]) => '<tr><td>' + escapeHTML(n) + '</td><td>' + escapeHTML(v) + '</td></tr>').join('') +
+                        '</tbody></table>' +
+                        '</div>' +
+                        '</div>' +
+                        '<div class="modal__actions">' +
+                        '<a class="btn btn-primary" href="' + escapeHTML(p.repo) + '" target="_blank" rel="noopener noreferrer">' +
+                        ICONS.github + '<span>' + escapeHTML(t('detail.repo')) + '</span></a>' +
+                        '</div>' +
+                        '</div>';
+
+                    Modal.open(detailModal, opener);
+                }
+
+                // Visor de galería
+                detailDialog.addEventListener('click', (e) => {
+                    const thumb = e.target.closest('.gallery__thumb');
+                    if (!thumb) return;
+                    const p = projectById(detailDialog.dataset.project);
+                    const i = Number(thumb.dataset.shot);
+                    if (!p) return;
+                    const main = $('#gallery-main');
+                    main.src = projectImage(p, i);
+                    main.alt = t('detail.shot', { n: i + 1, caption: p.shots[i] });
+                    $('#gallery-caption').textContent = p.shots[i];
+                    $$('.gallery__thumb', detailDialog).forEach((b) => b.setAttribute('aria-current', String(b === thumb)));
+                });
+
+                // Delegación de eventos
+                $('.filters').addEventListener('click', (e) => {
+                    const btn = e.target.closest('.filter-btn');
+                    if (btn && btn.dataset.filter !== currentFilter) applyFilter(btn.dataset.filter);
+                });
+                grid.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-detail]');
+                    if (btn) { detailDialog.dataset.project = btn.dataset.detail; openDetail(btn.dataset.detail, btn); }
+                });
+                $('#quick-full').addEventListener('click', (e) => {
+                    const id = e.currentTarget.dataset.project;
+                    Modal.close({ restoreFocus: false });
+                    Nav.show('mis-proyectos', { focus: false });
+                    const opener = $('.project-card[data-id="' + id + '"] [data-detail]', grid);
+                    detailDialog.dataset.project = id;
+                    openDetail(id, opener);
+                });
+
+                return { render, openQuick, openDetail };
+            })();
+
+            /* =====================================================
+               RF-15 · TECNOLOGÍAS
+               ===================================================== */
+            const Tech = (() => {
+                const wrap = $('#tech-groups');
+                const groups = ['db', 'env', 'lang'];
+
+                const icon = (tch) =>
+                    '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">' +
+                    '<rect width="48" height="48" rx="12" fill="' + tch.bg + '"/>' +
+                    '<text x="24" y="' + (tch.abbr.length > 2 ? 29 : 31) + '" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-weight="700" font-size="' +
+                    (tch.abbr.length > 2 ? 14 : 18) + '" fill="#fff">' + escapeHTML(tch.abbr) + '</text></svg>';
+
+                function render() {
+                    let uid = 0;
+                    wrap.innerHTML = groups.map((g) =>
+                        '<div class="tech-group"><h3>' + escapeHTML(t('tech.group.' + g)) + '</h3><div class="tech-grid">' +
+                        TECH.filter((x) => x.group === g).map((x) => {
+                            const tipId = 'tip-' + (uid++);
+                            return '<button type="button" class="tech-card surface" aria-describedby="' + tipId + '">' +
+                                '<span class="tech-card__icon">' + icon(x) + '</span>' +
+                                '<span class="tech-card__name">' + escapeHTML(x.name) + '</span>' +
+                                '<span class="tooltip" role="tooltip" id="' + tipId + '">' +
+                                '<span class="tooltip__level"><span>' + escapeHTML(t('tech.level')) + '</span><span>' + escapeHTML(t('level.' + x.level)) + '</span></span>' +
+                                '<span class="meter" aria-hidden="true"><span style="--lvl:' + LEVEL_WIDTH[x.level] + '"></span></span>' +
+                                '<span>' + escapeHTML(x.note) + '</span>' +
+                                '</span></button>';
+                        }).join('') +
+                        '</div></div>'
+                    ).join('');
+                }
+
+                function closeAll(except) {
+                    $$('.tech-card.is-open', wrap).forEach((c) => { if (c !== except) c.classList.remove('is-open'); });
+                }
+
+                // Soporte táctil / clic: alterna el tooltip
+                wrap.addEventListener('click', (e) => {
+                    const card = e.target.closest('.tech-card');
+                    if (!card) return;
+                    closeAll(card);
+                    card.classList.toggle('is-open');
+                });
+                document.addEventListener('click', (e) => { if (!e.target.closest('.tech-card')) closeAll(); });
+                wrap.addEventListener('focusout', (e) => { if (!wrap.contains(e.relatedTarget)) closeAll(); });
+
+                return { render, closeAll };
+            })();
+
+            /* =====================================================
+               RF-06..RF-09 · RNF-06 · FORMULARIO DE CONTACTO
+               ===================================================== */
+            const Contact = (() => {
+                const CONTACT_ENDPOINT = 'server/contact.php'; // DEV-BE-01 (PHP + SMTP TLS 587)
+                const IS_LOCAL_PREVIEW = location.protocol === 'file:';
+                // Expresión regular basada en RFC 5322 (forma práctica, exige dominio con TLD)
+                const EMAIL_RE = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+                const HTML_RE = /<\s*\/?\s*[a-z!][^>]*>|javascript\s*:|on\w+\s*=/i;
+                const CONTROL_RE = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
+
+                const form = $('#contact-form');
+                const submitBtn = $('#contact-submit');
+                const label = $('.btn-label', submitBtn);
+                const counter = $('#msg-counter');
+                const fields = $$('input:not([name="website"]), textarea', form);
+                let sending = false;
+
+                const normalize = (v) => v.replace(CONTROL_RE, '').trim();
+
+                function validateField(input) {
+                    const value = normalize(input.value);
+                    const min = Number(input.getAttribute('minlength')) || 0;
+                    const max = Number(input.getAttribute('maxlength')) || Infinity;
+                    let error = '';
+                    if (value.length === 0) error = t('err.required');
+                    else if (value.length < min) error = t('err.min', { n: min });
+                    else if (value.length > max) error = t('err.max', { n: max });
+                    else if (input.type === 'email' && !EMAIL_RE.test(value)) error = t('err.email');
+                    else if (HTML_RE.test(value)) error = t('err.html');
+
+                    const field = input.closest('.field');
+                    const errEl = $('#err-' + input.name);
+                    field.classList.toggle('is-invalid', Boolean(error));
+                    input.setAttribute('aria-invalid', String(Boolean(error)));
+                    errEl.textContent = error;
+                    return !error;
+                }
+
+                function validateAll() {
+                    let firstInvalid = null;
+                    fields.forEach((f) => { if (!validateField(f) && !firstInvalid) firstInvalid = f; });
+                    if (firstInvalid) firstInvalid.focus();
+                    return !firstInvalid;
+                }
+
+                function setSending(state) {
+                    sending = state;
+                    submitBtn.disabled = state;
+                    submitBtn.setAttribute('aria-busy', String(state));
+                    label.textContent = state ? t('form.sending') : t('form.submit');
+                    const icon = $('svg, .spinner', submitBtn);
+                    if (state) icon.outerHTML = '<span class="spinner" aria-hidden="true"></span>';
+                    else if (icon.classList.contains('spinner')) {
+                        icon.outerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg>';
+                    }
+                }
+
+                function resetForm() {
+                    form.reset();
+                    fields.forEach((f) => {
+                        f.closest('.field').classList.remove('is-invalid');
+                        f.removeAttribute('aria-invalid');
+                        $('#err-' + f.name).textContent = '';
+                    });
+                    updateCounter();
+                }
+
+                function updateCounter() {
+                    const ta = $('#f-mensaje');
+                    counter.textContent = ta.value.length + ' / ' + ta.maxLength;
+                }
+
+                async function onSubmit(e) {
+                    e.preventDefault();
+                    if (sending) return; // bloqueo de envío múltiple
+                    if (!validateAll()) {
+                        Toast.show({ type: 'error', title: t('toast.invalidTitle'), message: t('toast.invalidText') });
+                        return;
+                    }
+
+                    // Honeypot: si un bot lo rellenó, se simula éxito sin enviar nada
+                    if ($('#f-website').value) { resetForm(); return; }
+
+                    const payload = new FormData();
+                    fields.forEach((f) => payload.append(f.name, normalize(f.value)));
+                    payload.append('lang', I18n.lang);
+
+                    setSending(true);
+                    try {
+                        if (IS_LOCAL_PREVIEW) {
+                            // Vista previa local (file://): no hay servidor PHP disponible
+                            await new Promise((r) => setTimeout(r, 900));
+                            Toast.show({ title: t('toast.okTitle'), message: t('toast.demo') });
+                        } else {
+                            const res = await fetch(CONTACT_ENDPOINT, {
+                                method: 'POST',
+                                body: payload,
+                                headers: { 'Accept': 'application/json', 'X-Requested-With': 'fetch' }
+                            });
+                            if (!res.ok) throw new Error('HTTP ' + res.status);
+                            Toast.show({ title: t('toast.okTitle'), message: t('toast.okText') });
+                        }
+                        resetForm();
+                    } catch (err) {
+                        Toast.show({ type: 'error', title: t('toast.errTitle'), message: t('toast.errText') });
+                    } finally {
+                        setSending(false);
+                    }
+                }
+
+                form.addEventListener('submit', onSubmit);
+                fields.forEach((f) => {
+                    f.addEventListener('blur', () => { if (f.value) validateField(f); });
+                    f.addEventListener('input', () => {
+                        if (f.closest('.field').classList.contains('is-invalid')) validateField(f);
+                    });
+                });
+                $('#f-mensaje').addEventListener('input', updateCounter);
+                document.addEventListener('i18n:change', () => { if (!sending) label.textContent = t('form.submit'); });
+
+                return {};
+            })();
+
+            /* =====================================================
+               DEV-FE-09 · NAVEGACIÓN SPA (RF-10 · RNF-02 · RNF-03)
+               Vistas en memoria, estado activo reactivo, historial
+               con hash y bloqueo (150 ms) ante clics repetidos.
+               ===================================================== */
+            const Nav = (() => {
+                const VIEWS = ['inicio', 'mi-informacion', 'mis-proyectos', 'tecnologias', 'contacto'];
+                const LOCK_MS = 150;
+                const sidebar = $('#sidebar');
+                const overlay = $('#nav-overlay');
+                const toggle = $('#menu-toggle');
+                let current = null;
+                let locked = false;
+                let pending = null;
+
+                /* --- Menú móvil (off-canvas) --- */
+                function isMobile() { return !desktopMQ.matches; }
+
+                function syncSidebarA11y() {
+                    const hidden = isMobile() && !sidebar.classList.contains('is-open');
+                    sidebar.inert = hidden;
+                    if (hidden) sidebar.setAttribute('aria-hidden', 'true');
+                    else sidebar.removeAttribute('aria-hidden');
+                }
+
+                function setMobileMenu(open, { focusToggle = false } = {}) {
+                    sidebar.classList.toggle('is-open', open);
+                    overlay.classList.toggle('is-visible', open);
+                    toggle.setAttribute('aria-expanded', String(open));
+                    toggle.setAttribute('aria-label', t(open ? 'nav.menuClose' : 'nav.menu'));
+                    document.body.classList.toggle('nav-open', open && isMobile());
+                    syncSidebarA11y();
+                    if (open) { const a = $('.nav-item-active', sidebar) || $('.nav-item', sidebar); a.focus(); }
+                    else if (focusToggle) toggle.focus();
+                }
+                const isMenuOpen = () => sidebar.classList.contains('is-open');
+
+                /* --- Cambio de vista --- */
+                function show(id, { push = true, focus = true } = {}) {
+                    if (!VIEWS.includes(id)) id = 'inicio';
+                    if (isMenuOpen()) setMobileMenu(false);
+                    if (id === current) return;
+                    if (locked) { pending = { id, push, focus }; return; }
+                    locked = true;
+
+                    const next = document.getElementById(id);
+                    if (current) {
+                        const prev = document.getElementById(current);
+                        prev.classList.remove('is-active');
+                        prev.hidden = true;
+                    }
+                    next.hidden = false;
+                    void next.offsetWidth; // reflow → transición de opacidad
+                    next.classList.add('is-active');
+
+                    $$('.nav-item').forEach((a) => {
+                        const active = a.dataset.nav === id;
+                        a.classList.toggle('nav-item-active', active);
+                        if (active) a.setAttribute('aria-current', 'page');
+                        else a.removeAttribute('aria-current');
+                    });
+
+                    if (push && location.hash !== '#' + id) history.pushState({ view: id }, '', '#' + id);
+                    window.scrollTo(0, 0);
+                    if (focus) {
+                        const heading = $('[tabindex="-1"]', next);
+                        if (heading) heading.focus({ preventScroll: true });
+                    }
+
+                    id === 'inicio' ? Carousel.resume('hidden-view') : Carousel.pause('hidden-view');
+                    if (id !== 'tecnologias') Tech.closeAll();
+                    current = id;
+
+                    setTimeout(() => {
+                        locked = false;
+                        if (pending) { const p = pending; pending = null; show(p.id, p); }
+                    }, LOCK_MS);
+                }
+
+                const idFromHash = () => decodeURIComponent(location.hash.replace('#', ''));
+
+                // Delegación: cualquier enlace interno hacia una vista
+                document.addEventListener('click', (e) => {
+                    const link = e.target.closest('a[href^="#"]');
+                    if (!link) return;
+                    const id = link.getAttribute('href').slice(1);
+                    if (!VIEWS.includes(id)) return;
+                    e.preventDefault();
+                    show(id);
+                });
+
+                window.addEventListener('popstate', () => show(idFromHash(), { push: false }));
+                window.addEventListener('hashchange', () => show(idFromHash(), { push: false }));
+
+                toggle.addEventListener('click', () => setMobileMenu(!isMenuOpen()));
+                overlay.addEventListener('click', () => setMobileMenu(false, { focusToggle: true }));
+                desktopMQ.addEventListener('change', () => setMobileMenu(false));
+
+                function init() {
+                    syncSidebarA11y();
+                    const initial = idFromHash();
+                    show(VIEWS.includes(initial) ? initial : 'inicio', { push: false, focus: false });
+                    if (!VIEWS.includes(initial) && location.hash) history.replaceState(null, '', '#inicio');
+                }
+
+                return { show, init, isMenuOpen, setMobileMenu };
+            })();
+
+            /* =====================================================
+               TECLADO GLOBAL · Escape (keyCode 27)
+               ===================================================== */
+            document.addEventListener('keydown', (e) => {
+                const isEscape = e.key === 'Escape' || e.keyCode === 27;
+                if (Modal.isOpen) {
+                    if (isEscape) { e.preventDefault(); Modal.close(); }
+                    else if (e.key === 'Tab') Modal.trapFocus(e);
+                    return;
+                }
+                if (isEscape && Nav.isMenuOpen()) Nav.setMobileMenu(false, { focusToggle: true });
+                if (isEscape) Tech.closeAll();
+            });
+
+            /* =====================================================
+               ARRANQUE
+               ===================================================== */
+            function renderDynamic() {
+                Carousel.render();
+                Projects.render();
+                Tech.render();
+            }
+            document.addEventListener('i18n:change', renderDynamic);
+
+            const requestedLang = new URLSearchParams(location.search).get('lang');
+            if (requestedLang && requestedLang !== 'es' && DICTIONARIES[requestedLang]) {
+                I18n.apply(requestedLang); // dispara renderDynamic()
+            } else {
+                renderDynamic();
+            }
+            Nav.init();
+
+            // API pública mínima para la futura V2.1 (conmutador de idioma)
+            window.PortfolioI18n = Object.freeze({
+                setLang: (lang) => I18n.apply(lang),
+                get lang() { return I18n.lang; }
+            });
+        })();
+    </script>
+</body>
+
+</html>
