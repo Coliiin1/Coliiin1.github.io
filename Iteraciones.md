@@ -8,7 +8,7 @@
 > **Alumno:** Carlos Daniel Ávila Colin (Grupo: SG)  
 > **Profesor Titular:** M. en C. José Rafael Cruz Reyes  
 > **Fecha de Emisión:** Octubre de 2026 | **Versión del Plan:** 2.0.0  
-> **Repositorio Oficial de Control de Versiones:** [GitHub \- Coliiin1/PWebPersonal](https://github.com/Coliiin1/PWebPersonal) (Rama principal: `main`)  
+> **Repositorio Oficial de Control de Versiones:** [GitHub \- Coliiin1/PortafolioWebPersonal](https://github.com/Coliiin1/PortafolioWebPersonal) (Rama principal: `main`) | **Sitio publicado (GitHub Pages):** [coliiin1.github.io/PortafolioWebPersonal](https://coliiin1.github.io/PortafolioWebPersonal/)  
 > **Entorno de Publicación de Referencia (V1.0):** [Google Sites \- Portafolio Daniel Colin](https://sites.google.com/view/portafolio-web-daniel-colin/inicio)
 
 ---
@@ -60,7 +60,7 @@ Para asegurar un avance controlado, predecible y verificable, cada iteración de
 
 ### 2.1 Protocolo de Flujo de Trabajo en Git y Control de Versiones
 
-- **Repositorio Central:** `https://github.com/Coliiin1/PWebPersonal`  
+- **Repositorio Central:** `https://github.com/Coliiin1/PortafolioWebPersonal`  
 - **Rama Principal (`main`):** Aloja el código estable y probado listo para despliegue en producción. Toda incorporación a `main` requiere la aprobación satisfactoria de la fase de pruebas.  
 - **Ramas de Característica (`feature/DEV-xx-nombre`):** Cada requerimiento o componente DEV se implementa en una rama aislada (ej. `feature/DEV-FE-03-carousel`, `feature/DEV-BE-01-smtp`).  
 - **Ramas de Verificación QA (`qa/TC-xxx-testing`):** Utilizadas para pruebas de regresión, auditorías automatizadas (Lighthouse, axe) o scripts de carga.  
@@ -398,7 +398,7 @@ A continuación se presenta el desglose exhaustivo de las **8 Iteraciones de Des
 - **Categoría:** Requerimiento Funcional | **Prioridad:** Alta  
 - **Objetivo de Negocio Vinculado:** `OBJ-08` — *Atracción de reclutadores y vinculación*  
 - **Referencia de Diseño (Mockup):** Figura 4, elemento 4  
-- **Componente(s) de Desarrollo:** `DEV-FE-04 (index.html#mi-informacion) | DEV-DOC-01 (assets/docs/CV_Carlos_Avila.pdf)`  
+- **Componente(s) de Desarrollo:** `DEV-FE-04 (index.html#mi-informacion) | DEV-DOC-01 (assets/docs/CV_Carlos_Daniel_Avila.pdf)`  
 - **Rama Git Asignada:** `feature/rf-13-dev-fe-04`
 
 **Especificaciones Técnicas de Implementación:**
