@@ -1,7 +1,8 @@
 # Portafolio Web Profesional — Carlos Daniel Ávila Colin
 
-SPA estática (HTML5 + CSS Mobile-First + JavaScript vanilla en módulos ES) construida como
-reingeniería de la V1.0 publicada en Google Sites. Sin dependencias externas ni paso de compilación.
+SPA estática (HTML5 + CSS Mobile-First + JavaScript vanilla modular en scripts clásicos con
+namespace `window.Portfolio`) construida como reingeniería de la V1.0 publicada en Google Sites.
+Sin dependencias externas ni paso de compilación.
 
 - **Repositorio:** https://github.com/Coliiin1/PWebPersonal
 - **Sitio publicado:** https://coliiin1.github.io/PWebPersonal/
@@ -41,7 +42,7 @@ reingeniería de la V1.0 publicada en Google Sites. Sin dependencias externas ni
 
 ## Previsualización local
 
-Los módulos ES requieren un servidor HTTP (no funciona abriendo el archivo con doble clic):
+Puedes abrir `index.html` directamente con doble clic (funciona vía `file://`) o servirlo por HTTP:
 
 ```bash
 py -m http.server 8000

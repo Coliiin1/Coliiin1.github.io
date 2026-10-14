@@ -18,7 +18,9 @@
         Plan de referencia: Iteraciones.md (v2.0.0)
         ------------------------------------------------------------
         SPA estática modular: HTML5 semántico + CSS Mobile-First +
-        JavaScript vanilla en módulos ES, sin dependencias externas.
+        JavaScript vanilla en scripts clásicos con namespace
+        (window.Portfolio), sin dependencias externas. Compatible
+        con apertura directa (file://) y con GitHub Pages.
 
         Mapa de componentes DEV → archivos del proyecto:
           DEV-FE-01  Marcado semántico  → index.html (#inicio, #mi-informacion,
@@ -554,7 +556,21 @@
     <!-- ===================== RF-12 · REGIÓN DE NOTIFICACIONES ===================== -->
     <div class="toast-region" id="toast-region" role="status" aria-live="polite" aria-atomic="false"></div>
 
-    <script type="module" src="js/main.js"></script>
+    <!-- Scripts clásicos modulares (namespace window.Portfolio) — el orden de carga es importante -->
+    <script defer src="js/utils.js"></script>
+    <script defer src="js/bus.js"></script>
+    <script defer src="js/config.js"></script>
+    <script defer src="js/i18n.js"></script>
+    <script defer src="js/data.js"></script>
+    <script defer src="js/media.js"></script>
+    <script defer src="js/toast.js"></script>
+    <script defer src="js/modal.js"></script>
+    <script defer src="js/technologies.js"></script>
+    <script defer src="js/nav.js"></script>
+    <script defer src="js/projects.js"></script>
+    <script defer src="js/carousel.js"></script>
+    <script defer src="js/contact.js"></script>
+    <script defer src="js/main.js"></script>
 </body>
 
 </html>
