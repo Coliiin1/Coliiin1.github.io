@@ -70,7 +70,7 @@ export const PROJECTS = [
         arch: 'SPA estática modular (vistas en memoria) + endpoint PHP SMTP sin persistencia',
         features: ['Navegación SPA con transiciones < 300 ms', 'Carrusel con pausa al hover y soporte táctil', 'Formulario con validación en cliente y notificación toast', 'Diseño Mobile-First y contraste WCAG 2.1 AA'],
         deps: [['JavaScript vanilla (ES2020)', '—'], ['PHP', '8.x'], ['Hosting NVMe + SSL', '—']],
-        repo: 'https://github.com/Coliiin1/PortafolioWebPersonal', palette: ['#2c3e50', '#1f6fb2'], glyph: '</>',
+                    repo: 'https://github.com/Coliiin1/PWebPersonal', palette: ['#2c3e50', '#1f6fb2'], glyph: '</>',
         shots: ['Vista de inicio', 'Arquitectura de vistas', 'Módulo de navegación']
     }
 ];

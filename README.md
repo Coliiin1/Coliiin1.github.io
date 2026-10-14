@@ -3,7 +3,8 @@
 SPA estática (HTML5 + CSS Mobile-First + JavaScript vanilla en módulos ES) construida como
 reingeniería de la V1.0 publicada en Google Sites. Sin dependencias externas ni paso de compilación.
 
-- **Sitio publicado:** https://coliiin1.github.io/PortafolioWebPersonal/
+- **Repositorio:** https://github.com/Coliiin1/PWebPersonal
+- **Sitio publicado:** https://coliiin1.github.io/PWebPersonal/
 - **Plan de iteraciones y QA:** [Iteraciones.md](Iteraciones.md)
 
 ## Estructura del proyecto
@@ -71,7 +72,7 @@ sitio apuntan a esa ruta). Hasta que el archivo exista, esos enlaces devolverán
 1. Sube los cambios a la rama `main`.
 2. En GitHub: **Settings → Pages → Source:** `Deploy from a branch`.
 3. **Branch:** `main` y carpeta `/ (root)` → **Save**.
-4. El sitio queda en https://coliiin1.github.io/PortafolioWebPersonal/
+4. El sitio queda en https://coliiin1.github.io/PWebPersonal/
 
 ## Datos y contenido
 
