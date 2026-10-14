@@ -21,14 +21,14 @@
 
         function render() {
             grid.innerHTML = PROJECTS.map((p) =>
-                '<article class="project-card surface" data-category="' + p.category.join(' ') + '" data-id="' + p.id + '">' +
+                '<article class="project-card" data-category="' + p.category.join(' ') + '" data-id="' + p.id + '">' +
                 imgTag(projectImage(p, 0), t('img.preview', { title: p.title })) +
                 '<div class="project-card__body">' +
                 '<div class="badges">' + catBadges(p) + '</div>' +
                 '<h3 class="project-card__title">' + escapeHTML(p.title) + '</h3>' +
                 '<p class="project-card__desc">' + escapeHTML(p.short) + '</p>' +
                 '<div class="badges">' + stackBadges(p.stack.slice(0, 3)) + '</div>' +
-                '<button type="button" class="btn btn-outline" data-detail="' + p.id + '">' + escapeHTML(t('projects.details')) + '</button>' +
+                '<button type="button" class="btn btn-primary" data-detail="' + p.id + '">' + escapeHTML(t('projects.details')) + '</button>' +
                 '</div></article>'
             ).join('');
             applyFilter(currentFilter, false);

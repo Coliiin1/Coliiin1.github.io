@@ -188,14 +188,13 @@ h1, h2, h3, h4, h5, h6 {
     gap: 20px;
 }
 
-/* Logotipo (Izquierda): minúsculas y negrita en Ocean */
+/* Logotipo (Izquierda): negrita en Ocean con mayúscula inicial */
 .header-logo {
     font-family: var(--font-heading);
     font-size: 1.65rem;
     font-weight: 800;
     letter-spacing: -0.03em;
     color: var(--c-ocean);
-    text-transform: lowercase;
     text-decoration: none;
     display: inline-flex;
     align-items: baseline;
@@ -211,7 +210,7 @@ h1, h2, h3, h4, h5, h6 {
     transform: scale(1.02);
 }
 
-/* Menú de Navegación (Centro): texto minúscula con línea de subrayado activo */
+/* Menú de Navegación (Centro): mayúscula inicial con línea de subrayado activo */
 .header-nav {
     display: none; /* Visible en tablet/desktop */
 }
@@ -231,7 +230,6 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--c-noir);
-    text-transform: lowercase;
     text-decoration: none;
     padding: 8px 2px;
     display: inline-block;
@@ -268,7 +266,7 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
 }
 
-/* Redes Sociales (Derecha): minúsculas y negrita en Noir */
+/* Redes Sociales (Derecha): iconos en Noir */
 .header-social {
     display: none; /* Visible en tablet/desktop */
     align-items: center;
@@ -276,15 +274,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .social-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     font-family: var(--font-heading);
     font-size: 0.95rem;
     font-weight: 800;
     color: var(--c-noir);
-    text-transform: lowercase;
     text-decoration: none;
     padding: 4px 8px;
     border-radius: var(--radius-sm);
     transition: color var(--dur) var(--ease), background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.social-tag svg {
+    display: block;
+    width: 20px;
+    height: 20px;
 }
 
 .social-tag:hover {
@@ -533,7 +539,7 @@ main {
     background-color: var(--c-noir);
 }
 
-/* Título Principal: "lets think" en minúsculas y "creative" en Ocean y tamaño mayor */
+/* Título Principal: "Transformemos Ideas" en Noir y "En codigo!" en Ocean y tamaño mayor */
 .hero-main-title {
     margin: 0 0 28px;
     line-height: 1.02;
@@ -546,7 +552,6 @@ main {
     font-size: clamp(2.3rem, 3.8vw, 3.6rem);
     font-weight: 400;
     color: var(--c-noir);
-    text-transform: lowercase;
     letter-spacing: -0.02em;
 }
 
@@ -555,7 +560,6 @@ main {
     font-size: clamp(3.2rem, 5.6vw, 5.2rem);
     font-weight: 900;
     color: var(--c-ocean);
-    text-transform: lowercase;
     letter-spacing: -0.03em;
     line-height: 0.94;
 }
@@ -751,106 +755,6 @@ main {
     transform: translateX(6px);
 }
 
-/* --- 5. TARJETA FLOTANTE (Esquina Inferior Derecha) --- */
-.hero-floating-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 14px 16px;
-    background-color: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-lg);
-    max-width: 440px;
-    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
-}
-
-.hero-floating-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 42px rgba(18, 44, 79, 0.16);
-}
-
-/* Imagen Izquierda: Cuadrada oscura con icono circular de reproducción (play) blanco */
-.floating-card-media {
-    position: relative;
-    flex: 0 0 88px;
-    width: 88px;
-    height: 88px;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
-    background-color: #0b1522;
-}
-
-.floating-card-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.floating-card-play {
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    color: var(--c-midnight);
-    display: grid;
-    place-items: center;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
-}
-
-.floating-card-play svg {
-    width: 14px;
-    height: 14px;
-    margin-left: 2px;
-}
-
-/* Contenido Derecha: Texto principal en negrita + "Learn More" */
-.floating-card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.floating-card-title {
-    font-family: var(--font-heading);
-    font-size: 0.92rem;
-    font-weight: 700;
-    line-height: 1.35;
-    color: var(--c-midnight);
-    margin: 0;
-}
-
-.floating-card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-heading);
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--c-ocean);
-    text-decoration: none;
-    transition: color var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-
-.floating-card-link svg {
-    width: 16px;
-    height: 16px;
-    transition: transform var(--dur) var(--ease);
-}
-
-.floating-card-link:hover {
-    color: var(--c-midnight);
-}
-
-.floating-card-link:hover svg {
-    transform: translateX(4px);
-}
-
 /* =========================================================
    6. CARRUSEL DE PROYECTOS DESTACADOS
    ========================================================= */
@@ -1023,16 +927,6 @@ main {
     box-shadow: 0 6px 18px rgba(91, 136, 178, 0.35);
 }
 
-.btn-outline {
-    background-color: transparent;
-    color: var(--c-midnight);
-    border-color: var(--c-midnight);
-}
-
-.btn-outline:hover {
-    background-color: var(--c-midnight-soft);
-}
-
 .btn-primary-cta {
     display: inline-flex;
     align-items: center;
@@ -1059,24 +953,19 @@ main {
 .badges {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 8px;
 }
 
 .badge {
     display: inline-flex;
     align-items: center;
-    padding: 3px 10px;
+    padding: 6px 12px;
     border-radius: 999px;
     background: var(--c-ocean-soft);
     color: var(--c-midnight);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 700;
     white-space: nowrap;
-}
-
-.badge--cat {
-    background: var(--c-midnight);
-    color: #ffffff;
 }
 
 .tag-list {
@@ -1159,16 +1048,16 @@ main {
     border-left: 3px solid var(--c-ocean);
 }
 
-.timeline li {
+.timeline > li {
     position: relative;
     padding: 0 0 24px 16px;
 }
 
-.timeline li:last-child {
+.timeline > li:last-child {
     padding-bottom: 0;
 }
 
-.timeline li::before {
+.timeline > li::before {
     content: "";
     position: absolute;
     left: -29px;
@@ -1202,7 +1091,7 @@ main {
 .competency {
     padding: 18px;
     border: 1px solid var(--c-border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius);
     background: var(--c-surface);
 }
 
@@ -1269,16 +1158,14 @@ main {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--c-surface);
+    background: #ffffff;
     border: 1px solid var(--c-border);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+    transition: border-color var(--dur) var(--ease);
 }
 
 .project-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+    border-color: var(--c-ocean);
 }
 
 .project-card__body {
@@ -1298,7 +1185,8 @@ main {
 .project-card__desc {
     margin: 0;
     font-size: 0.92rem;
-    color: var(--c-text-muted);
+    line-height: 1.7;
+    color: var(--c-noir);
     display: -webkit-box;
     -webkit-line-clamp: 4;
     line-clamp: 4;

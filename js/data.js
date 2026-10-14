@@ -18,7 +18,7 @@
             features: ['Registro y búsqueda de pacientes y médicos', 'Agenda de citas con validación de horarios', 'Esquema relacional normalizado (3FN)', 'Especificación de requisitos funcionales y no funcionales'],
             deps: [['Java SE', '17 LTS'], ['OpenJFX', '17'], ['PostgreSQL JDBC Driver', '42']],
             repo: GITHUB, palette: ['#1f4e79', '#2a9d8f'], glyph: '+',
-            shots: ['Interfaz principal', 'Modelo entidad-relación', 'Controlador JavaFX']
+            shots: [""]
         },
         {
             id: 'catalogo-productos', title: 'Catálogo de Productos', category: ['escritorio', 'bd'], featured: true,
@@ -29,7 +29,7 @@
             features: ['Inicio de sesión con roles (administrador / usuario)', 'Altas, bajas y cambios de productos y categorías', 'Búsqueda y filtrado del catálogo', 'Encapsulamiento, herencia y polimorfismo aplicados'],
             deps: [['Java SE', '17 LTS'], ['Swing (JFrame, JPanel)', 'JDK']],
             repo: GITHUB, palette: ['#5b3a8c', '#1f6fb2'], glyph: '{ }',
-            shots: ['Panel de administración', 'Diagrama de clases', 'Capa de acceso a datos']
+            shots: [""]
         },
 
         {
@@ -41,7 +41,7 @@
             features: ['Configuración de puertos de E/S', 'Uso de temporizadores e interrupciones', 'Lectura de entradas digitales y control de salidas', 'Validación en simulación previa al montaje'],
             deps: [['MPLAB X IDE', '6.x'], ['Compilador MPLAB XC8', '2.x'], ['Proteus Design Suite', '8.x']],
             repo: GITHUB, palette: ['#264653', '#c8553d'], glyph: 'C',
-            shots: ['Simulación del circuito', 'Máquina de estados', 'Rutina de interrupción']
+            shots: [""]
         },
         {
             id: 'scripts-python', title: 'Cerberus IDE', category: ['escritorio'], featured: true,
@@ -52,7 +52,7 @@
             features: ['Funciones y tipos de datos en español', 'Control de flujo con palabras reservadas en español (ej: si/entonces, mientras/hacer)', 'Soporte para clases(En desarrollo), métodos con sintaxis adaptada'],
             deps: [['Java', '25'], ['Biblioteca estándar (Maven)', '—']],
             repo: GITHUB, palette: ['#306998', '#b8860b'], glyph: 'IDE',
-            shots: ['Ejecución en terminal', 'Estructura de módulos', 'Fragmento de código']
+            shots: [""]
         },
         {
             id: 'modelado-bd', title: 'Diseño de Bases de Datos Relacionales', category: ['bd'], featured: false,
@@ -63,18 +63,18 @@
             features: ['Diagramas entidad-relación', 'Normalización hasta tercera forma normal', 'Restricciones, llaves foráneas y vistas', 'Consultas con JOIN y subconsultas'],
             deps: [['PostgreSQL', '16'], ['MariaDB', '11'], ['pgAdmin / DBeaver', '—']],
             repo: GITHUB, palette: ['#336791', '#003545'], glyph: 'SQL',
-            shots: ['Diagrama entidad-relación', 'Esquema físico', 'Consultas SQL']
+            shots: [""]
         },
         {
-            id: 'portafolio-web', title: 'Portafolio Web Profesional V2.0', category: ['web'], featured: true,
+            id: 'portafolio-web', title: 'Portafolio Web Profesional', category: ['web'], featured: true,
             short: 'Este mismo sitio: SPA estática a la medida con HTML5 semántico, CSS Mobile-First y JavaScript vanilla.',
-            description: 'Reingeniería integral del portafolio publicado originalmente en Google Sites. SPA estática sin dependencias externas, con menú lateral fijo, carrusel, modales, filtrado dinámico, formulario de contacto nativo con backend SMTP, accesibilidad WCAG 2.1 AA y arquitectura i18n.',
+            description: 'Reingeniería integral del portafolio publicado originalmente en Google Sites. SPA estática sin dependencias externas, con menú superior fijo, carrusel, modales, filtrado dinámico, formulario de contacto nativo con backend SMTP, accesibilidad WCAG 2.1 AA y arquitectura i18n.',
             stack: ['HTML5', 'CSS3', 'JavaScript', 'PHP'], langs: ['HTML', 'CSS', 'JavaScript', 'PHP'],
             arch: 'SPA estática modular (vistas en memoria) + endpoint PHP SMTP sin persistencia',
             features: ['Navegación SPA con transiciones < 300 ms', 'Carrusel con pausa al hover y soporte táctil', 'Formulario con validación en cliente y notificación toast', 'Diseño Mobile-First y contraste WCAG 2.1 AA'],
             deps: [['JavaScript vanilla (ES2020)', '—'], ['PHP', '8.x'], ['Hosting NVMe + SSL', '—']],
-                        repo: 'https://github.com/Coliiin1/Coliiin1.github.io', palette: ['#2c3e50', '#1f6fb2'], glyph: '</>',
-            shots: ['Vista de inicio', 'Arquitectura de vistas', 'Módulo de navegación']
+            repo: 'https://github.com/Coliiin1/Coliiin1.github.io', palette: ['#2c3e50', '#1f6fb2'], glyph: '</>',
+            shots: [""]
         }
     ];
     const projectById = (id) => PROJECTS.find((p) => p.id === id);
