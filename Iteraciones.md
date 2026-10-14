@@ -8,7 +8,7 @@
 > **Alumno:** Carlos Daniel Ávila Colin (Grupo: SG)  
 > **Profesor Titular:** M. en C. José Rafael Cruz Reyes  
 > **Fecha de Emisión:** Octubre de 2026 | **Versión del Plan:** 2.0.0  
-> **Repositorio Oficial de Control de Versiones:** [GitHub \- Coliiin1/PWebPersonal](https://github.com/Coliiin1/PWebPersonal) (Rama principal: `main`) | **Sitio publicado (GitHub Pages):** [coliiin1.github.io/PWebPersonal](https://coliiin1.github.io/PWebPersonal/)  
+> **Repositorio Oficial de Control de Versiones:** [GitHub \- Coliiin1/Coliiin1.github.io](https://github.com/Coliiin1/Coliiin1.github.io) (Rama principal: `main`) | **Sitio publicado (GitHub Pages):** [coliiin1.github.io](https://coliiin1.github.io/)  
 > **Entorno de Publicación de Referencia (V1.0):** [Google Sites \- Portafolio Daniel Colin](https://sites.google.com/view/portafolio-web-daniel-colin/inicio)
 
 ---
@@ -60,7 +60,7 @@ Para asegurar un avance controlado, predecible y verificable, cada iteración de
 
 ### 2.1 Protocolo de Flujo de Trabajo en Git y Control de Versiones
 
-- **Repositorio Central:** `https://github.com/Coliiin1/PWebPersonal`  
+- **Repositorio Central:** `https://github.com/Coliiin1/Coliiin1.github.io`  
 - **Rama Principal (`main`):** Aloja el código estable y probado listo para despliegue en producción. Toda incorporación a `main` requiere la aprobación satisfactoria de la fase de pruebas.  
 - **Ramas de Característica (`feature/DEV-xx-nombre`):** Cada requerimiento o componente DEV se implementa en una rama aislada (ej. `feature/DEV-FE-03-carousel`, `feature/DEV-BE-01-smtp`).  
 - **Ramas de Verificación QA (`qa/TC-xxx-testing`):** Utilizadas para pruebas de regresión, auditorías automatizadas (Lighthouse, axe) o scripts de carga.  
