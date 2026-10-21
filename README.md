@@ -67,8 +67,16 @@ valida los campos y muestra una notificación, pero no envía correos.
 
 ## CV en PDF
 
-Coloca tu currículum en `assets/docs/CV_Carlos_Daniel_Avila.pdf` (los botones de descarga del
-sitio apuntan a esa ruta). Hasta que el archivo exista, esos enlaces devolverán 404.
+El CV está disponible en `assets/docs/CV_Carlos_Daniel_Avila.pdf` y el botón **Descargar CV (PDF)** de
+la sección "Mi información" apunta a esa ruta.
+
+La fuente editable es `assets/docs/cv.html`. Después de modificarla, regenera el PDF con Edge o Chrome:
+
+```bash
+msedge --headless=new --no-pdf-header-footer \
+  --print-to-pdf="assets/docs/CV_Carlos_Daniel_Avila.pdf" \
+  "file:///ruta/al/proyecto/assets/docs/cv.html"
+```
 
 ## Publicación en GitHub Pages
 

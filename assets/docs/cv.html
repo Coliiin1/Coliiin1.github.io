@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CV · Carlos Daniel Ávila Colin</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 13mm 16mm 14mm;
+        }
+
+        :root {
+            --ink: #122C4F;
+            --accent: #1F6FB2;
+            --accent-soft: #E8F0F8;
+            --muted: #4A5868;
+            --line: #D6E0EA;
+            --body: #1B2733;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+            font-size: 9.7pt;
+            line-height: 1.4;
+            color: var(--body);
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ---------- Cabecera ---------- */
+        .header {
+            display: grid;
+            grid-template-columns: 1fr 31mm;
+            gap: 8mm;
+            align-items: center;
+            padding-bottom: 5mm;
+            border-bottom: 2.4pt solid var(--ink);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24pt;
+            line-height: 1.05;
+            letter-spacing: -0.4pt;
+            color: var(--ink);
+        }
+
+        .role {
+            margin: 2mm 0 0;
+            font-size: 11pt;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .tagline {
+            margin: 2.4mm 0 0;
+            max-width: 150mm;
+            color: var(--muted);
+        }
+
+        .contact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2mm 5mm;
+            margin: 3mm 0 0;
+            padding: 0;
+            list-style: none;
+            font-size: 9pt;
+            color: var(--muted);
+        }
+
+        .contact li {
+            display: flex;
+            align-items: center;
+            gap: 1.4mm;
+        }
+
+        .contact li::before {
+            content: "";
+            width: 1.6mm;
+            height: 1.6mm;
+            border-radius: 50%;
+            background: var(--accent);
+            flex: none;
+        }
+
+        .photo {
+            width: 31mm;
+            height: 31mm;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: 50% 22%;
+            filter: grayscale(100%) contrast(1.05);
+            border: 2.4pt solid var(--accent-soft);
+            box-shadow: 0 0 0 1pt var(--line);
+        }
+
+        /* ---------- Secciones ---------- */
+        section {
+            margin-top: 5.2mm;
+        }
+
+        h2 {
+            margin: 0 0 2.6mm;
+            padding-bottom: 1.2mm;
+            border-bottom: 1pt solid var(--line);
+            font-size: 11.4pt;
+            letter-spacing: 0.6pt;
+            text-transform: uppercase;
+            color: var(--ink);
+            break-after: avoid;
+        }
+
+        h2 span {
+            display: inline-block;
+            padding-bottom: 1.2mm;
+            border-bottom: 2.4pt solid var(--accent);
+        }
+
+        h3 {
+            margin: 0;
+            font-size: 10.2pt;
+            color: var(--ink);
+        }
+
+        p {
+            margin: 0;
+        }
+
+        /* ---------- Formación ---------- */
+        .edu-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 4mm;
+        }
+
+        .edu-head h3 {
+            font-size: 10.4pt;
+        }
+
+        .edu-meta {
+            flex: none;
+            font-size: 8.8pt;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .edu-sub {
+            margin-top: 0.6mm;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 9pt;
+        }
+
+        .edu-text {
+            margin-top: 1.4mm;
+        }
+
+        .courses {
+            margin: 1.6mm 0 0;
+            padding-left: 4.2mm;
+        }
+
+        .courses li {
+            margin-bottom: 0.5mm;
+        }
+
+        /* ---------- Competencias técnicas ---------- */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.4mm 8mm;
+        }
+
+        .skill {
+            break-inside: avoid;
+        }
+
+        .skill h3 {
+            margin-bottom: 0.5mm;
+            font-size: 9.6pt;
+            color: var(--accent);
+        }
+
+        .skill p {
+            color: var(--body);
+        }
+
+        /* ---------- Proyectos ---------- */
+        .project {
+            break-inside: avoid;
+            padding: 2.4mm 0 2.6mm;
+            border-bottom: 0.6pt solid var(--line);
+        }
+
+        .project:last-child {
+            border-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .project-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 4mm;
+        }
+
+        .project-head h3 {
+            font-size: 10.1pt;
+        }
+
+        .stack {
+            flex: none;
+            max-width: 62mm;
+            text-align: right;
+            font-size: 8.5pt;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .project p {
+            margin-top: 0.9mm;
+            color: var(--muted);
+        }
+
+        /* ---------- Competencias profesionales ---------- */
+        .comp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.2mm 8mm;
+        }
+
+        .comp {
+            break-inside: avoid;
+        }
+
+        .comp h3 {
+            margin-bottom: 0.4mm;
+            font-size: 9.6pt;
+        }
+
+        .comp ul {
+            margin: 0;
+            padding-left: 4.2mm;
+            color: var(--muted);
+        }
+
+        .comp li {
+            margin-bottom: 0.3mm;
+        }
+
+        /* ---------- Pie ---------- */
+        .footer {
+            margin-top: 5mm;
+            padding-top: 2.6mm;
+            border-top: 1.4pt solid var(--ink);
+            display: flex;
+            justify-content: space-between;
+            gap: 6mm;
+            font-size: 8.6pt;
+            color: var(--muted);
+        }
+
+        .footer strong {
+            color: var(--ink);
+        }
+
+        /* Solo para previsualizar el documento en el navegador. */
+        @media screen {
+            html {
+                background: #E9EEF3;
+            }
+
+            body {
+                width: 210mm;
+                margin: 0 auto;
+                padding: 13mm 16mm 14mm;
+                background: #FFFFFF;
+                box-shadow: 0 10px 40px rgba(18, 44, 79, 0.12);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div>
+            <h1>Carlos Daniel Ávila Colin</h1>
+            <p class="role">Desarrollador de Software · Frontend &amp; Bases de Datos</p>
+            <p class="tagline">
+                Estudiante de Ingeniería en Software enfocado en el desarrollo de aplicaciones robustas,
+                arquitecturas de bases de datos de alto rendimiento y experiencias web adaptables, con
+                atención meticulosa a los detalles, la accesibilidad y la calidad del código.
+            </p>
+            <ul class="contact">
+                <li>Tianguistenco, Estado de México</li>
+                <li><a href="https://coliiin1.github.io">coliiin1.github.io</a></li>
+                <li><a href="https://github.com/Coliiin1">github.com/Coliiin1</a></li>
+                <li><a href="https://www.linkedin.com/in/daniel-colin">linkedin.com/in/daniel-colin</a></li>
+            </ul>
+        </div>
+        <img class="photo" src="../img/Perfil.JPEG" alt="Fotografía de Carlos Daniel Ávila Colin">
+    </header>
+
+    <section>
+        <h2><span>Perfil profesional</span></h2>
+        <p>
+            Estudiante de la Licenciatura en Ingeniería en Software en el Centro Universitario UAEMex
+            Tianguistenco. Me apasiona el desarrollo backend, la creación de aplicaciones de escritorio y la
+            arquitectura de bases de datos. Diseño soluciones aplicando programación orientada a objetos,
+            arquitecturas en capas y MVC, y modelado relacional normalizado. Mi entorno principal de trabajo es
+            Fedora Linux y dedico mi tiempo al aprendizaje y aplicación de nuevas tecnologías.
+        </p>
+    </section>
+
+    <section>
+        <h2><span>Formación académica</span></h2>
+        <div class="edu-head">
+            <h3>Licenciatura en Ingeniería en Software</h3>
+            <span class="edu-meta">En curso</span>
+        </div>
+        <p class="edu-sub">Centro Universitario UAEMex Tianguistenco</p>
+        <p class="edu-text">
+            Formación integral en el ciclo de vida del software: análisis y especificación de requisitos, diseño
+            orientado a objetos, bases de datos, métodos de desarrollo y programación de sistemas de bajo nivel.
+        </p>
+        <ul class="courses">
+            <li>Programación Orientada a Objetos</li>
+            <li>Bases de Datos</li>
+            <li>Ingeniería de Requisitos</li>
+            <li>Métodos y Modelos de Desarrollo de Software</li>
+            <li>Microcontroladores</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2><span>Competencias técnicas</span></h2>
+        <div class="skills-grid">
+            <div class="skill">
+                <h3>Lenguajes de programación</h3>
+                <p>Java · C · Python · SQL · HTML5 · CSS3 · JavaScript · Ensamblador PIC</p>
+            </div>
+            <div class="skill">
+                <h3>Bases de datos</h3>
+                <p>PostgreSQL · MariaDB · Modelado entidad-relación · Normalización 3FN · DDL/DML · JOIN ·
+                    Subconsultas · Vistas y restricciones de integridad</p>
+            </div>
+            <div class="skill">
+                <h3>Desarrollo y arquitectura</h3>
+                <p>POO · MVC · Arquitectura en capas · JavaFX · Swing · JDBC · Interfaces gráficas de escritorio ·
+                    UML (casos de uso, clases y secuencia)</p>
+            </div>
+            <div class="skill">
+                <h3>Entornos y herramientas</h3>
+                <p>Git y GitHub · Fedora Linux · MPLAB X · XC8 · Proteus · Maven · pgAdmin / DBeaver ·
+                    opencode · Antigravity · Codex</p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2><span>Proyectos destacados</span></h2>
+
+        <article class="project">
+            <div class="project-head">
+                <h3>Gestor de Citas Médicas</h3>
+                <span class="stack">Java · JavaFX · PostgreSQL · JDBC</span>
+            </div>
+            <p>
+                Sistema de escritorio para administrar pacientes, médicos y agenda de citas. Arquitectura MVC en
+                capas (vista FXML, controlador, servicio y DAO), esquema relacional normalizado (3FN), validación
+                de horarios y especificación de requisitos funcionales y no funcionales.
+            </p>
+        </article>
+
+        <article class="project">
+            <div class="project-head">
+                <h3>Catálogo de Productos</h3>
+                <span class="stack">Java · Swing</span>
+            </div>
+            <p>
+                Aplicación con arquitectura en capas y POO que gestiona niveles de acceso para administrador y
+                usuario. Incluye inicio de sesión por roles, altas, bajas y cambios de productos y categorías,
+                búsqueda y filtrado, aplicando encapsulamiento, herencia y polimorfismo.
+            </p>
+        </article>
+
+        <article class="project">
+            <div class="project-head">
+                <h3>Cerberus IDE</h3>
+                <span class="stack">Java · JavaFX · Maven</span>
+            </div>
+            <p>
+                Lenguaje de programación educativo en español diseñado para facilitar el aprendizaje de la
+                programación y la POO. Incluye editor con análisis léxico y sintáctico, palabras reservadas en
+                español (si/entonces, mientras/hacer) y soporte de clases y métodos con sintaxis adaptada.
+            </p>
+        </article>
+
+        <article class="project">
+            <div class="project-head">
+                <h3>Control Embebido con PIC18F4550</h3>
+                <span class="stack">C · XC8 · MPLAB X · Proteus</span>
+            </div>
+            <p>
+                Firmware en C para el microcontrolador PIC18F4550 orientado al manejo de puertos de entrada/salida,
+                temporizadores e interrupciones. Configuración de E/S, lectura de entradas digitales, control de
+                salidas y validación en simulación antes del montaje físico.
+            </p>
+        </article>
+
+        <article class="project">
+            <div class="project-head">
+                <h3>Diseño de Bases de Datos Relacionales</h3>
+                <span class="stack">PostgreSQL · MariaDB · SQL</span>
+            </div>
+            <p>
+                Modelado entidad-relación, normalización hasta tercera forma normal e implementación física de
+                esquemas en PostgreSQL y MariaDB, con restricciones de integridad, llaves foráneas, vistas y
+                consultas complejas con JOIN y subconsultas.
+            </p>
+        </article>
+
+        <article class="project">
+            <div class="project-head">
+                <h3>Portafolio Web Profesional</h3>
+                <span class="stack">HTML5 · CSS3 · JavaScript · PHP</span>
+            </div>
+            <p>
+                SPA estática sin dependencias externas con navegación por historial, carrusel accesible, modales,
+                filtrado dinámico, formulario de contacto con validación en cliente y arquitectura i18n ES/EN.
+                Diseño Mobile-First, transiciones ágiles y contraste conforme a WCAG 2.1 AA.
+            </p>
+        </article>
+    </section>
+
+    <section>
+        <h2><span>Competencias profesionales</span></h2>
+        <div class="comp-grid">
+            <div class="comp">
+                <h3>Desarrollo de software</h3>
+                <ul>
+                    <li>Programación orientada a objetos</li>
+                    <li>Arquitectura en capas y MVC</li>
+                    <li>Interfaces gráficas de escritorio</li>
+                    <li>Automatización de tareas</li>
+                </ul>
+            </div>
+            <div class="comp">
+                <h3>Bases de datos</h3>
+                <ul>
+                    <li>Modelado entidad-relación</li>
+                    <li>Normalización hasta 3FN</li>
+                    <li>Consultas SQL y restricciones</li>
+                    <li>Integración con aplicaciones</li>
+                </ul>
+            </div>
+            <div class="comp">
+                <h3>Requisitos y modelado UML</h3>
+                <ul>
+                    <li>Elicitación y especificación RF/RNF</li>
+                    <li>Casos de uso</li>
+                    <li>Diagramas de clases y secuencia</li>
+                    <li>Trazabilidad de requisitos</li>
+                </ul>
+            </div>
+            <div class="comp">
+                <h3>Sistemas embebidos</h3>
+                <ul>
+                    <li>Programación a bajo nivel</li>
+                    <li>Puertos de E/S y temporizadores</li>
+                    <li>Rutinas de retardo e interrupciones</li>
+                    <li>Simulación de circuitos</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <span><strong>Disponible</strong> para prácticas profesionales, proyectos de desarrollo y colaboraciones
+            académicas.</span>
+        <span>Portafolio: <a href="https://coliiin1.github.io">coliiin1.github.io</a></span>
+    </footer>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 (function (P) {
     'use strict';
-    const { $ } = P.utils;
+    const { $, $$ } = P.utils;
     const { DICTIONARIES, I18n, t } = P.i18n;
     const { Carousel } = P.carousel;
     const { Projects } = P.projects;
@@ -21,6 +21,37 @@
         }
         if (isEscape && Nav.isMenuOpen()) Nav.setMobileMenu(false, { focusToggle: true });
         if (isEscape) Tech.closeAll();
+    });
+
+    /* =====================================================
+       DESCARGA FORZADA DE ARCHIVOS (CV en PDF)
+       Evita que el navegador abra el PDF en otra pestaña.
+       ===================================================== */
+    $$('a[download]').forEach((link) => {
+        link.addEventListener('click', async (e) => {
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            if (location.protocol === 'file:') return; // En local se usa la descarga nativa.
+
+            e.preventDefault();
+            const fallback = () => { window.location.assign(link.href); };
+
+            try {
+                const response = await fetch(link.href, { cache: 'no-store' });
+                if (!response.ok) throw new Error('HTTP ' + response.status);
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = link.getAttribute('download') || link.href.split('/').pop();
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                setTimeout(() => URL.revokeObjectURL(url), 1000);
+            } catch (err) {
+                fallback();
+            }
+        });
     });
 
     /* =====================================================
