@@ -5,10 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Portafolio Web Profesional de Carlos Daniel Ávila Colin, estudiante de Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco.">
+        content="Portafolio Web Profesional de Carlos Daniel Ávila Colin, estudiante de Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco."
+        data-i18n-content="meta.description">
     <meta name="author" content="Carlos Daniel Ávila Colin">
-    <meta name="theme-color" content="#1b2836">
-    <title>Daniel Colin</title>
+    <meta name="theme-color" content="#FBF9E4">
+    <script>
+        (function () {
+            try {
+                var saved = localStorage.getItem('portfolio.theme');
+                if (saved === 'dark' || saved === 'light') {
+                    document.documentElement.setAttribute('data-theme', saved);
+                }
+            } catch (e) { /* almacenamiento no disponible */ }
+        })();
+    </script>
+    <title data-i18n="meta.title">Daniel Colin</title>
     <link rel="icon"
         href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f6fb2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Segoe UI,Arial' font-weight='700' font-size='28' fill='%23fff'%3EDC%3C/text%3E%3C/svg%3E">
 
@@ -31,7 +42,7 @@
           DEV-FE-09  Navegación SPA     → js/nav.js
           DEV-FE-12  Arquitectura i18n  → js/i18n.js
           DEV-AST-01 Imágenes lazy 16:9 → js/media.js (marcadores SVG
-                     sustituibles por WebP en assets/img/)
+                     sustituibles por capturas reales en assets/img/)
           DEV-BE-01  Formulario y envío → js/contact.js · js/config.js
                      (endpoint configurable de Formspree)
         ============================================================
@@ -54,38 +65,68 @@
     <header class="site-header" id="site-header">
         <div class="header-inner">
             <!-- Logotipo (Izquierda): negrita en Ocean -->
-            <a class="header-logo" href="#inicio" data-nav="inicio" aria-label="Inicio">
+            <a class="header-logo" href="#inicio" data-nav="inicio" aria-label="Inicio"
+                data-i18n-aria="nav.homeAria">
                 Daniel Colin<span class="logo-dot">.</span>
             </a>
 
             <!-- Menú de Navegación (Centro): mayúscula inicial con línea de subrayado en activo -->
-            <nav class="header-nav" id="header-nav" aria-label="Navegación principal">
+            <nav class="header-nav" id="header-nav" aria-label="Navegación principal" data-i18n-aria="nav.label">
                 <ul class="nav-links">
-                    <li><a class="nav-item nav-item-active" href="#inicio" data-nav="inicio">Inicio</a></li>
-                    <li><a class="nav-item" href="#mis-proyectos" data-nav="mis-proyectos">Mis proyectos</a></li>
-                    <li><a class="nav-item" href="#mi-informacion" data-nav="mi-informacion">Mi información</a></li>
-                    <li><a class="nav-item" href="#tecnologias" data-nav="tecnologias">Tecnologías</a></li>
-                    <li><a class="nav-item" href="#contacto" data-nav="contacto">Contacto</a></li>
+                    <li><a class="nav-item nav-item-active" href="#inicio" data-nav="inicio"
+                            data-i18n="nav.home">Inicio</a></li>
+                    <li><a class="nav-item" href="#mis-proyectos" data-nav="mis-proyectos"
+                            data-i18n="nav.projects">Mis proyectos</a></li>
+                    <li><a class="nav-item" href="#mi-informacion" data-nav="mi-informacion"
+                            data-i18n="nav.about">Mi información</a></li>
+                    <li><a class="nav-item" href="#tecnologias" data-nav="tecnologias"
+                            data-i18n="nav.tech">Tecnologías</a></li>
+                    <li><a class="nav-item" href="#contacto" data-nav="contacto"
+                            data-i18n="nav.contact">Contacto</a></li>
                 </ul>
             </nav>
+
+            <!-- Controles de idioma y tema (visibles en todos los tamaños) -->
+            <div class="header-tools">
+                <button class="tool-btn lang-toggle" id="lang-toggle" type="button" aria-label="Cambiar a inglés"
+                    title="Cambiar a inglés">
+                    <span class="lang-toggle__label" aria-hidden="true">EN</span>
+                </button>
+                <button class="tool-btn theme-toggle" id="theme-toggle" type="button" aria-label="Activar modo oscuro"
+                    title="Activar modo oscuro" aria-pressed="false">
+                    <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                    <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4" />
+                        <path
+                            d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+                    </svg>
+                </button>
+            </div>
 
             <!-- Redes Sociales (Derecha): iconos en Noir -->
             <div class="header-social">
                 <a class="social-tag" href="https://github.com/Coliiin1" target="_blank" rel="noopener noreferrer"
-                    aria-label="GitHub">
+                    aria-label="GitHub" data-i18n-aria="social.github">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
                         <path
                             d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z" />
                     </svg>
                 </a>
                 <a class="social-tag" href="https://www.linkedin.com/in/daniel-colin" target="_blank"
-                    rel="noopener noreferrer" aria-label="LinkedIn">
+                    rel="noopener noreferrer" aria-label="LinkedIn" data-i18n-aria="social.linkedin">
                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
                         <path
                             d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
                     </svg>
                 </a>
-                <a class="social-tag" href="#contacto" data-nav="contacto" aria-label="Contacto">
+                <a class="social-tag" href="#contacto" data-nav="contacto" aria-label="Contacto"
+                    data-i18n-aria="social.contact">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" aria-hidden="true" focusable="false">
                         <rect x="2" y="4" width="20" height="16" rx="2"></rect>
@@ -105,36 +146,42 @@
     </header>
 
     <!-- Menú móvil desplegable / off-canvas -->
-    <aside class="sidebar" id="sidebar" aria-label="Menú móvil">
+    <aside class="sidebar" id="sidebar" aria-label="Menú móvil" data-i18n-aria="nav.mobileMenu">
         <div class="sidebar__brand">
             <span class="sidebar__logo">Daniel Colin.</span>
-            <p class="sidebar__role">Daniel Colin · Software Engineer</p>
+            <p class="sidebar__role" data-i18n="sidebar.role">Daniel Colin · Software Engineer</p>
         </div>
-        <nav aria-label="Navegación móvil">
+        <nav aria-label="Navegación móvil" data-i18n-aria="nav.mobileLabel">
             <ul class="nav-list">
-                <li><a class="nav-item nav-item-active" href="#inicio" data-nav="inicio">Inicio</a></li>
-                <li><a class="nav-item" href="#mis-proyectos" data-nav="mis-proyectos">Mis proyectos</a></li>
-                <li><a class="nav-item" href="#mi-informacion" data-nav="mi-informacion">Mi información</a></li>
-                <li><a class="nav-item" href="#tecnologias" data-nav="tecnologias">Tecnologías</a></li>
-                <li><a class="nav-item" href="#contacto" data-nav="contacto">Contacto</a></li>
+                <li><a class="nav-item nav-item-active" href="#inicio" data-nav="inicio"
+                        data-i18n="nav.home">Inicio</a></li>
+                <li><a class="nav-item" href="#mis-proyectos" data-nav="mis-proyectos"
+                        data-i18n="nav.projects">Mis proyectos</a></li>
+                <li><a class="nav-item" href="#mi-informacion" data-nav="mi-informacion"
+                        data-i18n="nav.about">Mi información</a></li>
+                <li><a class="nav-item" href="#tecnologias" data-nav="tecnologias"
+                        data-i18n="nav.tech">Tecnologías</a></li>
+                <li><a class="nav-item" href="#contacto" data-nav="contacto"
+                        data-i18n="nav.contact">Contacto</a></li>
             </ul>
         </nav>
         <div class="sidebar__social">
             <a class="social-tag" href="https://github.com/Coliiin1" target="_blank" rel="noopener noreferrer"
-                aria-label="GitHub">
+                aria-label="GitHub" data-i18n-aria="social.github">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
                     <path
                         d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z" />
                 </svg>
             </a>
             <a class="social-tag" href="https://www.linkedin.com/in/daniel-colin" target="_blank"
-                rel="noopener noreferrer" aria-label="LinkedIn">
+                rel="noopener noreferrer" aria-label="LinkedIn" data-i18n-aria="social.linkedin">
                 <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
                     <path
                         d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
                 </svg>
             </a>
-            <a class="social-tag" href="#contacto" data-nav="contacto" aria-label="Contacto">
+            <a class="social-tag" href="#contacto" data-nav="contacto" aria-label="Contacto"
+                data-i18n-aria="social.contact">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" aria-hidden="true" focusable="false">
                     <rect x="2" y="4" width="20" height="16" rx="2"></rect>
@@ -178,22 +225,26 @@
 
                         <!-- Subtítulo + Línea horizontal -->
                         <div class="hero-kicker-row">
-                            <span class="hero-kicker-text">Hola!</span>
+                            <span class="hero-kicker-text" data-i18n="hero.greeting">Hola!</span>
                             <span class="hero-kicker-line" aria-hidden="true"></span>
                         </div>
 
                         <!-- Título Principal -->
                         <h1 class="hero-main-title" id="inicio-title" tabindex="-1">
-                            <span class="hero-title-line1">Transformemos Ideas en</span>
-                            <span class="hero-title-line2">Codigo!</span>
+                            <span class="hero-title-line1" data-i18n="hero.titleLine1">Transformemos Ideas en</span>
+                            <span class="hero-title-line2" data-i18n="hero.titleLine2">Codigo!</span>
                         </h1>
 
                         <!-- Barras de Estadísticas Apiladas -->
-                        <div class="hero-stats-stack" role="region" aria-label="Estadísticas de trayectoria">
-                            <div class="stat-bar stat-bar-1">ESTUDIANTE DE INGENIERÍA EN SOFTWARE</div>
-                            <div class="stat-bar stat-bar-2">ARQUITECTURAS ESCALABLES & DB</div>
-                            <div class="stat-bar stat-bar-3">INTERFACES INTUITIVAS Y ACCESIBLES</div>
-                            <div class="stat-bar stat-bar-4">ENFOQUE EN EXPERIENCIA DE USUARIO</div>
+                        <div class="hero-stats-stack" role="region" aria-label="Estadísticas de trayectoria"
+                            data-i18n-aria="hero.statsAria">
+                            <div class="stat-bar stat-bar-1" data-i18n="hero.stat1">ESTUDIANTE DE INGENIERÍA EN SOFTWARE
+                            </div>
+                            <div class="stat-bar stat-bar-2" data-i18n="hero.stat2">ARQUITECTURAS ESCALABLES & DB</div>
+                            <div class="stat-bar stat-bar-3" data-i18n="hero.stat3">INTERFACES INTUITIVAS Y ACCESIBLES
+                            </div>
+                            <div class="stat-bar stat-bar-4" data-i18n="hero.stat4">ENFOQUE EN EXPERIENCIA DE USUARIO
+                            </div>
                         </div>
                     </div>
 
@@ -205,11 +256,11 @@
                             <!-- Fotografía en escala de grises de perfil mirando a la derecha -->
                             <img class="hero-photo-img" src="assets/img/profile-hero.jpg"
                                 alt="Fotografía en escala de grises de Daniel Colin mirando hacia la derecha"
-                                width="480" height="480" loading="eager">
+                                data-i18n-alt="hero.photoAlt" width="480" height="480" loading="eager">
                         </div>
                         <!-- Texto de usuario con subrayado continuo en Noir (#000000) -->
                         <div class="hero-handle-wrap">
-                            <span class="hero-handle">Redes Sociales: @coliiin1</span>
+                            <span class="hero-handle" data-i18n="hero.social">Redes Sociales: @coliiin1</span>
                         </div>
                     </div>
 
@@ -218,18 +269,18 @@
                         <div class="hero-intro-box">
                             <!-- Título de Presentación con subrayado grueso que no toca el texto -->
                             <h2 class="hero-intro-title">
-                                <span class="intro-prefix">Soy </span>
+                                <span class="intro-prefix" data-i18n="hero.introPrefix">Soy</span>
                                 <span class="intro-name">Daniel Colin</span>
                             </h2>
                             <!-- Párrafo de Biografía -->
-                            <p class="hero-bio-desc">
+                            <p class="hero-bio-desc" data-i18n="hero.bio">
                                 Desarrollador de software y frontend que destaca en la creación de aplicaciones
                                 robustas, arquitecturas de bases de datos de alto rendimiento y experiencias web
                                 adaptables, con una atención meticulosa a los detalles.
                             </p>
                             <!-- Llamado a la Acción (Botón / Enlace con flecha ->) -->
                             <a class="hero-cta-btn" href="#mis-proyectos" data-nav="mis-proyectos">
-                                <span>Leer Mas</span>
+                                <span data-i18n="hero.cta">Leer Mas</span>
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                                     <line x1="4" y1="12" x2="19" y2="12"></line>
@@ -247,7 +298,8 @@
                 </div>
 
                 <div class="carousel surface" id="featured-carousel" role="region" aria-roledescription="carrusel"
-                    aria-label="Carrusel de proyectos destacados" data-i18n-aria="carousel.label">
+                    data-i18n-roledescription="carousel.role" aria-label="Carrusel de proyectos destacados"
+                    data-i18n-aria="carousel.label">
                     <div class="carousel__viewport">
                         <div class="carousel__track" id="carousel-track"></div>
                     </div>
@@ -292,12 +344,14 @@
                         </h3>
                         <div class="bio">
                             <div>
-                                <p>Soy <strong>Carlos Daniel Ávila Colin</strong>, estudiante de la Licenciatura en
+                                <p data-i18n-html="about.bio1">Soy <strong>Carlos Daniel Ávila Colin</strong>, estudiante
+                                    de la Licenciatura en
                                     Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco. Me apasiona
                                     el desarrollo backend, la creación de aplicaciones de escritorio y la arquitectura
                                     de
                                     bases de datos.</p>
-                                <p>Disfruto enfrentando retos técnicos, como el diseño de sistemas médicos o la
+                                <p data-i18n-html="about.bio2">Disfruto enfrentando retos técnicos, como el diseño de
+                                    sistemas médicos o la
                                     configuración de servidores utilizando herramientas de red. Mi entorno de trabajo
                                     principal es <strong>Fedora Linux</strong>, y dedico mi tiempo al aprendizaje y
                                     aplicacion de
@@ -335,21 +389,23 @@
                         </h3>
                         <ol class="timeline">
                             <li>
-                                <h4>Licenciatura en Ingeniería en Software</h4>
-                                <span class="timeline__meta">Centro Universitario UAEMex Tianguistenco · En curso</span>
-                                <p>Formación integral en el ciclo de vida del software: análisis y especificación de
+                                <h4 data-i18n="about.edu1Title">Licenciatura en Ingeniería en Software</h4>
+                                <span class="timeline__meta" data-i18n="about.edu1Meta">Centro Universitario UAEMex
+                                    Tianguistenco · En curso</span>
+                                <p data-i18n="about.edu1Text">Formación integral en el ciclo de vida del software:
+                                    análisis y especificación de
                                     requisitos, diseño orientado a objetos, bases de datos, métodos de desarrollo y
                                     programación de sistemas de bajo nivel.</p>
                             </li>
                             <li>
-                                <h4>Unidades de aprendizaje destacadas</h4>
-                                <span class="timeline__meta">Plan de estudios</span>
+                                <h4 data-i18n="about.edu2Title">Unidades de aprendizaje destacadas</h4>
+                                <span class="timeline__meta" data-i18n="about.edu2Meta">Plan de estudios</span>
                                 <ul class="tag-list">
-                                    <li>Programación Orientada a Objetos</li>
-                                    <li>Bases de Datos</li>
-                                    <li>Ingeniería de Requisitos</li>
-                                    <li>Métodos y Modelos de Desarrollo de Software</li>
-                                    <li>Microcontroladores</li>
+                                    <li data-i18n="about.course1">Programación Orientada a Objetos</li>
+                                    <li data-i18n="about.course2">Bases de Datos</li>
+                                    <li data-i18n="about.course3">Ingeniería de Requisitos</li>
+                                    <li data-i18n="about.course4">Métodos y Modelos de Desarrollo de Software</li>
+                                    <li data-i18n="about.course5">Microcontroladores</li>
                                 </ul>
                             </li>
                         </ol>
@@ -368,37 +424,37 @@
                             <div class="competency">
                                 <h4 data-i18n="skills.dev">Desarrollo de software</h4>
                                 <ul>
-                                    <li>Programación orientada a objetos</li>
-                                    <li>Arquitectura en capas y MVC</li>
-                                    <li>Interfaces gráficas de escritorio</li>
-                                    <li>Automatización de tareas</li>
+                                    <li data-i18n="skills.dev.1">Programación orientada a objetos</li>
+                                    <li data-i18n="skills.dev.2">Arquitectura en capas y MVC</li>
+                                    <li data-i18n="skills.dev.3">Interfaces gráficas de escritorio</li>
+                                    <li data-i18n="skills.dev.4">Automatización de tareas</li>
                                 </ul>
                             </div>
                             <div class="competency">
                                 <h4 data-i18n="skills.db">Bases de datos</h4>
                                 <ul>
-                                    <li>Modelado entidad-relación</li>
-                                    <li>Normalización (hasta 3FN)</li>
-                                    <li>Consultas SQL y restricciones</li>
-                                    <li>Integración con aplicaciones</li>
+                                    <li data-i18n="skills.db.1">Modelado entidad-relación</li>
+                                    <li data-i18n="skills.db.2">Normalización (hasta 3FN)</li>
+                                    <li data-i18n="skills.db.3">Consultas SQL y restricciones</li>
+                                    <li data-i18n="skills.db.4">Integración con aplicaciones</li>
                                 </ul>
                             </div>
                             <div class="competency">
                                 <h4 data-i18n="skills.req">Requisitos y modelado UML</h4>
                                 <ul>
-                                    <li>Elicitación y especificación RF/RNF</li>
-                                    <li>Casos de uso</li>
-                                    <li>Diagramas de clases y secuencia</li>
-                                    <li>Trazabilidad de requisitos</li>
+                                    <li data-i18n="skills.req.1">Elicitación y especificación RF/RNF</li>
+                                    <li data-i18n="skills.req.2">Casos de uso</li>
+                                    <li data-i18n="skills.req.3">Diagramas de clases y secuencia</li>
+                                    <li data-i18n="skills.req.4">Trazabilidad de requisitos</li>
                                 </ul>
                             </div>
                             <div class="competency">
                                 <h4 data-i18n="skills.emb">Sistemas embebidos</h4>
                                 <ul>
-                                    <li>Programación a bajo nivel</li>
-                                    <li>Puertos de E/S y temporizadores</li>
-                                    <li>Rutinas de retardo e interrupciones</li>
-                                    <li>Simulación de circuitos</li>
+                                    <li data-i18n="skills.emb.1">Programación a bajo nivel</li>
+                                    <li data-i18n="skills.emb.2">Puertos de E/S y temporizadores</li>
+                                    <li data-i18n="skills.emb.3">Rutinas de retardo e interrupciones</li>
+                                    <li data-i18n="skills.emb.4">Simulación de circuitos</li>
                                 </ul>
                             </div>
                         </div>
@@ -614,6 +670,7 @@
     <script defer src="js/bus.js"></script>
     <script defer src="js/config.js"></script>
     <script defer src="js/i18n.js"></script>
+    <script defer src="js/theme.js"></script>
     <script defer src="js/data.js"></script>
     <script defer src="js/media.js"></script>
     <script defer src="js/toast.js"></script>

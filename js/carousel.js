@@ -2,7 +2,7 @@
     'use strict';
     const { $, $$, escapeHTML, reducedMotion } = P.utils;
     const { t } = P.i18n;
-    const { PROJECTS } = P.data;
+    const { getProjects } = P.data;
     const { projectImage, imgTag, catBadges, stackBadges } = P.media;
     const bus = P.bus;
     const { Projects } = P.projects;
@@ -18,7 +18,6 @@
         const root = $('#featured-carousel');
         const track = $('#carousel-track');
         const dotsWrap = $('#carousel-dots');
-        const featured = PROJECTS.filter((p) => p.featured).slice(0, 5); // 3 a 5 tarjetas
         const pauseReasons = new Set();
         let index = 0;
         let timer = null;
@@ -26,8 +25,10 @@
         let dots = [];
 
         function render() {
+            const featured = getProjects().filter((p) => p.featured).slice(0, 5); // 3 a 5 tarjetas
             track.innerHTML = featured.map((p, i) =>
-                '<div class="carousel__slide" role="group" aria-roledescription="diapositiva" aria-label="' +
+                '<div class="carousel__slide" role="group" aria-roledescription="' +
+                escapeHTML(t('carousel.role')) + '" aria-label="' +
                 escapeHTML(t('carousel.slide', { n: i + 1, total: featured.length })) + '">' +
                 '<button type="button" class="carousel__media" data-quick="' + p.id + '" aria-label="' +
                 escapeHTML(t('carousel.quick') + ': ' + p.title) + '">' +

@@ -20,8 +20,9 @@ Sin dependencias externas ni paso de compilación.
 │   ├── main.js             # Arranque, teclado global y API i18n
 │   ├── utils.js            # Utilidades DOM, escapeHTML, iconos
 │   ├── bus.js              # Bus de eventos interno (desacople de módulos)
-│   ├── i18n.js             # Diccionarios ES/EN (DEV-FE-12)
-│   ├── data.js             # Datos de proyectos y tecnologías
+│   ├── i18n.js             # Diccionarios ES/EN y conmutador de idioma (DEV-FE-12)
+│   ├── theme.js            # Modo claro/oscuro y preferencia persistente
+│   ├── data.js             # Datos de proyectos y tecnologías (ES/EN)
 │   ├── media.js            # Marcadores 16:9 + badges (DEV-AST-01)
 │   ├── toast.js            # Notificaciones (RF-12)
 │   ├── modal.js            # Ventanas modales (RF-02 / RF-05)
@@ -32,7 +33,8 @@ Sin dependencias externas ni paso de compilación.
 │   └── nav.js              # Navegación SPA (DEV-FE-09)
 ├── assets/
 │   ├── docs/               # CV_Carlos_Daniel_Avila.pdf (DEV-DOC-01)
-│   └── img/                # Capturas WebP de proyectos (DEV-AST-01)
+│   ├── icons/tech/         # Iconos SVG locales de tecnologías
+│   └── img/                # Capturas de proyectos y foto de perfil (DEV-AST-01)
 ├── legacy/
 │   ├── v1-google-sites.html    # Línea base V1.0
 │   └── v2.0-standalone.html    # Entregable V2.0 en un solo archivo
@@ -79,6 +81,9 @@ automáticamente desde la rama `main` (carpeta raíz): no requiere activación m
 
 ## Datos y contenido
 
-- Proyectos y tecnologías: `js/data.js`
+- Proyectos y tecnologías: `js/data.js` (incluye traducciones en el campo `en`)
 - Textos y traducciones: `js/i18n.js` (se puede forzar inglés con `?lang=en` para pruebas)
-- Capturas reales: agrega `images: ['assets/img/<id>-1.webp', ...]` a cada proyecto en `js/data.js`
+- Idioma y tema se recuerdan en `localStorage`; los controles están en la barra superior
+- Capturas reales: agrega `images: ['assets/img/<proyecto>/<captura>.png', ...]` a cada proyecto y define los textos en `shots` (ES) y `en.shots` (EN) dentro de `js/data.js`
+- Iconos de tecnologías: SVG locales en `assets/icons/tech/`; las tecnologías se configuran con el arreglo `icons` en `js/data.js` (ver `ATTRIBUTION.md` para licencias)
+- La vista incluye el grupo “Inteligencia Artificial” con opencode, Antigravity y Codex

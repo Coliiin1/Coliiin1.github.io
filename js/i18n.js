@@ -5,29 +5,50 @@
     /* =====================================================
        DEV-FE-12 · ARQUITECTURA i18n BASE (RNF-14)
        Textos desacoplados del marcado mediante data-i18n,
-       data-i18n-placeholder y data-i18n-aria.
-       V2.0: diccionarios embebidos (es/en). En V2.1 se moverán
-       a i18n/es.json e i18n/en.json y se añadirá el conmutador.
+       data-i18n-html, data-i18n-placeholder y data-i18n-aria.
+       Diccionarios embebidos (es/en) y conmutador en la barra
+       superior con persistencia en localStorage.
        Prueba rápida: abrir el archivo con ?lang=en
        ===================================================== */
     const DICTIONARIES = {
         es: {
             'skip': 'Saltar al contenido principal',
+            'meta.title': 'Daniel Colin',
+            'meta.description': 'Portafolio Web Profesional de Carlos Daniel Ávila Colin, estudiante de Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco.',
             'profile.role': 'Ingeniería en Software',
             'nav.menu': 'Abrir menú de navegación',
             'nav.menuClose': 'Cerrar menú de navegación',
             'nav.label': 'Navegación principal',
+            'nav.homeAria': 'Inicio',
+            'nav.mobileMenu': 'Menú móvil',
+            'nav.mobileLabel': 'Navegación móvil',
+            'sidebar.role': 'Daniel Colin · Ingeniería en Software',
             'nav.home': 'Inicio', 'nav.about': 'Mi información', 'nav.projects': 'Mis proyectos',
             'nav.tech': 'Tecnologías', 'nav.contact': 'Contacto',
             'social.github': 'Perfil de GitHub (se abre en una pestaña nueva)',
             'social.linkedin': 'Perfil de LinkedIn (se abre en una pestaña nueva)',
+            'social.contact': 'Contacto',
             'hero.kicker': 'Estudiante de Ingeniería en Software · UAEMex Tianguistenco',
             'hero.title': 'Hola, soy Daniel Colin',
             'hero.text': 'Desarrollo soluciones tecnológicas que van desde aplicaciones de escritorio robustas y bases de datos relacionales hasta sistemas embebidos de bajo nivel.',
+            'hero.greeting': 'Hola!',
+            'hero.titleLine1': 'Transformemos Ideas en',
+            'hero.titleLine2': 'Codigo!',
+            'hero.statsAria': 'Estadísticas de trayectoria',
+            'hero.stat1': 'ESTUDIANTE DE INGENIERÍA EN SOFTWARE',
+            'hero.stat2': 'ARQUITECTURAS ESCALABLES & DB',
+            'hero.stat3': 'INTERFACES INTUITIVAS Y ACCESIBLES',
+            'hero.stat4': 'ENFOQUE EN EXPERIENCIA DE USUARIO',
+            'hero.photoAlt': 'Fotografía en escala de grises de Daniel Colin mirando hacia la derecha',
+            'hero.social': 'Redes Sociales: @coliiin1',
+            'hero.introPrefix': 'Soy',
+            'hero.bio': 'Desarrollador de software y frontend que destaca en la creación de aplicaciones robustas, arquitecturas de bases de datos de alto rendimiento y experiencias web adaptables, con una atención meticulosa a los detalles.',
+            'hero.cta': 'Leer Mas',
             'hero.ctaProjects': 'Explorar proyectos', 'hero.ctaCv': 'Descargar CV',
             'featured.title': 'Proyectos destacados',
             'featured.lead': 'Una selección de mis desarrollos más representativos. Haz clic o toca una tarjeta para abrir una vista rápida.',
             'carousel.label': 'Carrusel de proyectos destacados',
+            'carousel.role': 'carrusel',
             'carousel.prev': 'Proyecto anterior', 'carousel.next': 'Proyecto siguiente',
             'carousel.goto': 'Ir al proyecto {n}: {title}', 'carousel.slide': '{n} de {total}',
             'carousel.quick': 'Vista rápida',
@@ -35,9 +56,37 @@
             'about.lead': 'Conoce mi trayectoria, mi formación académica y las competencias que he desarrollado como futuro Ingeniero en Software.',
             'about.bioTitle': 'Biografía', 'about.eduTitle': 'Formación académica',
             'about.skillsTitle': 'Competencias profesionales',
+            'about.bio1': 'Soy <strong>Carlos Daniel Ávila Colin</strong>, estudiante de la Licenciatura en Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco. Me apasiona el desarrollo backend, la creación de aplicaciones de escritorio y la arquitectura de bases de datos.',
+            'about.bio2': 'Disfruto enfrentando retos técnicos, como el diseño de sistemas médicos o la configuración de servidores utilizando herramientas de red. Mi entorno de trabajo principal es <strong>Fedora Linux</strong>, y dedico mi tiempo al aprendizaje y aplicación de <strong>Nuevas Tecnologías</strong>, bajo la cual diseño soluciones de software.',
+            'about.edu1Title': 'Licenciatura en Ingeniería en Software',
+            'about.edu1Meta': 'Centro Universitario UAEMex Tianguistenco · En curso',
+            'about.edu1Text': 'Formación integral en el ciclo de vida del software: análisis y especificación de requisitos, diseño orientado a objetos, bases de datos, métodos de desarrollo y programación de sistemas de bajo nivel.',
+            'about.edu2Title': 'Unidades de aprendizaje destacadas',
+            'about.edu2Meta': 'Plan de estudios',
+            'about.course1': 'Programación Orientada a Objetos',
+            'about.course2': 'Bases de Datos',
+            'about.course3': 'Ingeniería de Requisitos',
+            'about.course4': 'Métodos y Modelos de Desarrollo de Software',
+            'about.course5': 'Microcontroladores',
             'about.cv': 'Descargar CV (PDF)', 'about.cvHint': 'Archivo PDF · descarga directa',
             'skills.dev': 'Desarrollo de software', 'skills.db': 'Bases de datos',
             'skills.req': 'Requisitos y modelado UML', 'skills.emb': 'Sistemas embebidos',
+            'skills.dev.1': 'Programación orientada a objetos',
+            'skills.dev.2': 'Arquitectura en capas y MVC',
+            'skills.dev.3': 'Interfaces gráficas de escritorio',
+            'skills.dev.4': 'Automatización de tareas',
+            'skills.db.1': 'Modelado entidad-relación',
+            'skills.db.2': 'Normalización (hasta 3FN)',
+            'skills.db.3': 'Consultas SQL y restricciones',
+            'skills.db.4': 'Integración con aplicaciones',
+            'skills.req.1': 'Elicitación y especificación RF/RNF',
+            'skills.req.2': 'Casos de uso',
+            'skills.req.3': 'Diagramas de clases y secuencia',
+            'skills.req.4': 'Trazabilidad de requisitos',
+            'skills.emb.1': 'Programación a bajo nivel',
+            'skills.emb.2': 'Puertos de E/S y temporizadores',
+            'skills.emb.3': 'Rutinas de retardo e interrupciones',
+            'skills.emb.4': 'Simulación de circuitos',
             'projects.title': 'Mis proyectos',
             'projects.lead': 'Catálogo de desarrollos realizados durante mi formación. Filtra por tecnología y abre cada ficha para ver capturas, arquitectura, dependencias y el repositorio.',
             'projects.count': 'Mostrando {n} de {total} proyectos',
@@ -56,9 +105,10 @@
             'detail.deps': 'Dependencias y versiones', 'detail.dep': 'Dependencia', 'detail.version': 'Versión',
             'detail.repo': 'Ver repositorio en GitHub',
             'tech.title': 'Tecnologías',
-            'tech.lead': 'Herramientas, bases de datos y entornos con los que trabajo. Pasa el cursor, enfoca con el teclado o toca una tarjeta para ver mi nivel de dominio.',
+            'tech.lead': 'Herramientas, bases de datos, entornos e inteligencia artificial con los que trabajo. Pasa el cursor, enfoca con el teclado o toca una tarjeta para ver mi nivel de dominio.',
             'tech.group.db': 'Bases de datos', 'tech.group.env': 'Sistemas operativos y entornos',
-            'tech.group.lang': 'Lenguajes y herramientas', 'tech.level': 'Nivel de dominio',
+            'tech.group.lang': 'Lenguajes y herramientas', 'tech.group.ai': 'Inteligencia Artificial',
+            'tech.level': 'Nivel de dominio',
             'level.basico': 'Básico', 'level.medio': 'Medio', 'level.avanzado': 'Avanzado',
             'contact.title': 'Contacto',
             'contact.lead': '¿Tienes una propuesta, una vacante o quieres colaborar en un proyecto? Escríbeme directamente desde este formulario.',
@@ -87,25 +137,50 @@
             'toast.invalidText': 'Hay campos marcados en rojo que necesitan tu atención.',
             'toast.close': 'Cerrar notificación',
             'footer.rights': '© 2026 Daniel Colin. Todos los derechos reservados.',
-            'footer.version': 'Portafolio Web Profesional · Versión 2.0'
+            'footer.version': 'Portafolio Web Profesional · Versión 2.0',
+            'lang.switchToEn': 'Cambiar a inglés',
+            'lang.switchToEs': 'Cambiar a español',
+            'theme.toDark': 'Activar modo oscuro',
+            'theme.toLight': 'Activar modo claro'
         },
         en: {
             'skip': 'Skip to main content',
+            'meta.title': 'Daniel Colin',
+            'meta.description': 'Professional Web Portfolio of Carlos Daniel Ávila Colin, Software Engineering student at Centro Universitario UAEMex Tianguistenco.',
             'profile.role': 'Software Engineering',
             'nav.menu': 'Open navigation menu',
             'nav.menuClose': 'Close navigation menu',
             'nav.label': 'Main navigation',
+            'nav.homeAria': 'Home',
+            'nav.mobileMenu': 'Mobile menu',
+            'nav.mobileLabel': 'Mobile navigation',
+            'sidebar.role': 'Daniel Colin · Software Engineering',
             'nav.home': 'Home', 'nav.about': 'About me', 'nav.projects': 'My projects',
             'nav.tech': 'Technologies', 'nav.contact': 'Contact',
             'social.github': 'GitHub profile (opens in a new tab)',
             'social.linkedin': 'LinkedIn profile (opens in a new tab)',
+            'social.contact': 'Contact',
             'hero.kicker': 'Software Engineering Student · UAEMex Tianguistenco',
             'hero.title': "Hi, I'm Daniel Colin",
             'hero.text': 'I build technology solutions ranging from robust desktop applications and relational databases to low-level embedded systems.',
+            'hero.greeting': 'Hi!',
+            'hero.titleLine1': "Let's turn ideas into",
+            'hero.titleLine2': 'Code!',
+            'hero.statsAria': 'Career highlights',
+            'hero.stat1': 'SOFTWARE ENGINEERING STUDENT',
+            'hero.stat2': 'SCALABLE ARCHITECTURES & DB',
+            'hero.stat3': 'INTUITIVE, ACCESSIBLE INTERFACES',
+            'hero.stat4': 'USER EXPERIENCE FOCUS',
+            'hero.photoAlt': 'Black and white photograph of Daniel Colin facing right',
+            'hero.social': 'Social media: @coliiin1',
+            'hero.introPrefix': "I'm",
+            'hero.bio': 'Software and frontend developer skilled at building robust applications, high-performance database architectures and adaptive web experiences, with meticulous attention to detail.',
+            'hero.cta': 'Read more',
             'hero.ctaProjects': 'Explore projects', 'hero.ctaCv': 'Download CV',
             'featured.title': 'Featured projects',
             'featured.lead': 'A selection of my most representative work. Click or tap a card to open a quick view.',
             'carousel.label': 'Featured projects carousel',
+            'carousel.role': 'carousel',
             'carousel.prev': 'Previous project', 'carousel.next': 'Next project',
             'carousel.goto': 'Go to project {n}: {title}', 'carousel.slide': '{n} of {total}',
             'carousel.quick': 'Quick view',
@@ -113,9 +188,37 @@
             'about.lead': 'Learn about my background, academic education and the skills I have developed as a future Software Engineer.',
             'about.bioTitle': 'Biography', 'about.eduTitle': 'Education',
             'about.skillsTitle': 'Professional skills',
+            'about.bio1': 'I am <strong>Carlos Daniel Ávila Colin</strong>, a Software Engineering student at Centro Universitario UAEMex Tianguistenco. I am passionate about backend development, building desktop applications and database architecture.',
+            'about.bio2': 'I enjoy tackling technical challenges, such as designing medical systems or configuring servers using network tools. My main working environment is <strong>Fedora Linux</strong>, and I spend my time learning and applying <strong>new technologies</strong> to design software solutions.',
+            'about.edu1Title': 'B.Sc. in Software Engineering',
+            'about.edu1Meta': 'Centro Universitario UAEMex Tianguistenco · In progress',
+            'about.edu1Text': 'Comprehensive training across the software lifecycle: requirements analysis and specification, object-oriented design, databases, development methods and low-level systems programming.',
+            'about.edu2Title': 'Highlighted courses',
+            'about.edu2Meta': 'Curriculum',
+            'about.course1': 'Object-Oriented Programming',
+            'about.course2': 'Databases',
+            'about.course3': 'Requirements Engineering',
+            'about.course4': 'Software Development Methods and Models',
+            'about.course5': 'Microcontrollers',
             'about.cv': 'Download CV (PDF)', 'about.cvHint': 'PDF file · direct download',
             'skills.dev': 'Software development', 'skills.db': 'Databases',
             'skills.req': 'Requirements & UML modeling', 'skills.emb': 'Embedded systems',
+            'skills.dev.1': 'Object-oriented programming',
+            'skills.dev.2': 'Layered architecture and MVC',
+            'skills.dev.3': 'Desktop graphical interfaces',
+            'skills.dev.4': 'Task automation',
+            'skills.db.1': 'Entity-relationship modeling',
+            'skills.db.2': 'Normalization (up to 3NF)',
+            'skills.db.3': 'SQL queries and constraints',
+            'skills.db.4': 'Application integration',
+            'skills.req.1': 'Requirements elicitation and specification (FR/NFR)',
+            'skills.req.2': 'Use cases',
+            'skills.req.3': 'Class and sequence diagrams',
+            'skills.req.4': 'Requirements traceability',
+            'skills.emb.1': 'Low-level programming',
+            'skills.emb.2': 'I/O ports and timers',
+            'skills.emb.3': 'Delay routines and interrupts',
+            'skills.emb.4': 'Circuit simulation',
             'projects.title': 'My projects',
             'projects.lead': 'Catalog of projects built during my studies. Filter by technology and open each card to see screenshots, architecture, dependencies and the repository.',
             'projects.count': 'Showing {n} of {total} projects',
@@ -134,9 +237,10 @@
             'detail.deps': 'Dependencies & versions', 'detail.dep': 'Dependency', 'detail.version': 'Version',
             'detail.repo': 'View repository on GitHub',
             'tech.title': 'Technologies',
-            'tech.lead': 'Tools, databases and environments I work with. Hover, focus with the keyboard or tap a card to see my proficiency level.',
+            'tech.lead': 'Tools, databases, environments and AI technologies I work with. Hover, focus with the keyboard or tap a card to see my proficiency level.',
             'tech.group.db': 'Databases', 'tech.group.env': 'Operating systems & environments',
-            'tech.group.lang': 'Languages & tools', 'tech.level': 'Proficiency level',
+            'tech.group.lang': 'Languages & tools', 'tech.group.ai': 'Artificial Intelligence',
+            'tech.level': 'Proficiency level',
             'level.basico': 'Basic', 'level.medio': 'Intermediate', 'level.avanzado': 'Advanced',
             'contact.title': 'Contact',
             'contact.lead': 'Do you have a proposal, a job opening or want to collaborate on a project? Write to me directly using this form.',
@@ -165,7 +269,11 @@
             'toast.invalidText': 'Some fields highlighted in red need your attention.',
             'toast.close': 'Close notification',
             'footer.rights': '© 2026 Daniel Colin. All rights reserved.',
-            'footer.version': 'Professional Web Portfolio · Version 2.0'
+            'footer.version': 'Professional Web Portfolio · Version 2.0',
+            'lang.switchToEn': 'Switch to English',
+            'lang.switchToEs': 'Switch to Spanish',
+            'theme.toDark': 'Enable dark mode',
+            'theme.toLight': 'Enable light mode'
         }
     };
 
@@ -177,13 +285,22 @@
             Object.keys(vars).forEach((k) => { str = str.split('{' + k + '}').join(vars[k]); });
             return str;
         },
-        apply(lang) {
+        apply(lang, { persist = true } = {}) {
             if (!DICTIONARIES[lang]) return;
             this.lang = lang;
             document.documentElement.lang = lang;
             $$('[data-i18n]').forEach((el) => { el.textContent = this.t(el.dataset.i18n); });
+            // Solo se usa con cadenas estáticas y controladas del diccionario.
+            $$('[data-i18n-html]').forEach((el) => { el.innerHTML = this.t(el.dataset.i18nHtml); });
             $$('[data-i18n-placeholder]').forEach((el) => { el.placeholder = this.t(el.dataset.i18nPlaceholder); });
             $$('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', this.t(el.dataset.i18nAria)); });
+            $$('[data-i18n-alt]').forEach((el) => { el.setAttribute('alt', this.t(el.dataset.i18nAlt)); });
+            $$('[data-i18n-title]').forEach((el) => { el.setAttribute('title', this.t(el.dataset.i18nTitle)); });
+            $$('[data-i18n-content]').forEach((el) => { el.setAttribute('content', this.t(el.dataset.i18nContent)); });
+            $$('[data-i18n-roledescription]').forEach((el) => { el.setAttribute('aria-roledescription', this.t(el.dataset.i18nRoledescription)); });
+            if (persist) {
+                try { localStorage.setItem('portfolio.lang', lang); } catch (e) { /* almacenamiento no disponible */ }
+            }
             document.dispatchEvent(new CustomEvent('i18n:change', { detail: { lang } }));
         }
     };

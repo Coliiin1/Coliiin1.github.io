@@ -2,7 +2,7 @@
     'use strict';
     const { $, $$, escapeHTML, ICONS } = P.utils;
     const { t } = P.i18n;
-    const { PROJECTS, projectById } = P.data;
+    const { getProjects, projectById } = P.data;
     const { projectImage, imgTag, catBadges, stackBadges } = P.media;
     const { Modal } = P.modal;
     const { Nav } = P.nav;
@@ -20,7 +20,7 @@
         let currentFilter = 'todos';
 
         function render() {
-            grid.innerHTML = PROJECTS.map((p) =>
+            grid.innerHTML = getProjects().map((p) =>
                 '<article class="project-card" data-category="' + p.category.join(' ') + '" data-id="' + p.id + '">' +
                 imgTag(projectImage(p, 0), t('img.preview', { title: p.title })) +
                 '<div class="project-card__body">' +
@@ -52,7 +52,7 @@
                     card.hidden = true;
                 }
             });
-            countEl.textContent = t('projects.count', { n: visible, total: PROJECTS.length });
+            countEl.textContent = t('projects.count', { n: visible, total: grid.children.length });
             emptyEl.hidden = visible > 0;
         }
 
@@ -154,7 +154,19 @@
             openDetail(id, opener);
         });
 
-        return { render, openQuick, openDetail };
+        function refreshOpen() {
+            if (!quickModal.hidden) {
+                const id = $('#quick-full').dataset.project;
+                if (id) openQuick(id);
+                return;
+            }
+            if (!detailModal.hidden) {
+                const id = detailDialog.dataset.project;
+                if (id) openDetail(id);
+            }
+        }
+
+        return { render, openQuick, openDetail, refreshOpen };
     })();
     P.projects = { Projects };
 })(window.Portfolio = window.Portfolio || {});

@@ -298,6 +298,63 @@ h1, h2, h3, h4, h5, h6 {
     transform: translateY(-1px);
 }
 
+/* Controles de idioma y tema */
+.header-tools {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: none;
+}
+
+.tool-btn {
+    height: 42px;
+    min-width: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid var(--c-border);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--c-noir);
+    cursor: pointer;
+    transition: color var(--dur) var(--ease), background-color var(--dur) var(--ease),
+        border-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.tool-btn:hover {
+    color: var(--c-ocean);
+    border-color: var(--c-ocean);
+    background-color: var(--c-ocean-soft);
+    transform: translateY(-1px);
+}
+
+.lang-toggle {
+    padding: 0 12px;
+    border-radius: 999px;
+    font-family: var(--font-heading);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+}
+
+.theme-toggle__icon {
+    width: 20px;
+    height: 20px;
+}
+
+.theme-toggle__icon--sun {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle__icon--moon {
+    display: none;
+}
+
+html[data-theme="dark"] .theme-toggle__icon--sun {
+    display: block;
+}
+
 /* Botón Hamburguesa Móvil */
 .mobile-toggle {
     display: flex;
@@ -798,7 +855,7 @@ main {
 .media-16x9 {
     width: 100%;
     aspect-ratio: 16 / 9;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .carousel__body {
@@ -1249,9 +1306,47 @@ main {
     box-shadow: var(--shadow-md);
 }
 
-.tech-card__icon svg {
-    width: 50px;
-    height: 50px;
+.tech-card__icon {
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    padding: 5px;
+    border-radius: 18px;
+    background: var(--tech-bg, var(--c-ocean));
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+
+.tech-card__icon-plate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 100%;
+    height: 100%;
+    border-radius: 13px;
+    background: #ffffff;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.06);
+}
+
+.tech-card__icon img {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.tech-card__icon.is-duo img {
+    width: 20px;
+    height: 20px;
+}
+
+.tech-card__icon.is-trio .tech-card__icon-plate {
+    gap: 1px;
+}
+
+.tech-card__icon.is-trio img {
+    width: 15px;
+    height: 15px;
 }
 
 .tech-card__name {
@@ -1766,8 +1861,8 @@ main {
     }
 }
 
-/* Desktop (880px+): activa menú superior completo y oculta toggle */
-@media (min-width: 880px) {
+/* Desktop (1024px+): activa menú superior completo y oculta toggle */
+@media (min-width: 1024px) {
     .header-nav {
         display: block;
     }
@@ -1840,6 +1935,256 @@ main {
     .projects-grid {
         grid-template-columns: repeat(4, 1fr);
     }
+}
+
+/* Ajuste de la barra superior en anchos intermedios */
+@media (min-width: 880px) and (max-width: 1100px) {
+    .header-inner {
+        gap: 14px;
+        padding: 0 18px;
+    }
+
+    .nav-links {
+        gap: 18px;
+    }
+
+    .header-social {
+        gap: 8px;
+    }
+}
+
+/* Pantallas pequeñas: los controles caben junto al logotipo */
+@media (max-width: 480px) {
+    .header-inner {
+        gap: 10px;
+        padding: 0 14px;
+    }
+
+    .header-logo {
+        font-size: 1.35rem;
+    }
+
+    .header-tools {
+        gap: 6px;
+    }
+
+    .tool-btn {
+        height: 38px;
+        min-width: 38px;
+    }
+
+    .lang-toggle {
+        padding: 0 10px;
+        font-size: 0.78rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .header-inner {
+        gap: 6px;
+        padding: 0 10px;
+    }
+
+    .header-logo {
+        font-size: 1.15rem;
+    }
+
+    .header-tools {
+        gap: 4px;
+    }
+
+    .tool-btn {
+        height: 34px;
+        min-width: 34px;
+    }
+
+    .lang-toggle {
+        padding: 0 7px;
+        font-size: 0.72rem;
+    }
+
+    .theme-toggle__icon {
+        width: 17px;
+        height: 17px;
+    }
+
+    .mobile-toggle {
+        width: 36px;
+        height: 36px;
+        padding: 4px;
+    }
+
+    .hamburger-line {
+        width: 20px;
+    }
+}
+
+/* =========================================================
+   16. MODO OSCURO
+   ========================================================= */
+html[data-theme="dark"] {
+    color-scheme: dark;
+
+    --c-bg: #0B1220;
+    --c-noir: #E6EDF3;
+    --c-midnight: #DCE9F6;
+    --c-ocean: #7FB0DA;
+    --c-ocean-hover: #A6CBE8;
+    --c-ocean-soft: rgba(127, 176, 218, 0.16);
+    --c-midnight-soft: rgba(230, 237, 243, 0.06);
+
+    --c-surface: #131C26;
+    --c-surface-pearl: #0B1220;
+    --c-text: #E6EDF3;
+    --c-text-muted: #9FB0C3;
+    --c-primary: #7FB0DA;
+    --c-accent: #7FB0DA;
+    --c-accent-hover: #A6CBE8;
+    --c-accent-soft: rgba(127, 176, 218, 0.18);
+    --c-accent-ink: #DCE9F6;
+
+    --c-border: rgba(230, 237, 243, 0.16);
+    --c-border-strong: #7FB0DA;
+    --c-focus: #A6CBE8;
+    --c-success: #4ADE80;
+    --c-error: #F87171;
+
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 38px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="dark"] .skip-link {
+    background: var(--c-surface);
+}
+
+html[data-theme="dark"] .hero-badge-svg text {
+    fill: var(--c-noir);
+}
+
+html[data-theme="dark"] .badge-center-circle {
+    fill: var(--c-ocean);
+}
+
+html[data-theme="dark"] .hero-photo-backdrop {
+    background-color: #2F5E8A;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .stat-bar-1 {
+    background-color: #14243B;
+}
+
+html[data-theme="dark"] .stat-bar-2 {
+    background-color: #456F96;
+}
+
+html[data-theme="dark"] .stat-bar-3 {
+    background-color: #1E3A60;
+}
+
+html[data-theme="dark"] .stat-bar-4 {
+    background-color: #5B88B2;
+}
+
+html[data-theme="dark"] .stat-bar {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .carousel__media {
+    background: #101A26;
+}
+
+html[data-theme="dark"] .carousel__arrow {
+    background: var(--c-surface);
+}
+
+html[data-theme="dark"] .carousel__arrow:hover {
+    background-color: var(--c-bg);
+}
+
+html[data-theme="dark"] .carousel__dot::before {
+    background: rgba(230, 237, 243, 0.28);
+}
+
+html[data-theme="dark"] .btn-primary,
+html[data-theme="dark"] .btn-primary-cta {
+    background-color: #2F5E8A;
+    color: #FFFFFF;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .btn-primary:hover,
+html[data-theme="dark"] .btn-primary-cta:hover {
+    background-color: #3D6E9E;
+    color: #FFFFFF;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .filter-btn {
+    background: var(--c-surface);
+}
+
+html[data-theme="dark"] .filter-btn[aria-pressed="true"] {
+    background: #2F5E8A;
+    border-color: #2F5E8A;
+    color: #FFFFFF;
+}
+
+html[data-theme="dark"] .cv-box,
+html[data-theme="dark"] .project-card {
+    background: var(--c-surface);
+}
+
+html[data-theme="dark"] .tooltip {
+    background: #0F1B2A;
+    color: #E6EDF3;
+    box-shadow: var(--shadow-lg);
+}
+
+html[data-theme="dark"] .tooltip::after {
+    border-top-color: #0F1B2A;
+}
+
+html[data-theme="dark"] .field input,
+html[data-theme="dark"] .field textarea {
+    background: #0F1722;
+    color: var(--c-text);
+    border-color: var(--c-border);
+}
+
+html[data-theme="dark"] .field input::placeholder,
+html[data-theme="dark"] .field textarea::placeholder {
+    color: rgba(230, 237, 243, 0.55);
+}
+
+html[data-theme="dark"] .field.is-invalid input,
+html[data-theme="dark"] .field.is-invalid textarea {
+    box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.18);
+}
+
+html[data-theme="dark"] .modal__backdrop {
+    background: rgba(3, 8, 15, 0.72);
+}
+
+html[data-theme="dark"] .modal__dialog {
+    background: var(--c-surface);
+}
+
+html[data-theme="dark"] .modal__close {
+    background: rgba(19, 28, 38, 0.95);
+}
+
+html[data-theme="dark"] .toast {
+    background: var(--c-surface);
+}
+
+html[data-theme="dark"] .nav-overlay {
+    background: rgba(3, 8, 15, 0.62);
+}
+
+html[data-theme="dark"] .deps-table th {
+    background: var(--c-bg);
 }
 
 /* Accesibilidad: movimiento reducido */

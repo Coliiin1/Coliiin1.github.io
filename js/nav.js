@@ -24,7 +24,7 @@
         function isMobile() { return !desktopMQ.matches; }
 
         function syncSidebarA11y() {
-            const hidden = isMobile() && !sidebar.classList.contains('is-open');
+            const hidden = !sidebar.classList.contains('is-open');
             sidebar.inert = hidden;
             if (hidden) sidebar.setAttribute('aria-hidden', 'true');
             else sidebar.removeAttribute('aria-hidden');
@@ -102,6 +102,9 @@
         toggle.addEventListener('click', () => setMobileMenu(!isMenuOpen()));
         overlay.addEventListener('click', () => setMobileMenu(false, { focusToggle: true }));
         desktopMQ.addEventListener('change', () => setMobileMenu(false));
+        document.addEventListener('i18n:change', () => {
+            if (isMenuOpen()) toggle.setAttribute('aria-label', t('nav.menuClose'));
+        });
 
         function init() {
             syncSidebarA11y();

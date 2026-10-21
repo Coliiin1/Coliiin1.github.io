@@ -7,7 +7,7 @@
     const $ = (sel, ctx = document) => ctx.querySelector(sel);
     const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const desktopMQ = window.matchMedia('(min-width: 768px)');
+    const desktopMQ = window.matchMedia('(min-width: 1024px)');
 
     /** RNF-06 · Escape estricto de caracteres peligrosos antes de insertar en el DOM. */
     const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (ch) => ({
