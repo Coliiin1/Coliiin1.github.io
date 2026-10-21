@@ -60,6 +60,7 @@
             features: ['Configuración de puertos de E/S', 'Uso de temporizadores e interrupciones', 'Lectura de entradas digitales y control de salidas', 'Validación en simulación previa al montaje'],
             deps: [['MPLAB X IDE', '6.x'], ['Compilador MPLAB XC8', '2.x'], ['Proteus Design Suite', '8.x']],
             repo: GITHUB, palette: ['#264653', '#c8553d'], glyph: 'C',
+            images: ['assets/img/PIC18F4550/placa-desarrollo.jpg'],
             en: {
                 title: 'Embedded Control with PIC18F4550 in C',
                 short: 'C firmware for the PIC18F4550 focused on port handling, timers and interrupts.',
@@ -67,9 +68,9 @@
                 arch: 'Interrupt-driven firmware and state machine',
                 features: ['I/O port configuration', 'Use of timers and interrupts', 'Digital input reading and output control', 'Simulation validation before assembly'],
                 deps: [['MPLAB X IDE', '6.x'], ['MPLAB XC8 Compiler', '2.x'], ['Proteus Design Suite', '8.x']],
-                shots: [""]
+                shots: ['Circuit board with microcontroller and peripherals']
             },
-            shots: [""]
+            shots: ['Placa de circuito con microcontrolador y periféricos']
         },
         {
             id: 'scripts-python', title: 'Cerberus IDE', category: ['escritorio'], featured: true,
@@ -101,15 +102,16 @@
             features: ['Diagramas entidad-relación', 'Normalización hasta tercera forma normal', 'Restricciones, llaves foráneas y vistas', 'Consultas con JOIN y subconsultas'],
             deps: [['PostgreSQL', '16'], ['MariaDB', '11'], ['pgAdmin / DBeaver', '—']],
             repo: GITHUB, palette: ['#336791', '#003545'], glyph: 'SQL',
+            images: ['assets/img/Modelado-BD/servidores-bd.jpg'],
             en: {
                 title: 'Relational Database Design',
                 short: 'Modeling, normalization and implementation of relational schemas in PostgreSQL and MariaDB.',
                 description: 'Database design projects covering everything from entity-relationship modeling and normalization to physical implementation in PostgreSQL and MariaDB, including integrity constraints, views and complex queries.',
                 arch: 'Normalized relational model (3NF) with referential integrity',
                 features: ['Entity-relationship diagrams', 'Normalization up to third normal form', 'Constraints, foreign keys and views', 'JOIN queries and subqueries'],
-                shots: [""]
+                shots: ['Server infrastructure for relational databases']
             },
-            shots: [""]
+            shots: ['Infraestructura de servidores para bases de datos relacionales']
         },
         {
             id: 'portafolio-web', title: 'Portafolio Web Profesional', category: ['web'], featured: true,
@@ -120,6 +122,7 @@
             features: ['Navegación SPA con transiciones < 300 ms', 'Carrusel con pausa al hover y soporte táctil', 'Formulario con validación en cliente y notificación toast', 'Diseño Mobile-First y contraste WCAG 2.1 AA'],
             deps: [['JavaScript vanilla (ES2020)', '—'], ['PHP', '8.x'], ['Hosting NVMe + SSL', '—']],
             repo: 'https://github.com/Coliiin1/Coliiin1.github.io', palette: ['#2c3e50', '#1f6fb2'], glyph: '</>',
+            images: ['assets/img/Portafolio-Web/desarrollo-web.jpg'],
             en: {
                 title: 'Professional Web Portfolio',
                 short: 'This very site: a tailored static SPA built with semantic HTML5, Mobile-First CSS and vanilla JavaScript.',
@@ -127,9 +130,9 @@
                 arch: 'Modular static SPA (in-memory views) + PHP SMTP endpoint without persistence',
                 features: ['SPA navigation with transitions under 300 ms', 'Carousel with pause on hover and touch support', 'Form with client-side validation and toast notifications', 'Mobile-First design and WCAG 2.1 AA contrast'],
                 deps: [['Vanilla JavaScript (ES2020)', '—'], ['PHP', '8.x'], ['NVMe hosting + SSL', '—']],
-                shots: [""]
+                shots: ['Web development with HTML, CSS and JavaScript']
             },
-            shots: [""]
+            shots: ['Desarrollo web con HTML, CSS y JavaScript']
         }
     ];
 

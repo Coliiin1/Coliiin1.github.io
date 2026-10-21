@@ -1,0 +1,3674 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Portafolio Web Profesional de Carlos Daniel Ávila Colin, estudiante de Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco.">
+    <meta name="author" content="Carlos Daniel Ávila Colin">
+    <meta name="theme-color" content="#1b2836">
+    <title>Daniel Colin</title>
+    <link rel="icon"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f6fb2'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Segoe UI,Arial' font-weight='700' font-size='28' fill='%23fff'%3EDC%3C/text%3E%3C/svg%3E">
+
+    <!--
+        ============================================================
+        PORTAFOLIO WEB PROFESIONAL — V2.1 STANDALONE (Core Release)
+        Plan de referencia: Iteraciones.md (v2.0.0)
+        Snapshot V2.1-standalone: CSS y JS incrustados en este documento.
+        ------------------------------------------------------------
+        Documento único autocontenido (snapshot standalone): HTML5 +
+        CSS Mobile-First + JavaScript vanilla con namespace
+        (window.Portfolio), sin dependencias externas. Compatible
+        con apertura directa (file://) y con GitHub Pages.
+
+        Mapa de componentes DEV → archivos del proyecto:
+          DEV-FE-01  Marcado semántico  → index.html (#inicio, #mi-informacion,
+                     #mis-proyectos, #tecnologias, #contacto)
+          DEV-FE-02  Hoja de estilos    → css/styles.css
+          DEV-FE-03  Carrusel + modales → js/carousel.js · js/modal.js
+          DEV-FE-04  Sección "Mi información" + CTA de CV → index.html
+          DEV-FE-09  Navegación SPA     → js/nav.js
+          DEV-FE-12  Arquitectura i18n  → js/i18n.js
+          DEV-AST-01 Imágenes lazy 16:9 → js/media.js (marcadores SVG
+                     sustituibles por WebP en assets/img/)
+          DEV-BE-01  Formulario y envío → js/contact.js · js/config.js
+                     (endpoint configurable de Formspree)
+        ============================================================
+    -->
+
+    <!-- Google Fonts: Outfit (modern geometric titles) & Plus Jakarta Sans (clean UI/body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+/* =============================================================
+   PORTAFOLIO WEB PROFESIONAL — REDISEÑO EDITORIAL V3.0
+   Colores: Pearl Perfect (#FBF9E4), Noir (#000000), 
+            Midnight (#122C4F), Ocean (#5B88B2)
+   Tipografía: Outfit (Titulares geométricos) + Plus Jakarta Sans (Cuerpo & UI)
+   ============================================================= */
+
+/* =========================================================
+   1. TOKENS DE DISEÑO & CONFIGURACIÓN GLOBAL
+   ========================================================= */
+:root {
+    /* Paleta Oficial Requerida */
+    --c-bg: #FBF9E4;           /* Pearl Perfect: fondo general luminoso */
+    --c-noir: #000000;         /* Noir: alto contraste */
+    --c-midnight: #122C4F;     /* Midnight: azul marino profundo */
+    --c-ocean: #5B88B2;        /* Ocean: azul océano elegante */
+    --c-ocean-hover: #487299;
+    --c-ocean-soft: rgba(91, 136, 178, 0.14);
+    --c-midnight-soft: rgba(18, 44, 79, 0.08);
+
+    /* Superficies y Bordes */
+    --c-surface: #ffffff;
+    --c-surface-pearl: #FBF9E4;
+    --c-text: #000000;
+    --c-text-muted: #3d4f63;
+    --c-primary: #122C4F;
+    --c-accent: #5B88B2;
+    --c-accent-hover: #487299;
+    --c-accent-soft: rgba(91, 136, 178, 0.12);
+    --c-accent-ink: #122C4F;
+    
+    --c-border: rgba(18, 44, 79, 0.14);
+    --c-border-strong: #122C4F;
+    --c-focus: #5B88B2;
+    --c-success: #1e7e34;
+    --c-error: #b42318;
+
+    /* Tipografías */
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+    /* Métricas */
+    --header-h: 74px;
+    --sidebar-w: 280px;
+    --radius-sm: 6px;
+    --radius: 12px;
+    --radius-lg: 18px;
+
+    /* Sombras refinadas */
+    --shadow-sm: 0 2px 6px rgba(18, 44, 79, 0.05);
+    --shadow-md: 0 8px 24px rgba(18, 44, 79, 0.08);
+    --shadow-lg: 0 16px 38px rgba(18, 44, 79, 0.12);
+
+    /* Animaciones suaves */
+    --dur: 250ms;
+    --ease: cubic-bezier(.4, 0, .2, 1);
+}
+
+/* =========================================================
+   BASE (Mobile-First)
+   ========================================================= */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--c-noir);
+    background-color: var(--c-bg);
+    min-height: 100vh;
+}
+
+body.nav-open,
+body.modal-open {
+    overflow: hidden;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+img,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+img {
+    height: auto;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+    color: inherit;
+}
+
+a {
+    color: var(--c-ocean);
+    text-decoration: none;
+    transition: color var(--dur) var(--ease);
+}
+
+a:hover {
+    color: var(--c-midnight);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--c-noir);
+    line-height: 1.2;
+    margin: 0;
+}
+
+:focus-visible {
+    outline: 3px solid var(--c-ocean);
+    outline-offset: 3px;
+}
+
+[tabindex="-1"]:focus {
+    outline: none;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link {
+    position: fixed;
+    left: 12px;
+    top: 12px;
+    z-index: 5000;
+    padding: 12px 20px;
+    background: #ffffff;
+    color: var(--c-midnight);
+    font-weight: 700;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-200%);
+    transition: transform var(--dur) var(--ease);
+}
+
+.skip-link:focus {
+    transform: none;
+}
+
+/* =========================================================
+   2. ENCABEZADO (BARRA DE NAVEGACIÓN SUPERIOR HORIZONTAL)
+   ========================================================= */
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    height: var(--header-h);
+    background-color: var(--c-bg);
+    border-bottom: 1px solid var(--c-border);
+    transition: background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.header-inner {
+    max-width: 1360px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+/* Logotipo (Izquierda): negrita en Ocean con mayúscula inicial */
+.header-logo {
+    font-family: var(--font-heading);
+    font-size: 1.65rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--c-ocean);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: baseline;
+    transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.header-logo .logo-dot {
+    color: var(--c-midnight);
+}
+
+.header-logo:hover {
+    color: var(--c-midnight);
+    transform: scale(1.02);
+}
+
+/* Menú de Navegación (Centro): mayúscula inicial con línea de subrayado activo */
+.header-nav {
+    display: none; /* Visible en tablet/desktop */
+}
+
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-item {
+    position: relative;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--c-noir);
+    text-decoration: none;
+    padding: 8px 2px;
+    display: inline-block;
+    transition: color var(--dur) var(--ease);
+}
+
+/* Línea de subrayado debajo del enlace */
+.nav-item::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--c-noir);
+    transition: width var(--dur) var(--ease);
+}
+
+.nav-item:hover {
+    color: var(--c-noir);
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}
+
+/* Elemento activo con línea de subrayado continua debajo */
+.nav-item-active {
+    color: var(--c-noir) !important;
+    font-weight: 700;
+}
+
+.nav-item-active::after {
+    width: 100%;
+}
+
+/* Redes Sociales (Derecha): iconos en Noir */
+.header-social {
+    display: none; /* Visible en tablet/desktop */
+    align-items: center;
+    gap: 16px;
+}
+
+.social-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--c-noir);
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    transition: color var(--dur) var(--ease), background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.social-tag svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+}
+
+.social-tag:hover {
+    color: var(--c-ocean);
+    transform: translateY(-1px);
+}
+
+/* Botón Hamburguesa Móvil */
+.mobile-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    padding: 8px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    cursor: pointer;
+    color: var(--c-noir);
+}
+
+.hamburger-line {
+    display: block;
+    width: 24px;
+    height: 2.5px;
+    background-color: var(--c-noir);
+    border-radius: 2px;
+    transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+
+/* Menú Móvil Lateral (Off-canvas Drawer) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(85vw, 320px);
+    height: 100vh;
+    height: 100dvh;
+    background-color: var(--c-bg);
+    border-right: 1px solid var(--c-border);
+    box-shadow: var(--shadow-lg);
+    z-index: 1200;
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    transform: translateX(-100%);
+    transition: transform var(--dur) var(--ease);
+    overflow-y: auto;
+}
+
+.sidebar.is-open {
+    transform: translateX(0);
+}
+
+.sidebar__brand {
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--c-border);
+}
+
+.sidebar__logo {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--c-ocean);
+}
+
+.sidebar__role {
+    margin: 4px 0 0;
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+}
+
+.sidebar .nav-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar .nav-item {
+    font-size: 1.1rem;
+    padding: 8px 0;
+    display: inline-block;
+}
+
+.sidebar__social {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--c-border);
+    display: flex;
+    gap: 16px;
+}
+
+.nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 44, 79, 0.4);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    z-index: 1150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--dur) var(--ease);
+}
+
+.nav-overlay.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* =========================================================
+   3. CONTENEDOR PRINCIPAL
+   ========================================================= */
+main {
+    width: 100%;
+    min-height: calc(100vh - var(--header-h));
+    padding: 32px 20px 60px;
+    margin: 0 auto;
+}
+
+.container {
+    max-width: 1360px;
+    margin: 0 auto;
+}
+
+/* Transiciones suaves entre vistas SPA */
+.view {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity var(--dur) ease-in-out, transform var(--dur) ease-in-out;
+}
+
+.view.is-active {
+    opacity: 1;
+    transform: none;
+}
+
+.section-head {
+    margin: 48px 0 28px;
+}
+
+.section-title {
+    position: relative;
+    font-size: clamp(1.8rem, 1.4rem + 1.2vw, 2.4rem);
+    font-weight: 800;
+    color: var(--c-midnight);
+    margin-bottom: 12px;
+}
+
+.section-title::after {
+    content: "";
+    display: block;
+    width: 52px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--c-ocean);
+    margin-top: 10px;
+}
+
+.section-lead {
+    margin: 0;
+    max-width: 70ch;
+    color: var(--c-text-muted);
+    font-size: 1.05rem;
+}
+
+.surface {
+    background-color: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+/* =========================================================
+   4. SECCIÓN PRINCIPAL (HERO SECTION — 3 COLUMNAS IRREGULARES)
+   ========================================================= */
+.hero-v3 {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: 24px 0 56px;
+    margin-bottom: 32px;
+}
+
+/* --- COLUMNA IZQUIERDA --- */
+.hero-col--left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Insignia Circular Rotatoria: texto en círculo alrededor de círculo sólido Ocean */
+.hero-badge-wrap {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin-bottom: 24px;
+    display: grid;
+    place-items: center;
+}
+
+.hero-badge-svg {
+    width: 100%;
+    height: 100%;
+    animation: spinBadge 20s linear infinite;
+    transform-origin: 50% 50%;
+}
+
+@keyframes spinBadge {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Subtítulo: "HI THERE" en mayúsculas y negrita + línea horizontal negra */
+.hero-kicker-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+    width: 100%;
+}
+
+.hero-kicker-text {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    font-size: 0.92rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--c-noir);
+}
+
+.hero-kicker-line {
+    flex: 0 0 90px;
+    height: 2px;
+    background-color: var(--c-noir);
+}
+
+/* Título Principal: "Transformemos Ideas" en Noir y "En codigo!" en Ocean y tamaño mayor */
+.hero-main-title {
+    margin: 0 0 28px;
+    line-height: 1.02;
+    display: flex;
+    flex-direction: column;
+}
+
+.hero-title-line1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2.3rem, 3.8vw, 3.6rem);
+    font-weight: 400;
+    color: var(--c-noir);
+    letter-spacing: -0.02em;
+}
+
+.hero-title-line2 {
+    font-family: var(--font-heading);
+    font-size: clamp(3.2rem, 5.6vw, 5.2rem);
+    font-weight: 900;
+    color: var(--c-ocean);
+    letter-spacing: -0.03em;
+    line-height: 0.94;
+}
+
+/* Barras de Estadísticas: 4 rectángulos apilados de diferentes largos en Ocean y Midnight */
+.hero-stats-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    width: 100%;
+    max-width: 440px;
+    margin-top: 6px;
+}
+
+.stat-bar {
+    display: flex;
+    align-items: center;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(18, 44, 79, 0.08);
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.stat-bar:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(18, 44, 79, 0.15);
+}
+
+/* Barra 1 (más ancha): Midnight (#122C4F) */
+.stat-bar-1 {
+    width: 100%;
+    background-color: var(--c-midnight);
+}
+
+/* Barra 2 (más corta): Ocean (#5B88B2) */
+.stat-bar-2 {
+    width: 86%;
+    background-color: var(--c-ocean);
+}
+
+/* Barra 3 (aún más corta): Midnight al 85% */
+.stat-bar-3 {
+    width: 74%;
+    background-color: #1e3a60;
+}
+
+/* Barra 4 (la más corta): Ocean al 80% */
+.stat-bar-4 {
+    width: 58%;
+    background-color: #729bc1;
+}
+
+/* --- COLUMNA CENTRAL --- */
+.hero-col--center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-portrait-frame {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1 / 1;
+    margin-bottom: 24px;
+}
+
+/* Forma de Fondo: Cuadrado sólido Ocean (#5B88B2) desplazado hacia abajo y a la izquierda */
+.hero-photo-backdrop {
+    position: absolute;
+    bottom: -18px;
+    left: -18px;
+    width: 100%;
+    height: 100%;
+    background-color: var(--c-ocean);
+    border-radius: 4px;
+    z-index: 1;
+    box-shadow: 0 10px 28px rgba(91, 136, 178, 0.28);
+}
+
+/* Imagen de Perfil: Fotografía en escala de grises mirando a la derecha */
+.hero-photo-img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+    filter: grayscale(100%) contrast(1.08);
+    display: block;
+    box-shadow: 0 6px 20px rgba(18, 44, 79, 0.14);
+}
+
+/* Texto de Usuario: "@coliiin1" con línea de subrayado continua en Noir (#000000) */
+.hero-handle-wrap {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.hero-handle {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--c-noir);
+    text-decoration: underline;
+    text-decoration-thickness: 2.5px;
+    text-underline-offset: 4px;
+    letter-spacing: -0.01em;
+}
+
+/* --- COLUMNA DERECHA --- */
+.hero-col--right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 32px;
+}
+
+.hero-intro-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Título de Presentación: "I'm " + "Daniel Colin" con subrayado grueso que no toca el texto */
+.hero-intro-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 3.4vw, 3.4rem);
+    line-height: 1.15;
+    color: var(--c-noir);
+    margin-bottom: 18px;
+}
+
+.hero-intro-title .intro-prefix {
+    font-weight: 500;
+    color: var(--c-noir);
+}
+
+.hero-intro-title .intro-name {
+    font-weight: 800;
+    color: var(--c-noir);
+    display: inline-block;
+    position: relative;
+    padding-bottom: 8px;
+    border-bottom: 4px solid var(--c-noir);
+}
+
+/* Párrafo de Biografía en Noir */
+.hero-bio-desc {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--c-noir);
+    margin: 0 0 24px;
+    max-width: 44ch;
+}
+
+/* Llamado a la Acción (Botón/Enlace): "Learn More" en negrita con flecha -> */
+.hero-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-heading);
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: var(--c-noir);
+    text-decoration: none;
+    transition: transform var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+
+.hero-cta-btn svg {
+    width: 22px;
+    height: 22px;
+    transition: transform var(--dur) var(--ease);
+}
+
+.hero-cta-btn:hover {
+    color: var(--c-ocean);
+    transform: translateX(4px);
+}
+
+.hero-cta-btn:hover svg {
+    transform: translateX(6px);
+}
+
+/* =========================================================
+   6. CARRUSEL DE PROYECTOS DESTACADOS
+   ========================================================= */
+.carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background-color: var(--c-surface);
+    border: 1px solid var(--c-border);
+    box-shadow: var(--shadow-sm);
+}
+
+.carousel__viewport {
+    overflow: hidden;
+}
+
+.carousel__track {
+    display: flex;
+    touch-action: pan-y;
+    will-change: transform;
+    transition: transform 320ms var(--ease);
+}
+
+.carousel__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.carousel__media {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: #eef2f6;
+    cursor: pointer;
+}
+
+.carousel__media img,
+.media-16x9 {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.carousel__body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px 20px 84px;
+}
+
+.carousel__body h3 {
+    font-size: 1.4rem;
+    color: var(--c-midnight);
+}
+
+.carousel__body p {
+    margin: 0;
+    color: var(--c-text-muted);
+    font-size: 0.98rem;
+}
+
+.carousel__controls {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.carousel__arrow {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--c-border);
+    border-radius: 50%;
+    background: #ffffff;
+    color: var(--c-midnight);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.carousel__arrow:hover {
+    background-color: var(--c-bg);
+    transform: scale(1.05);
+}
+
+.carousel__arrow svg {
+    width: 22px;
+    height: 22px;
+}
+
+.carousel__dots {
+    display: flex;
+}
+
+.carousel__dot {
+    width: 32px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.carousel__dot::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: rgba(18, 44, 79, 0.25);
+    transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease);
+}
+
+.carousel__dot[aria-current="true"]::before {
+    background: var(--c-ocean);
+    transform: scale(1.4);
+}
+
+/* =========================================================
+   7. BOTONES Y BADGES
+   ========================================================= */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 10px 22px;
+    border: 2px solid transparent;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background-color: var(--c-midnight);
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: var(--c-ocean);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(91, 136, 178, 0.35);
+}
+
+.btn-primary-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 12px 24px;
+    border-radius: var(--radius-sm);
+    background-color: var(--c-midnight);
+    color: #ffffff;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1rem;
+    text-decoration: none;
+    box-shadow: 0 6px 16px rgba(18, 44, 79, 0.25);
+    transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.btn-primary-cta:hover {
+    background-color: var(--c-ocean);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(91, 136, 178, 0.35);
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--c-ocean-soft);
+    color: var(--c-midnight);
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.tag-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-list li {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: var(--c-ocean-soft);
+    color: var(--c-midnight);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* =========================================================
+   8. VISTA: MI INFORMACIÓN
+   ========================================================= */
+.info-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.info-block {
+    padding: 28px;
+}
+
+.info-block h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 18px;
+    font-size: 1.35rem;
+    color: var(--c-midnight);
+}
+
+.info-block h3 svg {
+    width: 24px;
+    height: 24px;
+    color: var(--c-ocean);
+    flex: none;
+}
+
+.bio {
+    display: grid;
+    gap: 20px;
+}
+
+.bio p {
+    margin: 0 0 14px;
+    color: var(--c-noir);
+    line-height: 1.7;
+}
+
+.cv-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 22px;
+    border-radius: var(--radius);
+    background: #ffffff;
+    border: 1px solid var(--c-border);
+}
+
+.cv-box small {
+    color: var(--c-text-muted);
+    font-weight: 600;
+}
+
+.timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 20px;
+    border-left: 3px solid var(--c-ocean);
+}
+
+.timeline > li {
+    position: relative;
+    padding: 0 0 24px 16px;
+}
+
+.timeline > li:last-child {
+    padding-bottom: 0;
+}
+
+.timeline > li::before {
+    content: "";
+    position: absolute;
+    left: -29px;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--c-ocean);
+    box-shadow: 0 0 0 4px var(--c-bg);
+}
+
+.timeline h4 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--c-midnight);
+}
+
+.timeline__meta {
+    display: block;
+    margin: 2px 0 10px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--c-ocean);
+}
+
+.competency-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.competency {
+    padding: 18px;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    background: var(--c-surface);
+}
+
+.competency h4 {
+    margin: 0 0 10px;
+    font-size: 1rem;
+    color: var(--c-midnight);
+}
+
+.competency ul {
+    margin: 0;
+    padding-left: 18px;
+    color: var(--c-text-muted);
+}
+
+/* =========================================================
+   9. VISTA: MIS PROYECTOS (FILTROS Y GRID)
+   ========================================================= */
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.filter-btn {
+    min-height: 42px;
+    padding: 6px 18px;
+    border: 2px solid var(--c-midnight);
+    border-radius: 999px;
+    background: var(--c-surface);
+    color: var(--c-midnight);
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.filter-btn:hover {
+    transform: translateY(-1px);
+    background: var(--c-midnight-soft);
+}
+
+.filter-btn[aria-pressed="true"] {
+    background: var(--c-midnight);
+    border-color: var(--c-midnight);
+    color: #ffffff;
+}
+
+.results-count {
+    margin: 0 0 24px;
+    font-size: 0.92rem;
+    color: var(--c-text-muted);
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius);
+    transition: border-color var(--dur) var(--ease);
+}
+
+.project-card:hover {
+    border-color: var(--c-ocean);
+}
+
+.project-card__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+}
+
+.project-card__title {
+    margin: 0;
+    font-size: 1.15rem;
+    color: var(--c-midnight);
+}
+
+.project-card__desc {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: var(--c-noir);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.project-card .btn {
+    margin-top: auto;
+    width: 100%;
+}
+
+.empty-state {
+    padding: 36px;
+    text-align: center;
+    color: var(--c-text-muted);
+}
+
+/* =========================================================
+   10. VISTA: TECNOLOGÍAS
+   ========================================================= */
+.tech-group + .tech-group {
+    margin-top: 36px;
+}
+
+.tech-group h3 {
+    margin: 0 0 16px;
+    font-size: 1.25rem;
+    color: var(--c-midnight);
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+.tech-card {
+    position: relative;
+    width: 100%;
+    min-height: 132px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.tech-card:hover,
+.tech-card.is-open {
+    transform: translateY(-3px);
+    border-color: var(--c-ocean);
+    box-shadow: var(--shadow-md);
+}
+
+.tech-card__icon svg {
+    width: 50px;
+    height: 50px;
+}
+
+.tech-card__name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    color: var(--c-midnight);
+    line-height: 1.3;
+}
+
+.tooltip {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(100% + 10px);
+    z-index: 30;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    background: var(--c-midnight);
+    color: #f1f5f9;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    text-align: left;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 200ms var(--ease), transform 200ms var(--ease);
+}
+
+.tooltip::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    margin-left: -7px;
+    border: 7px solid transparent;
+    border-top-color: var(--c-midnight);
+}
+
+.tech-card:hover .tooltip,
+.tech-card:focus-visible .tooltip,
+.tech-card.is-open .tooltip {
+    opacity: 1;
+    transform: none;
+}
+
+.tooltip__level {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 700;
+}
+
+.meter {
+    height: 6px;
+    margin: 6px 0 8px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.meter span {
+    display: block;
+    height: 100%;
+    width: var(--lvl, 33%);
+    border-radius: inherit;
+    background: var(--c-ocean);
+}
+
+/* =========================================================
+   11. VISTA: CONTACTO
+   ========================================================= */
+.contact-layout {
+    display: grid;
+    gap: 24px;
+}
+
+.contact-aside,
+.contact-form {
+    padding: 30px;
+}
+
+.contact-aside h3 {
+    margin: 0 0 12px;
+    color: var(--c-midnight);
+    font-size: 1.4rem;
+}
+
+.contact-aside ul {
+    list-style: none;
+    margin: 22px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 14px;
+}
+
+.contact-aside li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--c-text-muted);
+}
+
+.contact-aside li svg {
+    width: 22px;
+    height: 22px;
+    color: var(--c-ocean);
+    flex: none;
+}
+
+.contact-form {
+    display: grid;
+    gap: 18px;
+}
+
+.form-row {
+    display: grid;
+    gap: 18px;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--c-midnight);
+}
+
+.req {
+    color: var(--c-error);
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 2px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    background: #ffffff;
+    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+.field input:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: var(--c-ocean);
+    box-shadow: 0 0 0 3px var(--c-ocean-soft);
+}
+
+.field.is-invalid input,
+.field.is-invalid textarea {
+    border-color: var(--c-error);
+    box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.15);
+}
+
+.field__error {
+    min-height: 1.3em;
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--c-error);
+}
+
+.field__counter {
+    align-self: flex-end;
+    font-size: 0.8rem;
+    color: var(--c-text-muted);
+}
+
+.form-note {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--c-text-muted);
+}
+
+.privacy-note {
+    margin: 0;
+    padding: 14px 16px;
+    border-left: 4px solid var(--c-ocean);
+    border-radius: var(--radius-sm);
+    background: var(--c-ocean-soft);
+    font-size: 0.88rem;
+    color: var(--c-midnight);
+}
+
+.hp-field {
+    position: absolute !important;
+    left: -9999px !important;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+.contact-form .btn-primary {
+    justify-self: start;
+    min-width: 200px;
+}
+
+/* =========================================================
+   12. MODALES
+   ========================================================= */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+}
+
+.modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(18, 44, 79, 0.55);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity var(--dur) var(--ease);
+}
+
+.modal__dialog {
+    position: relative;
+    width: 100%;
+    max-width: 620px;
+    max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
+    overflow-y: auto;
+    border-radius: var(--radius-lg);
+    background: #ffffff;
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+
+.modal--detail .modal__dialog {
+    max-width: 980px;
+}
+
+.modal.is-open .modal__backdrop {
+    opacity: 1;
+}
+
+.modal.is-open .modal__dialog {
+    opacity: 1;
+    transform: none;
+}
+
+.modal__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--c-midnight);
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+}
+
+.modal__close svg {
+    width: 22px;
+    height: 22px;
+}
+
+.modal__content {
+    display: grid;
+    gap: 14px;
+    padding: 26px;
+}
+
+.modal__content h2,
+.modal__content h3 {
+    margin: 0;
+    color: var(--c-midnight);
+}
+
+.modal__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding-top: 6px;
+}
+
+.gallery__thumbs {
+    display: flex;
+    gap: 8px;
+    padding: 12px 24px 0;
+    overflow-x: auto;
+}
+
+.gallery__thumb {
+    flex: none;
+    width: 100px;
+    padding: 0;
+    border: 3px solid transparent;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: none;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+
+.gallery__thumb[aria-current="true"] {
+    border-color: var(--c-ocean);
+    opacity: 1;
+}
+
+.detail-grid {
+    display: grid;
+    gap: 24px;
+}
+
+.detail-grid h3 {
+    margin: 0 0 10px;
+    font-size: 1.15rem;
+}
+
+.detail-grid ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.spec-list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 8px 16px;
+    margin: 0;
+}
+
+.spec-list dt {
+    font-weight: 700;
+    color: var(--c-midnight);
+}
+
+.deps-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.deps-table th,
+.deps-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--c-border);
+    text-align: left;
+}
+
+.deps-table th {
+    color: var(--c-midnight);
+    background: var(--c-bg);
+}
+
+/* =========================================================
+   13. TOAST NOTIFICACIONES
+   ========================================================= */
+.toast-region {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+    pointer-events: none;
+}
+
+.toast {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 12px 14px 16px;
+    border-left: 5px solid var(--c-success);
+    border-radius: var(--radius-sm);
+    background: #ffffff;
+    box-shadow: var(--shadow-lg);
+    animation: toastIn 250ms var(--ease) both;
+}
+
+.toast.is-leaving {
+    animation: toastOut 200ms var(--ease) forwards;
+}
+
+.toast--error {
+    border-left-color: var(--c-error);
+}
+
+.toast__icon {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--c-success);
+    color: #fff;
+}
+
+.toast--error .toast__icon {
+    background: var(--c-error);
+}
+
+.toast__icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.toast__body {
+    flex: 1;
+}
+
+.toast__body strong {
+    display: block;
+    color: var(--c-midnight);
+}
+
+.toast__body p {
+    margin: 2px 0 0;
+    font-size: 0.88rem;
+    color: var(--c-text-muted);
+}
+
+.toast .icon-btn {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    color: var(--c-text-muted);
+    padding: 4px;
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes toastOut {
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* =========================================================
+   14. FOOTER
+   ========================================================= */
+.site-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 60px;
+    padding: 24px 0 12px;
+    border-top: 1px solid var(--c-border);
+    font-size: 0.9rem;
+    color: var(--c-text-muted);
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+/* =========================================================
+   15. BREAKPOINTS RESPONSIVOS
+   ========================================================= */
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+    main {
+        padding: 36px 32px 64px;
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .competency-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .form-row--2 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .toast-region {
+        left: auto;
+        width: 400px;
+    }
+}
+
+/* Desktop (880px+): activa menú superior completo y oculta toggle */
+@media (min-width: 880px) {
+    .header-nav {
+        display: block;
+    }
+
+    .header-social {
+        display: flex;
+    }
+
+    .mobile-toggle {
+        display: none;
+    }
+}
+
+/* Desktop Grande (1024px+): Hero en 3 columnas irregulares */
+@media (min-width: 1024px) {
+    main {
+        padding: 44px 36px 72px;
+    }
+
+    .hero-v3 {
+        grid-template-columns: 1.15fr 0.9fr 1.15fr;
+        gap: 48px;
+        padding: 32px 0 64px;
+    }
+
+    .carousel__slide {
+        grid-template-columns: 1.25fr 1fr;
+        align-items: center;
+    }
+
+    .carousel__body {
+        padding: 36px 36px 88px;
+    }
+
+    .carousel__controls {
+        left: auto;
+        right: 24px;
+        bottom: 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .info-block--bio {
+        grid-column: 1 / -1;
+    }
+
+    .bio {
+        grid-template-columns: 1fr auto;
+        align-items: start;
+    }
+
+    .contact-layout {
+        grid-template-columns: 1fr 1.6fr;
+        align-items: start;
+    }
+
+    .detail-grid {
+        grid-template-columns: 1.3fr 1fr;
+    }
+
+    .projects-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Pantallas Extra Grandes (1280px+) */
+@media (min-width: 1280px) {
+    .projects-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Accesibilidad: movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+    <a class="skip-link" href="#main" data-i18n="skip">Saltar al contenido principal</a>
+
+    <!-- ===================== ENCABEZADO (BARRA DE NAVEGACIÓN SUPERIOR) ===================== -->
+    <header class="site-header" id="site-header">
+        <div class="header-inner">
+            <!-- Logotipo (Izquierda): negrita en Ocean -->
+            <a class="header-logo" href="#inicio" data-nav="inicio" aria-label="Inicio">
+                Daniel Colin<span class="logo-dot">.</span>
+            </a>
+
+            <!-- Menú de Navegación (Centro): mayúscula inicial con línea de subrayado en activo -->
+            <nav class="header-nav" id="header-nav" aria-label="Navegación principal">
+                <ul class="nav-links">
+                    <li><a class="nav-item nav-item-active" href="#inicio" data-nav="inicio">Inicio</a></li>
+                    <li><a class="nav-item" href="#mis-proyectos" data-nav="mis-proyectos">Mis proyectos</a></li>
+                    <li><a class="nav-item" href="#mi-informacion" data-nav="mi-informacion">Mi información</a></li>
+                    <li><a class="nav-item" href="#tecnologias" data-nav="tecnologias">Tecnologías</a></li>
+                    <li><a class="nav-item" href="#contacto" data-nav="contacto">Contacto</a></li>
+                </ul>
+            </nav>
+
+            <!-- Redes Sociales (Derecha): iconos en Noir -->
+            <div class="header-social">
+                <a class="social-tag" href="https://github.com/Coliiin1" target="_blank" rel="noopener noreferrer"
+                    aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                        <path
+                            d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z" />
+                    </svg>
+                </a>
+                <a class="social-tag" href="https://www.linkedin.com/in/daniel-colin" target="_blank"
+                    rel="noopener noreferrer" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                        <path
+                            d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
+                    </svg>
+                </a>
+                <a class="social-tag" href="#contacto" data-nav="contacto" aria-label="Contacto">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true" focusable="false">
+                        <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                        <path d="m22 6-10 7L2 6"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- Botón toggle de menú móvil -->
+            <button class="mobile-toggle" id="menu-toggle" type="button" aria-controls="sidebar" aria-expanded="false"
+                aria-label="Abrir menú de navegación" data-i18n-aria="nav.menu">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Menú móvil desplegable / off-canvas -->
+    <aside class="sidebar" id="sidebar" aria-label="Menú móvil">
+        <div class="sidebar__brand">
+            <span class="sidebar__logo">Daniel Colin.</span>
+            <p class="sidebar__role">Daniel Colin · Software Engineer</p>
+        </div>
+        <nav aria-label="Navegación móvil">
+            <ul class="nav-list">
+                <li><a class="nav-item nav-item-active" href="#inicio" data-nav="inicio">Inicio</a></li>
+                <li><a class="nav-item" href="#mis-proyectos" data-nav="mis-proyectos">Mis proyectos</a></li>
+                <li><a class="nav-item" href="#mi-informacion" data-nav="mi-informacion">Mi información</a></li>
+                <li><a class="nav-item" href="#tecnologias" data-nav="tecnologias">Tecnologías</a></li>
+                <li><a class="nav-item" href="#contacto" data-nav="contacto">Contacto</a></li>
+            </ul>
+        </nav>
+        <div class="sidebar__social">
+            <a class="social-tag" href="https://github.com/Coliiin1" target="_blank" rel="noopener noreferrer"
+                aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path
+                        d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z" />
+                </svg>
+            </a>
+            <a class="social-tag" href="https://www.linkedin.com/in/daniel-colin" target="_blank"
+                rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                    <path
+                        d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
+                </svg>
+            </a>
+            <a class="social-tag" href="#contacto" data-nav="contacto" aria-label="Contacto">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true" focusable="false">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="m22 6-10 7L2 6"></path>
+                </svg>
+            </a>
+        </div>
+    </aside>
+    <div class="nav-overlay" id="nav-overlay"></div>
+
+    <!-- ===================== CONTENIDO PRINCIPAL ===================== -->
+    <main id="main" tabindex="-1">
+        <div class="container">
+
+            <!-- ============ VISTA: INICIO (RF-01) ============ -->
+            <section id="inicio" class="view" aria-labelledby="inicio-title">
+                <!-- HERO REDISEÑADO: 3 COLUMNAS IRREGULARES -->
+                <div class="hero-v3">
+                    <!-- COLUMNA IZQUIERDA -->
+                    <div class="hero-col hero-col--left">
+                        <!-- Insignia Circular Rotatoria -->
+                        <div class="hero-badge-wrap"
+                            title="------------------------------------------------------------">
+                            <svg class="hero-badge-svg" viewBox="0 0 160 160"
+                                aria-label="Work Hard, Dream Big, Succeed.">
+                                <defs>
+                                    <path id="badge-circle-path"
+                                        d="M 80, 80 m -52, 0 a 52,52 0 1,1 104,0 a 52,52 0 1,1 -104,0" fill="none" />
+                                </defs>
+                                <!-- Círculo central en Ocean (#5B88B2) -->
+                                <circle class="badge-center-circle" cx="80" cy="80" r="28" fill="#5B88B2" />
+                                <!-- Texto en Noir (#000000) rotando alrededor -->
+                                <text font-family="'Outfit', sans-serif" font-size="10.2" font-weight="800"
+                                    fill="#000000" letter-spacing="2.3">
+                                    <textPath href="#badge-circle-path" startOffset="0%">
+                                        ------------------------------------------------------------
+                                    </textPath>
+                                </text>
+                            </svg>
+                        </div>
+
+                        <!-- Subtítulo + Línea horizontal -->
+                        <div class="hero-kicker-row">
+                            <span class="hero-kicker-text">Hola!</span>
+                            <span class="hero-kicker-line" aria-hidden="true"></span>
+                        </div>
+
+                        <!-- Título Principal -->
+                        <h1 class="hero-main-title" id="inicio-title" tabindex="-1">
+                            <span class="hero-title-line1">Transformemos Ideas en</span>
+                            <span class="hero-title-line2">Codigo!</span>
+                        </h1>
+
+                        <!-- Barras de Estadísticas Apiladas -->
+                        <div class="hero-stats-stack" role="region" aria-label="Estadísticas de trayectoria">
+                            <div class="stat-bar stat-bar-1">ESTUDIANTE DE INGENIERÍA EN SOFTWARE</div>
+                            <div class="stat-bar stat-bar-2">ARQUITECTURAS ESCALABLES & DB</div>
+                            <div class="stat-bar stat-bar-3">INTERFACES INTUITIVAS Y ACCESIBLES</div>
+                            <div class="stat-bar stat-bar-4">ENFOQUE EN EXPERIENCIA DE USUARIO</div>
+                        </div>
+                    </div>
+
+                    <!-- COLUMNA CENTRAL -->
+                    <div class="hero-col hero-col--center">
+                        <div class="hero-portrait-frame">
+                            <!-- Forma de fondo sólida Ocean (#5B88B2) desplazada hacia abajo y a la izquierda -->
+                            <div class="hero-photo-backdrop" aria-hidden="true"></div>
+                            <!-- Fotografía en escala de grises de perfil mirando a la derecha -->
+                            <img class="hero-photo-img" src="data:image/jpeg;base64,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"
+                                alt="Fotografía en escala de grises de Daniel Colin mirando hacia la derecha"
+                                width="480" height="480" loading="eager">
+                        </div>
+                        <!-- Texto de usuario con subrayado continuo en Noir (#000000) -->
+                        <div class="hero-handle-wrap">
+                            <span class="hero-handle">Redes Sociales: @coliiin1</span>
+                        </div>
+                    </div>
+
+                    <!-- COLUMNA DERECHA -->
+                    <div class="hero-col hero-col--right">
+                        <div class="hero-intro-box">
+                            <!-- Título de Presentación con subrayado grueso que no toca el texto -->
+                            <h2 class="hero-intro-title">
+                                <span class="intro-prefix">Soy </span>
+                                <span class="intro-name">Daniel Colin</span>
+                            </h2>
+                            <!-- Párrafo de Biografía -->
+                            <p class="hero-bio-desc">
+                                Desarrollador de software y frontend que destaca en la creación de aplicaciones
+                                robustas, arquitecturas de bases de datos de alto rendimiento y experiencias web
+                                adaptables, con una atención meticulosa a los detalles.
+                            </p>
+                            <!-- Llamado a la Acción (Botón / Enlace con flecha ->) -->
+                            <a class="hero-cta-btn" href="#mis-proyectos" data-nav="mis-proyectos">
+                                <span>Leer Mas</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <line x1="4" y1="12" x2="19" y2="12"></line>
+                                    <polyline points="13 6 19 12 13 18"></polyline>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-head">
+                    <h2 class="section-title" data-i18n="featured.title">Proyectos destacados</h2>
+                    <p class="section-lead" data-i18n="featured.lead">Una selección de mis desarrollos más
+                        representativos. Haz clic o toca una tarjeta para abrir una vista rápida.</p>
+                </div>
+
+                <div class="carousel surface" id="featured-carousel" role="region" aria-roledescription="carrusel"
+                    aria-label="Carrusel de proyectos destacados" data-i18n-aria="carousel.label">
+                    <div class="carousel__viewport">
+                        <div class="carousel__track" id="carousel-track"></div>
+                    </div>
+                    <div class="carousel__controls">
+                        <button class="carousel__arrow" type="button" data-dir="-1" aria-label="Proyecto anterior"
+                            data-i18n-aria="carousel.prev">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m15 18-6-6 6-6" />
+                            </svg>
+                        </button>
+                        <div class="carousel__dots" id="carousel-dots"></div>
+                        <button class="carousel__arrow" type="button" data-dir="1" aria-label="Proyecto siguiente"
+                            data-i18n-aria="carousel.next">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m9 18 6-6-6-6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ============ VISTA: MI INFORMACIÓN (RF-03 · RF-13) ============ -->
+            <section id="mi-informacion" class="view" aria-labelledby="info-title" hidden>
+                <div class="section-head">
+                    <h2 class="section-title" id="info-title" tabindex="-1" data-i18n="about.title">Mi información</h2>
+                    <p class="section-lead" data-i18n="about.lead">Conoce mi trayectoria, mi formación académica y las
+                        competencias que he desarrollado como futuro Ingeniero en Software.</p>
+                </div>
+
+                <div class="info-grid">
+                    <!-- Bloque 1: Biografía -->
+                    <article class="info-block info-block--bio surface">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="8" r="4" />
+                                <path d="M4 21a8 8 0 0 1 16 0" />
+                            </svg>
+                            <span data-i18n="about.bioTitle">Biografía</span>
+                        </h3>
+                        <div class="bio">
+                            <div>
+                                <p>Soy <strong>Carlos Daniel Ávila Colin</strong>, estudiante de la Licenciatura en
+                                    Ingeniería en Software en el Centro Universitario UAEMex Tianguistenco. Me apasiona
+                                    el desarrollo backend, la creación de aplicaciones de escritorio y la arquitectura
+                                    de
+                                    bases de datos.</p>
+                                <p>Disfruto enfrentando retos técnicos, como el diseño de sistemas médicos o la
+                                    configuración de servidores utilizando herramientas de red. Mi entorno de trabajo
+                                    principal es <strong>Fedora Linux</strong>, y dedico mi tiempo al aprendizaje y
+                                    aplicacion de
+                                    <strong>Nuevas Tecnologías</strong>, bajo la cual diseño soluciones de
+                                    software.
+                                </p>
+                            </div>
+                            <!-- RF-13 · CTA de descarga directa del CV -->
+                            <div class="cv-box">
+                                <a class="btn-primary-cta" href="../assets/docs/CV_Carlos_Daniel_Avila.pdf"
+                                    download="CV_Carlos_Daniel_Avila.pdf" type="application/pdf">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                                        focusable="false">
+                                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                                        <path d="M14 3v5h5" />
+                                        <path d="M12 11v6m0 0-2.5-2.5M12 17l2.5-2.5" />
+                                    </svg>
+                                    <span data-i18n="about.cv">Descargar CV (PDF)</span>
+                                </a>
+                                <small data-i18n="about.cvHint">Archivo PDF · descarga directa</small>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Bloque 2: Formación académica -->
+                    <article class="info-block surface">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m2 9 10-5 10 5-10 5z" />
+                                <path d="M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5" />
+                            </svg>
+                            <span data-i18n="about.eduTitle">Formación académica</span>
+                        </h3>
+                        <ol class="timeline">
+                            <li>
+                                <h4>Licenciatura en Ingeniería en Software</h4>
+                                <span class="timeline__meta">Centro Universitario UAEMex Tianguistenco · En curso</span>
+                                <p>Formación integral en el ciclo de vida del software: análisis y especificación de
+                                    requisitos, diseño orientado a objetos, bases de datos, métodos de desarrollo y
+                                    programación de sistemas de bajo nivel.</p>
+                            </li>
+                            <li>
+                                <h4>Unidades de aprendizaje destacadas</h4>
+                                <span class="timeline__meta">Plan de estudios</span>
+                                <ul class="tag-list">
+                                    <li>Programación Orientada a Objetos</li>
+                                    <li>Bases de Datos</li>
+                                    <li>Ingeniería de Requisitos</li>
+                                    <li>Métodos y Modelos de Desarrollo de Software</li>
+                                    <li>Microcontroladores</li>
+                                </ul>
+                            </li>
+                        </ol>
+                    </article>
+
+                    <!-- Bloque 3: Competencias profesionales (conceptuales, sin herramientas) -->
+                    <article class="info-block surface">
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m12 2 3 6.5 7 .9-5.2 4.8 1.4 7L12 17.8 5.8 21.2l1.4-7L2 9.4l7-.9z" />
+                            </svg>
+                            <span data-i18n="about.skillsTitle">Competencias profesionales</span>
+                        </h3>
+                        <div class="competency-grid">
+                            <div class="competency">
+                                <h4 data-i18n="skills.dev">Desarrollo de software</h4>
+                                <ul>
+                                    <li>Programación orientada a objetos</li>
+                                    <li>Arquitectura en capas y MVC</li>
+                                    <li>Interfaces gráficas de escritorio</li>
+                                    <li>Automatización de tareas</li>
+                                </ul>
+                            </div>
+                            <div class="competency">
+                                <h4 data-i18n="skills.db">Bases de datos</h4>
+                                <ul>
+                                    <li>Modelado entidad-relación</li>
+                                    <li>Normalización (hasta 3FN)</li>
+                                    <li>Consultas SQL y restricciones</li>
+                                    <li>Integración con aplicaciones</li>
+                                </ul>
+                            </div>
+                            <div class="competency">
+                                <h4 data-i18n="skills.req">Requisitos y modelado UML</h4>
+                                <ul>
+                                    <li>Elicitación y especificación RF/RNF</li>
+                                    <li>Casos de uso</li>
+                                    <li>Diagramas de clases y secuencia</li>
+                                    <li>Trazabilidad de requisitos</li>
+                                </ul>
+                            </div>
+                            <div class="competency">
+                                <h4 data-i18n="skills.emb">Sistemas embebidos</h4>
+                                <ul>
+                                    <li>Programación a bajo nivel</li>
+                                    <li>Puertos de E/S y temporizadores</li>
+                                    <li>Rutinas de retardo e interrupciones</li>
+                                    <li>Simulación de circuitos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <!-- ============ VISTA: MIS PROYECTOS (RF-04 · RF-05 · RF-16) ============ -->
+            <section id="mis-proyectos" class="view" aria-labelledby="projects-title" hidden>
+                <div class="section-head">
+                    <h2 class="section-title" id="projects-title" tabindex="-1" data-i18n="projects.title">Mis proyectos
+                    </h2>
+                    <p class="section-lead" data-i18n="projects.lead">Catálogo de desarrollos realizados durante mi
+                        formación. Filtra por tecnología y abre cada ficha para ver capturas, arquitectura, dependencias
+                        y el repositorio.</p>
+                </div>
+
+                <div class="filters" role="group" aria-label="Filtrar proyectos por tecnología"
+                    data-i18n-aria="filters.label">
+                    <button class="filter-btn" type="button" data-filter="todos" aria-pressed="true"
+                        data-i18n="filter.todos">Todos</button>
+                    <button class="filter-btn" type="button" data-filter="web" aria-pressed="false"
+                        data-i18n="filter.web">Web</button>
+                    <button class="filter-btn" type="button" data-filter="escritorio" aria-pressed="false"
+                        data-i18n="filter.escritorio">Escritorio</button>
+                    <button class="filter-btn" type="button" data-filter="microcontroladores" aria-pressed="false"
+                        data-i18n="filter.microcontroladores">Microcontroladores</button>
+                    <button class="filter-btn" type="button" data-filter="bd" aria-pressed="false"
+                        data-i18n="filter.bd">Bases de Datos</button>
+                </div>
+                <p class="results-count" id="results-count" aria-live="polite"></p>
+
+                <div class="projects-grid" id="projects-grid"></div>
+                <p class="empty-state surface" id="projects-empty" data-i18n="projects.empty" hidden>No hay proyectos en
+                    esta categoría todavía.</p>
+            </section>
+
+            <!-- ============ VISTA: TECNOLOGÍAS (RF-15) ============ -->
+            <section id="tecnologias" class="view" aria-labelledby="tech-title" hidden>
+                <div class="section-head">
+                    <h2 class="section-title" id="tech-title" tabindex="-1" data-i18n="tech.title">Tecnologías</h2>
+                    <p class="section-lead" data-i18n="tech.lead">Herramientas, bases de datos y entornos con los que
+                        trabajo. Pasa el cursor, enfoca con el teclado o toca una tarjeta para ver mi nivel de dominio.
+                    </p>
+                </div>
+                <div id="tech-groups"></div>
+            </section>
+
+            <!-- ============ VISTA: CONTACTO (RF-06 · RF-07 · RF-08 · RF-09 · RF-12) ============ -->
+            <section id="contacto" class="view" aria-labelledby="contact-title" hidden>
+                <div class="section-head">
+                    <h2 class="section-title" id="contact-title" tabindex="-1" data-i18n="contact.title">Contacto</h2>
+                    <p class="section-lead" data-i18n="contact.lead">¿Tienes una propuesta, una vacante o quieres
+                        colaborar en un proyecto? Escríbeme directamente desde este formulario.</p>
+                </div>
+
+                <div class="contact-layout">
+                    <aside class="contact-aside surface">
+                        <h3 data-i18n="contact.asideTitle">Hablemos</h3>
+                        <p data-i18n="contact.asideText">Estoy abierto a prácticas profesionales, proyectos de
+                            desarrollo y colaboraciones académicas.</p>
+                        <ul>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z" />
+                                    <circle cx="12" cy="9.5" r="2.5" />
+                                </svg>
+                                <span data-i18n="contact.location">Tianguistenco, Estado de México</span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M12 7v5l3 2" />
+                                </svg>
+                                <span data-i18n="contact.response">Tiempo de respuesta estimado: 24–48 h</span>
+                            </li>
+                            <li>
+                                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+                                    <path
+                                        d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z" />
+                                </svg>
+                                <a href="https://github.com/Coliiin1" target="_blank"
+                                    rel="noopener noreferrer">github.com/Coliiin1</a>
+                            </li>
+                        </ul>
+                    </aside>
+
+                    <!-- RF-06 · Formulario nativo (sin iframes ni servicios de terceros) -->
+                    <form class="contact-form surface" id="contact-form" method="POST" novalidate>
+                        <p class="form-note"><span class="req" aria-hidden="true">*</span> <span
+                                data-i18n="form.required">Campos obligatorios</span></p>
+
+                        <div class="form-row form-row--2">
+                            <div class="field">
+                                <label for="f-nombre"><span data-i18n="form.name">Nombre</span> <span class="req"
+                                        aria-hidden="true">*</span></label>
+                                <input id="f-nombre" name="nombre" type="text" autocomplete="name" required
+                                    minlength="2" maxlength="100" aria-describedby="err-nombre"
+                                    placeholder="Tu nombre completo" data-i18n-placeholder="form.namePh">
+                                <p class="field__error" id="err-nombre"></p>
+                            </div>
+                            <div class="field">
+                                <label for="f-correo"><span data-i18n="form.email">Correo electrónico</span> <span
+                                        class="req" aria-hidden="true">*</span></label>
+                                <input id="f-correo" name="correo" type="email" autocomplete="email" inputmode="email"
+                                    required minlength="2" maxlength="150" aria-describedby="err-correo"
+                                    placeholder="tucorreo@ejemplo.com" data-i18n-placeholder="form.emailPh">
+                                <p class="field__error" id="err-correo"></p>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="f-asunto"><span data-i18n="form.subject">Asunto</span> <span class="req"
+                                    aria-hidden="true">*</span></label>
+                            <input id="f-asunto" name="asunto" type="text" required minlength="2" maxlength="120"
+                                aria-describedby="err-asunto" placeholder="Motivo del mensaje"
+                                data-i18n-placeholder="form.subjectPh">
+                            <p class="field__error" id="err-asunto"></p>
+                        </div>
+
+                        <div class="field">
+                            <label for="f-mensaje"><span data-i18n="form.message">Mensaje</span> <span class="req"
+                                    aria-hidden="true">*</span></label>
+                            <textarea id="f-mensaje" name="mensaje" rows="6" required minlength="2" maxlength="1000"
+                                aria-describedby="err-mensaje msg-counter" placeholder="Cuéntame sobre tu propuesta…"
+                                data-i18n-placeholder="form.messagePh"></textarea>
+                            <span class="field__counter" id="msg-counter">0 / 1000</span>
+                            <p class="field__error" id="err-mensaje"></p>
+                        </div>
+
+                        <!-- Honeypot anti-spam (oculto a usuarios y lectores de pantalla) -->
+                        <div class="hp-field" aria-hidden="true">
+                            <label for="f-website">Website</label>
+                            <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                        </div>
+
+                        <!-- RF-09 · Aviso de privacidad inmediatamente antes del botón -->
+                        <p class="privacy-note" id="privacy-note">
+                            <strong data-i18n="form.privacyTitle">Aviso de privacidad:</strong>
+                            <span data-i18n="form.privacy">los datos que proporciones (nombre, correo, asunto y mensaje)
+                                se utilizarán exclusivamente para establecer comunicación profesional contigo. No se
+                                almacenan en bases de datos ni se comparten con terceros. Al enviar este formulario
+                                aceptas dicho uso.</span>
+                        </p>
+
+                        <button class="btn btn-primary" id="contact-submit" type="submit"
+                            aria-describedby="privacy-note">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="m22 2-7 20-4-9-9-4z" />
+                                <path d="M22 2 11 13" />
+                            </svg>
+                            <span class="btn-label" data-i18n="form.submit">Enviar Mensaje</span>
+                        </button>
+                    </form>
+                </div>
+            </section>
+
+            <footer class="site-footer">
+                <p data-i18n="footer.rights">© 2026 Daniel Colin. Todos los derechos reservados.</p>
+                <p data-i18n="footer.version">Portafolio Web.</p>
+            </footer>
+        </div>
+    </main>
+
+    <!-- ===================== RF-02 · MODAL DE VISTA RÁPIDA ===================== -->
+    <div class="modal" id="quick-modal" role="dialog" aria-modal="true" aria-labelledby="quick-title" hidden>
+        <div class="modal__backdrop" data-close></div>
+        <div class="modal__dialog">
+            <button class="modal__close" type="button" data-close aria-label="Cerrar" data-i18n-aria="detail.close">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    aria-hidden="true" focusable="false">
+                    <path d="M6 6l12 12M18 6 6 18" />
+                </svg>
+            </button>
+            <img class="media-16x9" id="quick-img" src="" alt="" width="640" height="360" loading="lazy"
+                decoding="async">
+            <div class="modal__content">
+                <div class="badges" id="quick-cats"></div>
+                <h2 id="quick-title"></h2>
+                <p id="quick-desc"></p>
+                <div>
+                    <p class="modal__label" data-i18n="quick.stack">Stack tecnológico</p>
+                    <div class="badges" id="quick-stack"></div>
+                </div>
+                <div class="modal__actions">
+                    <button class="btn btn-primary" type="button" id="quick-full">
+                        <span data-i18n="quick.full">Ver proyecto completo</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                            <path d="M5 12h14m-6-6 6 6-6 6" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== RF-05 · MODAL DE FICHA TÉCNICA DETALLADA ===================== -->
+    <div class="modal modal--detail" id="detail-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title"
+        hidden>
+        <div class="modal__backdrop" data-close></div>
+        <div class="modal__dialog" id="detail-dialog"></div>
+    </div>
+
+    <!-- ===================== RF-12 · REGIÓN DE NOTIFICACIONES ===================== -->
+    <div class="toast-region" id="toast-region" role="status" aria-live="polite" aria-atomic="false"></div>
+
+    <!-- Scripts clásicos modulares (namespace window.Portfolio) — el orden de carga es importante -->
+    <script>
+(function (P) {
+    'use strict';
+
+    /* =====================================================
+       UTILIDADES
+       ===================================================== */
+    const $ = (sel, ctx = document) => ctx.querySelector(sel);
+    const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const desktopMQ = window.matchMedia('(min-width: 768px)');
+
+    /** RNF-06 · Escape estricto de caracteres peligrosos antes de insertar en el DOM. */
+    const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (ch) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[ch]));
+
+    const ICONS = {
+        close: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+        check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m5 12 5 5 9-10"/></svg>',
+        alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M12 7v6M12 17h.01"/></svg>',
+        github: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.38 7.86 10.9.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>'
+    };
+    P.utils = { $, $$, reducedMotion, desktopMQ, escapeHTML, ICONS };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+
+    /* =====================================================
+       BUS DE EVENTOS INTERNO
+       Desacopla los módulos entre sí. Eventos publicados:
+         - modal:open   · un modal acaba de abrirse
+         - modal:close  · un modal se cerró restaurando el foco
+         - view:change  · cambió la vista de la SPA { id }
+       ===================================================== */
+    const listeners = new Map();
+
+    const bus = {
+        on(event, handler) {
+            if (!listeners.has(event)) listeners.set(event, new Set());
+            listeners.get(event).add(handler);
+            return () => listeners.get(event).delete(handler);
+        },
+        emit(event, detail) {
+            if (!listeners.has(event)) return;
+            listeners.get(event).forEach((handler) => handler(detail));
+        }
+    };
+    P.bus = bus;
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+
+    /* =====================================================
+       CONFIGURACIÓN DEL SITIO (DEV-BE-01)
+       -----------------------------------------------------
+       Formulario de contacto (Formspree):
+         1. Crea un formulario gratuito en https://formspree.io
+         2. Copia tu endpoint (formato https://formspree.io/f/xxxxxxxx)
+         3. Pégalo en CONTACT_ENDPOINT y vuelve a publicar.
+       Si se deja vacío, el formulario funciona en modo demostración:
+       valida los campos y notifica, pero no envía correos.
+       ===================================================== */
+    const CONTACT_ENDPOINT = '';
+    P.config = { CONTACT_ENDPOINT };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { $$ } = P.utils;
+
+    /* =====================================================
+       DEV-FE-12 · ARQUITECTURA i18n BASE (RNF-14)
+       Textos desacoplados del marcado mediante data-i18n,
+       data-i18n-placeholder y data-i18n-aria.
+       V2.0: diccionarios embebidos (es/en). En V2.1 se moverán
+       a i18n/es.json e i18n/en.json y se añadirá el conmutador.
+       Prueba rápida: abrir el archivo con ?lang=en
+       ===================================================== */
+    const DICTIONARIES = {
+        es: {
+            'skip': 'Saltar al contenido principal',
+            'profile.role': 'Ingeniería en Software',
+            'nav.menu': 'Abrir menú de navegación',
+            'nav.menuClose': 'Cerrar menú de navegación',
+            'nav.label': 'Navegación principal',
+            'nav.home': 'Inicio', 'nav.about': 'Mi información', 'nav.projects': 'Mis proyectos',
+            'nav.tech': 'Tecnologías', 'nav.contact': 'Contacto',
+            'social.github': 'Perfil de GitHub (se abre en una pestaña nueva)',
+            'social.linkedin': 'Perfil de LinkedIn (se abre en una pestaña nueva)',
+            'hero.kicker': 'Estudiante de Ingeniería en Software · UAEMex Tianguistenco',
+            'hero.title': 'Hola, soy Daniel Colin',
+            'hero.text': 'Desarrollo soluciones tecnológicas que van desde aplicaciones de escritorio robustas y bases de datos relacionales hasta sistemas embebidos de bajo nivel.',
+            'hero.ctaProjects': 'Explorar proyectos', 'hero.ctaCv': 'Descargar CV',
+            'featured.title': 'Proyectos destacados',
+            'featured.lead': 'Una selección de mis desarrollos más representativos. Haz clic o toca una tarjeta para abrir una vista rápida.',
+            'carousel.label': 'Carrusel de proyectos destacados',
+            'carousel.prev': 'Proyecto anterior', 'carousel.next': 'Proyecto siguiente',
+            'carousel.goto': 'Ir al proyecto {n}: {title}', 'carousel.slide': '{n} de {total}',
+            'carousel.quick': 'Vista rápida',
+            'about.title': 'Mi información',
+            'about.lead': 'Conoce mi trayectoria, mi formación académica y las competencias que he desarrollado como futuro Ingeniero en Software.',
+            'about.bioTitle': 'Biografía', 'about.eduTitle': 'Formación académica',
+            'about.skillsTitle': 'Competencias profesionales',
+            'about.cv': 'Descargar CV (PDF)', 'about.cvHint': 'Archivo PDF · descarga directa',
+            'skills.dev': 'Desarrollo de software', 'skills.db': 'Bases de datos',
+            'skills.req': 'Requisitos y modelado UML', 'skills.emb': 'Sistemas embebidos',
+            'projects.title': 'Mis proyectos',
+            'projects.lead': 'Catálogo de desarrollos realizados durante mi formación. Filtra por tecnología y abre cada ficha para ver capturas, arquitectura, dependencias y el repositorio.',
+            'projects.count': 'Mostrando {n} de {total} proyectos',
+            'projects.details': 'Ver detalles',
+            'projects.empty': 'No hay proyectos en esta categoría todavía.',
+            'filters.label': 'Filtrar proyectos por tecnología',
+            'filter.todos': 'Todos', 'filter.web': 'Web', 'filter.escritorio': 'Escritorio',
+            'filter.microcontroladores': 'Microcontroladores', 'filter.bd': 'Bases de Datos',
+            'img.preview': 'Vista previa de {title}',
+            'quick.stack': 'Stack tecnológico', 'quick.full': 'Ver proyecto completo',
+            'detail.close': 'Cerrar', 'detail.gallery': 'Galería de capturas',
+            'detail.shot': 'Captura {n}: {caption}',
+            'detail.about': 'Descripción', 'detail.features': 'Funcionalidades clave',
+            'detail.spec': 'Ficha técnica', 'detail.arch': 'Arquitectura', 'detail.langs': 'Lenguajes',
+            'detail.category': 'Categoría', 'detail.stack': 'Stack',
+            'detail.deps': 'Dependencias y versiones', 'detail.dep': 'Dependencia', 'detail.version': 'Versión',
+            'detail.repo': 'Ver repositorio en GitHub',
+            'tech.title': 'Tecnologías',
+            'tech.lead': 'Herramientas, bases de datos y entornos con los que trabajo. Pasa el cursor, enfoca con el teclado o toca una tarjeta para ver mi nivel de dominio.',
+            'tech.group.db': 'Bases de datos', 'tech.group.env': 'Sistemas operativos y entornos',
+            'tech.group.lang': 'Lenguajes y herramientas', 'tech.level': 'Nivel de dominio',
+            'level.basico': 'Básico', 'level.medio': 'Medio', 'level.avanzado': 'Avanzado',
+            'contact.title': 'Contacto',
+            'contact.lead': '¿Tienes una propuesta, una vacante o quieres colaborar en un proyecto? Escríbeme directamente desde este formulario.',
+            'contact.asideTitle': 'Hablemos',
+            'contact.asideText': 'Estoy abierto a prácticas profesionales, proyectos de desarrollo y colaboraciones académicas.',
+            'contact.location': 'Tianguistenco, Estado de México',
+            'contact.response': 'Tiempo de respuesta estimado: 24–48 h',
+            'form.required': 'Campos obligatorios',
+            'form.name': 'Nombre', 'form.email': 'Correo electrónico', 'form.subject': 'Asunto', 'form.message': 'Mensaje',
+            'form.namePh': 'Tu nombre completo', 'form.emailPh': 'tucorreo@ejemplo.com',
+            'form.subjectPh': 'Motivo del mensaje', 'form.messagePh': 'Cuéntame sobre tu propuesta…',
+            'form.privacyTitle': 'Aviso de privacidad:',
+            'form.privacy': 'los datos que proporciones (nombre, correo, asunto y mensaje) se utilizarán exclusivamente para establecer comunicación profesional contigo. No se almacenan en bases de datos ni se comparten con terceros. Al enviar este formulario aceptas dicho uso.',
+            'form.submit': 'Enviar Mensaje', 'form.sending': 'Enviando…',
+            'err.required': 'Este campo es obligatorio.',
+            'err.min': 'Debe contener al menos {n} caracteres.',
+            'err.max': 'Excede el máximo de {n} caracteres.',
+            'err.email': 'Introduce un correo electrónico válido (ej. nombre@dominio.com).',
+            'err.html': 'Por seguridad, no se permiten etiquetas HTML ni scripts.',
+            'toast.okTitle': '¡Mensaje enviado!',
+            'toast.okText': 'Gracias por escribir. Te responderé a la brevedad.',
+            'toast.demo': 'Modo demostración: el formulario es válido, pero aún no se ha configurado el servicio de envío.',
+            'toast.errTitle': 'No se pudo enviar el mensaje',
+            'toast.errText': 'Ocurrió un problema de conexión. Inténtalo de nuevo en unos minutos.',
+            'toast.invalidTitle': 'Revisa el formulario',
+            'toast.invalidText': 'Hay campos marcados en rojo que necesitan tu atención.',
+            'toast.close': 'Cerrar notificación',
+            'footer.rights': '© 2026 Daniel Colin. Todos los derechos reservados.',
+            'footer.version': 'Portafolio Web Profesional · Versión 2.0'
+        },
+        en: {
+            'skip': 'Skip to main content',
+            'profile.role': 'Software Engineering',
+            'nav.menu': 'Open navigation menu',
+            'nav.menuClose': 'Close navigation menu',
+            'nav.label': 'Main navigation',
+            'nav.home': 'Home', 'nav.about': 'About me', 'nav.projects': 'My projects',
+            'nav.tech': 'Technologies', 'nav.contact': 'Contact',
+            'social.github': 'GitHub profile (opens in a new tab)',
+            'social.linkedin': 'LinkedIn profile (opens in a new tab)',
+            'hero.kicker': 'Software Engineering Student · UAEMex Tianguistenco',
+            'hero.title': "Hi, I'm Daniel Colin",
+            'hero.text': 'I build technology solutions ranging from robust desktop applications and relational databases to low-level embedded systems.',
+            'hero.ctaProjects': 'Explore projects', 'hero.ctaCv': 'Download CV',
+            'featured.title': 'Featured projects',
+            'featured.lead': 'A selection of my most representative work. Click or tap a card to open a quick view.',
+            'carousel.label': 'Featured projects carousel',
+            'carousel.prev': 'Previous project', 'carousel.next': 'Next project',
+            'carousel.goto': 'Go to project {n}: {title}', 'carousel.slide': '{n} of {total}',
+            'carousel.quick': 'Quick view',
+            'about.title': 'About me',
+            'about.lead': 'Learn about my background, academic education and the skills I have developed as a future Software Engineer.',
+            'about.bioTitle': 'Biography', 'about.eduTitle': 'Education',
+            'about.skillsTitle': 'Professional skills',
+            'about.cv': 'Download CV (PDF)', 'about.cvHint': 'PDF file · direct download',
+            'skills.dev': 'Software development', 'skills.db': 'Databases',
+            'skills.req': 'Requirements & UML modeling', 'skills.emb': 'Embedded systems',
+            'projects.title': 'My projects',
+            'projects.lead': 'Catalog of projects built during my studies. Filter by technology and open each card to see screenshots, architecture, dependencies and the repository.',
+            'projects.count': 'Showing {n} of {total} projects',
+            'projects.details': 'View details',
+            'projects.empty': 'There are no projects in this category yet.',
+            'filters.label': 'Filter projects by technology',
+            'filter.todos': 'All', 'filter.web': 'Web', 'filter.escritorio': 'Desktop',
+            'filter.microcontroladores': 'Microcontrollers', 'filter.bd': 'Databases',
+            'img.preview': 'Preview of {title}',
+            'quick.stack': 'Tech stack', 'quick.full': 'View full project',
+            'detail.close': 'Close', 'detail.gallery': 'Screenshot gallery',
+            'detail.shot': 'Screenshot {n}: {caption}',
+            'detail.about': 'Description', 'detail.features': 'Key features',
+            'detail.spec': 'Technical sheet', 'detail.arch': 'Architecture', 'detail.langs': 'Languages',
+            'detail.category': 'Category', 'detail.stack': 'Stack',
+            'detail.deps': 'Dependencies & versions', 'detail.dep': 'Dependency', 'detail.version': 'Version',
+            'detail.repo': 'View repository on GitHub',
+            'tech.title': 'Technologies',
+            'tech.lead': 'Tools, databases and environments I work with. Hover, focus with the keyboard or tap a card to see my proficiency level.',
+            'tech.group.db': 'Databases', 'tech.group.env': 'Operating systems & environments',
+            'tech.group.lang': 'Languages & tools', 'tech.level': 'Proficiency level',
+            'level.basico': 'Basic', 'level.medio': 'Intermediate', 'level.avanzado': 'Advanced',
+            'contact.title': 'Contact',
+            'contact.lead': 'Do you have a proposal, a job opening or want to collaborate on a project? Write to me directly using this form.',
+            'contact.asideTitle': "Let's talk",
+            'contact.asideText': 'I am open to internships, development projects and academic collaborations.',
+            'contact.location': 'Tianguistenco, State of Mexico',
+            'contact.response': 'Estimated response time: 24–48 h',
+            'form.required': 'Required fields',
+            'form.name': 'Name', 'form.email': 'Email', 'form.subject': 'Subject', 'form.message': 'Message',
+            'form.namePh': 'Your full name', 'form.emailPh': 'you@example.com',
+            'form.subjectPh': 'Reason for your message', 'form.messagePh': 'Tell me about your proposal…',
+            'form.privacyTitle': 'Privacy notice:',
+            'form.privacy': 'the data you provide (name, email, subject and message) will be used exclusively to establish professional communication with you. It is not stored in databases or shared with third parties. By submitting this form you accept this use.',
+            'form.submit': 'Send Message', 'form.sending': 'Sending…',
+            'err.required': 'This field is required.',
+            'err.min': 'Must contain at least {n} characters.',
+            'err.max': 'Exceeds the maximum of {n} characters.',
+            'err.email': 'Enter a valid email address (e.g. name@domain.com).',
+            'err.html': 'For security reasons, HTML tags and scripts are not allowed.',
+            'toast.okTitle': 'Message sent!',
+            'toast.okText': 'Thanks for reaching out. I will reply shortly.',
+            'toast.demo': 'Demo mode: the form is valid, but the sending service has not been configured yet.',
+            'toast.errTitle': 'The message could not be sent',
+            'toast.errText': 'A connection problem occurred. Please try again in a few minutes.',
+            'toast.invalidTitle': 'Check the form',
+            'toast.invalidText': 'Some fields highlighted in red need your attention.',
+            'toast.close': 'Close notification',
+            'footer.rights': '© 2026 Daniel Colin. All rights reserved.',
+            'footer.version': 'Professional Web Portfolio · Version 2.0'
+        }
+    };
+
+    const I18n = {
+        lang: 'es',
+        t(key, vars = {}) {
+            const dict = DICTIONARIES[this.lang] || DICTIONARIES.es;
+            let str = dict[key] ?? DICTIONARIES.es[key] ?? key;
+            Object.keys(vars).forEach((k) => { str = str.split('{' + k + '}').join(vars[k]); });
+            return str;
+        },
+        apply(lang) {
+            if (!DICTIONARIES[lang]) return;
+            this.lang = lang;
+            document.documentElement.lang = lang;
+            $$('[data-i18n]').forEach((el) => { el.textContent = this.t(el.dataset.i18n); });
+            $$('[data-i18n-placeholder]').forEach((el) => { el.placeholder = this.t(el.dataset.i18nPlaceholder); });
+            $$('[data-i18n-aria]').forEach((el) => { el.setAttribute('aria-label', this.t(el.dataset.i18nAria)); });
+            document.dispatchEvent(new CustomEvent('i18n:change', { detail: { lang } }));
+        }
+    };
+    const t = (key, vars) => I18n.t(key, vars);
+    P.i18n = { DICTIONARIES, I18n, t };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+
+    /* =====================================================
+       DATOS · PROYECTOS (DEV-FE-05 / DEV-FE-06)
+       Para usar capturas reales en WebP, añade a cada proyecto:
+       images: ['assets/img/<id>-1.webp', ...]  (mismo orden que shots)
+       ===================================================== */
+    const GITHUB = 'https://github.com/Coliiin1';
+
+    const PROJECTS = [
+        {
+            id: 'gestor-citas', title: 'Gestor de Citas Médicas', category: ['escritorio', 'bd'], featured: true,
+            short: 'Sistema de escritorio para administrar pacientes, médicos y agenda de citas, con persistencia en bases de datos relacionales.',
+            description: 'Análisis y diseño de un sistema de gestión médica con una arquitectura sólida. Incluye la formulación de requerimientos, el diseño de esquemas de bases de datos y el desarrollo de interfaces gráficas (GUI) en JavaFX, con soporte para PostgreSQL.',
+            stack: ['Java', 'JavaFX', 'PostgreSQL', 'JDBC'], langs: ['Java', 'SQL'],
+            arch: 'MVC en capas (Vista FXML · Controlador · Servicio · DAO)',
+            features: ['Registro y búsqueda de pacientes y médicos', 'Agenda de citas con validación de horarios', 'Esquema relacional normalizado (3FN)', 'Especificación de requisitos funcionales y no funcionales'],
+            deps: [['Java SE', '17 LTS'], ['OpenJFX', '17'], ['PostgreSQL JDBC Driver', '42']],
+            repo: GITHUB, palette: ['#1f4e79', '#2a9d8f'], glyph: '+',
+            shots: [""]
+        },
+        {
+            id: 'catalogo-productos', title: 'Catálogo de Productos', category: ['escritorio', 'bd'], featured: true,
+            short: 'Aplicación con arquitectura en capas y POO que gestiona niveles de acceso para administradores y usuarios.',
+            description: 'Aplicación desarrollada con arquitectura en capas y principios de programación orientada a objetos (POO). Gestiona distintos niveles de acceso para administradores y usuarios, con persistencia en base de datos e interfaces construidas con Swing (JFrame, JPanel).',
+            stack: ['Java', 'Swing'], langs: ['Java'],
+            arch: 'Arquitectura en capas (Presentación · Lógica de negocio · Acceso a datos)',
+            features: ['Inicio de sesión con roles (administrador / usuario)', 'Altas, bajas y cambios de productos y categorías', 'Búsqueda y filtrado del catálogo', 'Encapsulamiento, herencia y polimorfismo aplicados'],
+            deps: [['Java SE', '17 LTS'], ['Swing (JFrame, JPanel)', 'JDK']],
+            repo: GITHUB, palette: ['#5b3a8c', '#1f6fb2'], glyph: '{ }',
+            shots: [""]
+        },
+
+        {
+            id: 'pic-c', title: 'Control Embebido con PIC18F4550 en C', category: ['microcontroladores'], featured: false,
+            short: 'Firmware en C para el PIC18F4550 orientado al manejo de puertos, temporizadores e interrupciones.',
+            description: 'Programas en lenguaje C para el microcontrolador PIC18F4550 enfocados en el manejo de puertos de entrada/salida, temporizadores e interrupciones, validados en simulación antes de su implementación física.',
+            stack: ['C', 'PIC18F4550', 'XC8', 'MPLAB X'], langs: ['C'],
+            arch: 'Firmware basado en interrupciones y máquina de estados',
+            features: ['Configuración de puertos de E/S', 'Uso de temporizadores e interrupciones', 'Lectura de entradas digitales y control de salidas', 'Validación en simulación previa al montaje'],
+            deps: [['MPLAB X IDE', '6.x'], ['Compilador MPLAB XC8', '2.x'], ['Proteus Design Suite', '8.x']],
+            repo: GITHUB, palette: ['#264653', '#c8553d'], glyph: 'C',
+            shots: [""]
+        },
+        {
+            id: 'scripts-python', title: 'Cerberus IDE', category: ['escritorio'], featured: true,
+            short: 'Cerberus es un lenguaje de programación educativo, escrito en español, diseñado para facilitar el aprendizaje de programación y de programación orientada a objetos.',
+            description: 'Cerberus es un lenguaje de programación educativo, escrito en español, diseñado para facilitar el aprendizaje de programación y de programación orientada a objetos.Su sintaxis toma como referencia conceptos y formas de escritura presentes en Java, pero adapta los elementos principales al español y busca una sintaxis más sencilla y comprensible para estudiantes con conocimientos básicos de programación.',
+            stack: ['Java', 'JavaFX', 'Maven'], langs: ['Java'],
+            arch: 'Arquitectura en capas (Presentación · Lógica de negocio · Acceso a datos)',
+            features: ['Funciones y tipos de datos en español', 'Control de flujo con palabras reservadas en español (ej: si/entonces, mientras/hacer)', 'Soporte para clases(En desarrollo), métodos con sintaxis adaptada'],
+            deps: [['Java', '25'], ['Biblioteca estándar (Maven)', '—']],
+            repo: GITHUB, palette: ['#306998', '#b8860b'], glyph: 'IDE',
+            shots: [""]
+        },
+        {
+            id: 'modelado-bd', title: 'Diseño de Bases de Datos Relacionales', category: ['bd'], featured: false,
+            short: 'Modelado, normalización e implementación de esquemas relacionales en PostgreSQL y MariaDB.',
+            description: 'Proyectos de diseño de bases de datos que abarcan desde el modelo entidad-relación y la normalización hasta la implementación física en PostgreSQL y MariaDB, incluyendo restricciones de integridad, vistas y consultas complejas.',
+            stack: ['PostgreSQL', 'MariaDB', 'SQL'], langs: ['SQL'],
+            arch: 'Modelo relacional normalizado (3FN) con integridad referencial',
+            features: ['Diagramas entidad-relación', 'Normalización hasta tercera forma normal', 'Restricciones, llaves foráneas y vistas', 'Consultas con JOIN y subconsultas'],
+            deps: [['PostgreSQL', '16'], ['MariaDB', '11'], ['pgAdmin / DBeaver', '—']],
+            repo: GITHUB, palette: ['#336791', '#003545'], glyph: 'SQL',
+            shots: [""]
+        },
+        {
+            id: 'portafolio-web', title: 'Portafolio Web Profesional', category: ['web'], featured: true,
+            short: 'Este mismo sitio: SPA estática a la medida con HTML5 semántico, CSS Mobile-First y JavaScript vanilla.',
+            description: 'Reingeniería integral del portafolio publicado originalmente en Google Sites. SPA estática sin dependencias externas, con menú superior fijo, carrusel, modales, filtrado dinámico, formulario de contacto nativo con backend SMTP, accesibilidad WCAG 2.1 AA y arquitectura i18n.',
+            stack: ['HTML5', 'CSS3', 'JavaScript', 'PHP'], langs: ['HTML', 'CSS', 'JavaScript', 'PHP'],
+            arch: 'SPA estática modular (vistas en memoria) + endpoint PHP SMTP sin persistencia',
+            features: ['Navegación SPA con transiciones < 300 ms', 'Carrusel con pausa al hover y soporte táctil', 'Formulario con validación en cliente y notificación toast', 'Diseño Mobile-First y contraste WCAG 2.1 AA'],
+            deps: [['JavaScript vanilla (ES2020)', '—'], ['PHP', '8.x'], ['Hosting NVMe + SSL', '—']],
+            repo: 'https://github.com/Coliiin1/Coliiin1.github.io', palette: ['#2c3e50', '#1f6fb2'], glyph: '</>',
+            shots: [""]
+        }
+    ];
+    const projectById = (id) => PROJECTS.find((p) => p.id === id);
+
+    /* =====================================================
+       DATOS · TECNOLOGÍAS (RF-15)
+       Nivel: 'basico' | 'medio' | 'avanzado'
+       ===================================================== */
+    const TECH = [
+        { group: 'db', name: 'PostgreSQL', abbr: 'PG', bg: '#336791', level: 'medio', note: 'Modelado relacional, consultas SQL, vistas y restricciones de integridad.' },
+        { group: 'db', name: 'MariaDB', abbr: 'MDB', bg: '#003545', level: 'medio', note: 'Creación de esquemas, consultas e integración con Java vía JDBC.' },
+        { group: 'db', name: 'SQL', abbr: 'SQL', bg: '#4a5868', level: 'medio', note: 'DDL/DML, JOIN, subconsultas y normalización.' },
+        { group: 'env', name: 'Fedora Linux', abbr: 'FED', bg: '#294172', level: 'avanzado', note: 'Entorno de trabajo principal: terminal, paquetes y configuración de servicios.' },
+        { group: 'env', name: 'Git y GitHub', abbr: 'GIT', bg: '#b8401f', level: 'medio', note: 'Ramas feature/, pull requests y control de versiones.' },
+        { group: 'env', name: 'MPLAB X', abbr: 'MPX', bg: '#a50e26', level: 'medio', note: 'Compilación, depuración y simulación de firmware para PIC.' },
+        { group: 'env', name: 'Proteus', abbr: 'PRO', bg: '#1d3557', level: 'medio', note: 'Simulación de circuitos con microcontroladores y periféricos.' },
+        { group: 'lang', name: 'Java', abbr: 'JV', bg: '#8a5a12', level: 'avanzado', note: 'POO, Swing, JavaFX, JDBC y arquitectura en capas / MVC.' },
+        { group: 'lang', name: 'C', abbr: 'C', bg: '#3d4a57', level: 'medio', note: 'Programación estructurada y firmware para microcontroladores.' },
+        { group: 'lang', name: 'Ensamblador PIC', abbr: 'ASM', bg: '#0b6e4f', level: 'medio', note: 'Manejo de registros, puertos y rutinas de retardo.' },
+        { group: 'lang', name: 'Python', abbr: 'PY', bg: '#306998', level: 'medio', note: 'Scripts de automatización y procesamiento de datos.' },
+        { group: 'lang', name: 'HTML, CSS y JS', abbr: 'WEB', bg: '#b5381a', level: 'medio', note: 'Maquetación semántica, CSS responsivo y JavaScript vanilla.' },
+        { group: 'lang', name: 'UML', abbr: 'UML', bg: '#2c3e50', level: 'medio', note: 'Casos de uso, diagramas de clases y de secuencia.' }
+    ];
+    const LEVEL_WIDTH = { basico: '33%', medio: '66%', avanzado: '100%' };
+    P.data = { PROJECTS, projectById, TECH, LEVEL_WIDTH };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { escapeHTML } = P.utils;
+    const { t } = P.i18n;
+
+    /* =====================================================
+       DEV-AST-01 · Marcadores gráficos 16:9 (SVG ligero)
+       Se reemplazan automáticamente por WebP si el proyecto
+       define el arreglo `images`.
+       ===================================================== */
+    function projectImage(p, variant = 0) {
+        if (Array.isArray(p.images) && p.images[variant]) return p.images[variant];
+        const caption = p.shots[variant] || '';
+        const decor = [
+            // 0 · ventana de interfaz
+            '<rect x="40" y="34" width="560" height="196" rx="12" fill="rgba(18,44,79,.05)" stroke="rgba(18,44,79,.3)" stroke-width="2"/>' +
+            '<line x1="40" y1="62" x2="600" y2="62" stroke="rgba(18,44,79,.18)" stroke-width="2"/>' +
+            '<circle cx="62" cy="48" r="4" fill="rgba(18,44,79,.22)"/><circle cx="78" cy="48" r="4" fill="rgba(18,44,79,.15)"/><circle cx="94" cy="48" r="4" fill="rgba(18,44,79,.1)"/>' +
+            '<rect x="62" y="80" width="150" height="130" rx="8" fill="rgba(18,44,79,.05)" stroke="rgba(18,44,79,.18)"/>' +
+            '<rect x="232" y="84" width="330" height="14" rx="7" fill="rgba(18,44,79,.16)"/>' +
+            '<rect x="232" y="112" width="270" height="14" rx="7" fill="rgba(18,44,79,.1)"/>' +
+            '<rect x="232" y="140" width="300" height="14" rx="7" fill="rgba(18,44,79,.1)"/>' +
+            '<rect x="232" y="176" width="120" height="30" rx="8" fill="rgba(18,44,79,.14)" stroke="rgba(18,44,79,.3)"/>',
+            // 1 · diagrama de bloques
+            '<g fill="rgba(18,44,79,.05)" stroke="rgba(18,44,79,.35)" stroke-width="2">' +
+            '<rect x="60" y="50" width="150" height="80" rx="10"/><rect x="430" y="50" width="150" height="80" rx="10"/>' +
+            '<rect x="245" y="150" width="150" height="80" rx="10"/></g>' +
+            '<g stroke="rgba(18,44,79,.28)" stroke-width="3" fill="none"><path d="M210 90h220"/><path d="M135 130v60h110"/><path d="M505 130v60H395"/></g>',
+            // 2 · código
+            '<rect x="40" y="34" width="560" height="196" rx="12" fill="rgba(18,44,79,.04)" stroke="rgba(18,44,79,.3)" stroke-width="2"/>' +
+            '<g fill="rgba(18,44,79,.18)">' +
+            '<rect x="64" y="58" width="120" height="10" rx="5"/><rect x="196" y="58" width="200" height="10" rx="5" opacity=".6"/>' +
+            '<rect x="88" y="84" width="240" height="10" rx="5" opacity=".8"/><rect x="88" y="110" width="320" height="10" rx="5" opacity=".6"/>' +
+            '<rect x="112" y="136" width="180" height="10" rx="5" opacity=".8"/><rect x="112" y="162" width="260" height="10" rx="5" opacity=".6"/>' +
+            '<rect x="88" y="188" width="140" height="10" rx="5" opacity=".8"/><rect x="64" y="210" width="60" height="10" rx="5"/></g>'
+        ][variant % 3];
+
+        const svg =
+            '<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">' +
+            '<rect width="640" height="360" fill="#F1F5F9"/>' + decor +
+            '<text x="600" y="320" text-anchor="end" font-family="Consolas,monospace" font-size="56" font-weight="700" fill="rgba(18,44,79,.1)">' + escapeHTML(p.glyph) + '</text>' +
+            '<text x="40" y="290" font-family="Segoe UI,Arial,sans-serif" font-size="30" font-weight="700" fill="#122C4F">' + escapeHTML(p.title) + '</text>' +
+            '<text x="40" y="322" font-family="Segoe UI,Arial,sans-serif" font-size="18" fill="rgba(18,44,79,.65)">' + escapeHTML(caption) + '</text>' +
+            '</svg>';
+        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
+
+    const imgTag = (src, alt, cls = 'media-16x9') =>
+        '<img class="' + cls + '" src="' + src + '" alt="' + escapeHTML(alt) + '" width="640" height="360" loading="lazy" decoding="async">';
+
+    const catBadges = (p) => p.category.map((c) => '<span class="badge">' + escapeHTML(t('filter.' + c)) + '</span>').join('');
+    const stackBadges = (list) => list.map((s) => '<span class="badge">' + escapeHTML(s) + '</span>').join('');
+    P.media = { projectImage, imgTag, catBadges, stackBadges };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { $, escapeHTML, ICONS, reducedMotion } = P.utils;
+    const { t } = P.i18n;
+
+    /* =====================================================
+       RF-12 · TOAST
+       ===================================================== */
+    const Toast = (() => {
+        const region = $('#toast-region');
+        function dismiss(el) {
+            if (!el.isConnected || el.classList.contains('is-leaving')) return;
+            el.classList.add('is-leaving');
+            setTimeout(() => el.remove(), reducedMotion ? 0 : 200);
+        }
+        function show({ type = 'success', title, message, duration = 4000 }) {
+            const el = document.createElement('div');
+            el.className = 'toast' + (type === 'error' ? ' toast--error' : '');
+            el.innerHTML =
+                '<span class="toast__icon">' + (type === 'error' ? ICONS.alert : ICONS.check) + '</span>' +
+                '<div class="toast__body"><strong>' + escapeHTML(title) + '</strong><p>' + escapeHTML(message) + '</p></div>' +
+                '<button type="button" class="icon-btn" aria-label="' + escapeHTML(t('toast.close')) + '">' + ICONS.close + '</button>';
+            el.querySelector('button').addEventListener('click', () => dismiss(el));
+            region.appendChild(el);
+            setTimeout(() => dismiss(el), duration);
+        }
+        return { show };
+    })();
+    P.toast = { Toast };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { $, $$, reducedMotion } = P.utils;
+    const bus = P.bus;
+
+    /* =====================================================
+       RF-02 / RF-05 · MODALES
+       Backdrop blur(8px), cierre con Escape (keyCode 27) o
+       clic en backdrop, bloqueo de scroll y foco atrapado.
+       ===================================================== */
+    const Modal = (() => {
+        let current = null;
+        let returnFocus = null;
+        const hideTimers = new WeakMap();
+        const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), textarea, select, [tabindex]:not([tabindex="-1"])';
+
+        function open(modal, opener) {
+            if (current && current !== modal) close({ restoreFocus: false });
+            if (!current) returnFocus = opener || document.activeElement;
+            clearTimeout(hideTimers.get(modal));
+            modal.hidden = false;
+            void modal.offsetWidth; // reflow para disparar la transición
+            modal.classList.add('is-open');
+            document.body.classList.add('modal-open');
+            current = modal;
+            const dialog = $('.modal__dialog', modal);
+            dialog.scrollTop = 0;
+            const closeBtn = $('.modal__close', modal);
+            if (closeBtn) closeBtn.focus({ preventScroll: true });
+            bus.emit('modal:open');
+        }
+
+        function close({ restoreFocus = true } = {}) {
+            if (!current) return;
+            const modal = current;
+            current = null;
+            modal.classList.remove('is-open');
+            hideTimers.set(modal, setTimeout(() => { modal.hidden = true; }, reducedMotion ? 0 : 250));
+            if (restoreFocus) {
+                document.body.classList.remove('modal-open');
+                bus.emit('modal:close');
+                if (returnFocus && document.contains(returnFocus)) returnFocus.focus({ preventScroll: true });
+                returnFocus = null;
+            }
+        }
+
+        function trapFocus(e) {
+            const items = $$(FOCUSABLE, current).filter((el) => el.offsetParent !== null);
+            if (!items.length) return;
+            const first = items[0];
+            const last = items[items.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+
+        $$('.modal').forEach((modal) => {
+            modal.addEventListener('click', (e) => {
+                if (e.target.closest('[data-close]')) close();
+            });
+        });
+
+        return {
+            open, close, trapFocus,
+            get isOpen() { return current !== null; }
+        };
+    })();
+    P.modal = { Modal };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { $, $$, escapeHTML } = P.utils;
+    const { t } = P.i18n;
+    const { TECH, LEVEL_WIDTH } = P.data;
+
+    /* =====================================================
+       RF-15 · TECNOLOGÍAS
+       ===================================================== */
+    const Tech = (() => {
+        const wrap = $('#tech-groups');
+        const groups = ['db', 'env', 'lang'];
+
+        const icon = (tch) =>
+            '<svg viewBox="0 0 48 48" aria-hidden="true" focusable="false">' +
+            '<rect width="48" height="48" rx="12" fill="' + tch.bg + '"/>' +
+            '<text x="24" y="' + (tch.abbr.length > 2 ? 29 : 31) + '" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-weight="700" font-size="' +
+            (tch.abbr.length > 2 ? 14 : 18) + '" fill="#fff">' + escapeHTML(tch.abbr) + '</text></svg>';
+
+        function render() {
+            let uid = 0;
+            wrap.innerHTML = groups.map((g) =>
+                '<div class="tech-group"><h3>' + escapeHTML(t('tech.group.' + g)) + '</h3><div class="tech-grid">' +
+                TECH.filter((x) => x.group === g).map((x) => {
+                    const tipId = 'tip-' + (uid++);
+                    return '<button type="button" class="tech-card surface" aria-describedby="' + tipId + '">' +
+                        '<span class="tech-card__icon">' + icon(x) + '</span>' +
+                        '<span class="tech-card__name">' + escapeHTML(x.name) + '</span>' +
+                        '<span class="tooltip" role="tooltip" id="' + tipId + '">' +
+                        '<span class="tooltip__level"><span>' + escapeHTML(t('tech.level')) + '</span><span>' + escapeHTML(t('level.' + x.level)) + '</span></span>' +
+                        '<span class="meter" aria-hidden="true"><span style="--lvl:' + LEVEL_WIDTH[x.level] + '"></span></span>' +
+                        '<span>' + escapeHTML(x.note) + '</span>' +
+                        '</span></button>';
+                }).join('') +
+                '</div></div>'
+            ).join('');
+        }
+
+        function closeAll(except) {
+            $$('.tech-card.is-open', wrap).forEach((c) => { if (c !== except) c.classList.remove('is-open'); });
+        }
+
+        // Soporte táctil / clic: alterna el tooltip
+        wrap.addEventListener('click', (e) => {
+            const card = e.target.closest('.tech-card');
+            if (!card) return;
+            closeAll(card);
+            card.classList.toggle('is-open');
+        });
+        document.addEventListener('click', (e) => { if (!e.target.closest('.tech-card')) closeAll(); });
+        wrap.addEventListener('focusout', (e) => { if (!wrap.contains(e.relatedTarget)) closeAll(); });
+
+        return { render, closeAll };
+    })();
+    P.technologies = { Tech };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { $, $$, desktopMQ } = P.utils;
+    const { t } = P.i18n;
+    const { Tech } = P.technologies;
+    const bus = P.bus;
+
+    /* =====================================================
+       DEV-FE-09 · NAVEGACIÓN SPA (RF-10 · RNF-02 · RNF-03)
+       Vistas en memoria, estado activo reactivo, historial
+       con hash y bloqueo (150 ms) ante clics repetidos.
+       ===================================================== */
+    const Nav = (() => {
+        const VIEWS = ['inicio', 'mi-informacion', 'mis-proyectos', 'tecnologias', 'contacto'];
+        const LOCK_MS = 150;
+        const sidebar = $('#sidebar');
+        const overlay = $('#nav-overlay');
+        const toggle = $('#menu-toggle');
+        let current = null;
+        let locked = false;
+        let pending = null;
+
+        /* --- Menú móvil (off-canvas) --- */
+        function isMobile() { return !desktopMQ.matches; }
+
+        function syncSidebarA11y() {
+            const hidden = isMobile() && !sidebar.classList.contains('is-open');
+            sidebar.inert = hidden;
+            if (hidden) sidebar.setAttribute('aria-hidden', 'true');
+            else sidebar.removeAttribute('aria-hidden');
+        }
+
+        function setMobileMenu(open, { focusToggle = false } = {}) {
+            sidebar.classList.toggle('is-open', open);
+            overlay.classList.toggle('is-visible', open);
+            toggle.setAttribute('aria-expanded', String(open));
+            toggle.setAttribute('aria-label', t(open ? 'nav.menuClose' : 'nav.menu'));
+            document.body.classList.toggle('nav-open', open && isMobile());
+            syncSidebarA11y();
+            if (open) { const a = $('.nav-item-active', sidebar) || $('.nav-item', sidebar); a.focus(); }
+            else if (focusToggle) toggle.focus();
+        }
+        const isMenuOpen = () => sidebar.classList.contains('is-open');
+
+        /* --- Cambio de vista --- */
+        function show(id, { push = true, focus = true } = {}) {
+            if (!VIEWS.includes(id)) id = 'inicio';
+            if (isMenuOpen()) setMobileMenu(false);
+            if (id === current) return;
+            if (locked) { pending = { id, push, focus }; return; }
+            locked = true;
+
+            const next = document.getElementById(id);
+            if (current) {
+                const prev = document.getElementById(current);
+                prev.classList.remove('is-active');
+                prev.hidden = true;
+            }
+            next.hidden = false;
+            void next.offsetWidth; // reflow → transición de opacidad
+            next.classList.add('is-active');
+
+            $$('.nav-item').forEach((a) => {
+                const active = a.dataset.nav === id;
+                a.classList.toggle('nav-item-active', active);
+                if (active) a.setAttribute('aria-current', 'page');
+                else a.removeAttribute('aria-current');
+            });
+
+            if (push && location.hash !== '#' + id) history.pushState({ view: id }, '', '#' + id);
+            window.scrollTo(0, 0);
+            if (focus) {
+                const heading = $('[tabindex="-1"]', next);
+                if (heading) heading.focus({ preventScroll: true });
+            }
+
+            bus.emit('view:change', { id });
+            if (id !== 'tecnologias') Tech.closeAll();
+            current = id;
+
+            setTimeout(() => {
+                locked = false;
+                if (pending) { const p = pending; pending = null; show(p.id, p); }
+            }, LOCK_MS);
+        }
+
+        const idFromHash = () => decodeURIComponent(location.hash.replace('#', ''));
+
+        // Delegación: cualquier enlace interno hacia una vista
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href^="#"]');
+            if (!link) return;
+            const id = link.getAttribute('href').slice(1);
+            if (!VIEWS.includes(id)) return;
+            e.preventDefault();
+            show(id);
+        });
+
+        window.addEventListener('popstate', () => show(idFromHash(), { push: false }));
+        window.addEventListener('hashchange', () => show(idFromHash(), { push: false }));
+
+        toggle.addEventListener('click', () => setMobileMenu(!isMenuOpen()));
+        overlay.addEventListener('click', () => setMobileMenu(false, { focusToggle: true }));
+        desktopMQ.addEventListener('change', () => setMobileMenu(false));
+
+        function init() {
+            syncSidebarA11y();
+            const initial = idFromHash();
+            show(VIEWS.includes(initial) ? initial : 'inicio', { push: false, focus: false });
+            if (!VIEWS.includes(initial) && location.hash) history.replaceState(null, '', '#inicio');
+        }
+
+        return { show, init, isMenuOpen, setMobileMenu };
+    })();
+    P.nav = { Nav };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { $, $$, escapeHTML, ICONS } = P.utils;
+    const { t } = P.i18n;
+    const { PROJECTS, projectById } = P.data;
+    const { projectImage, imgTag, catBadges, stackBadges } = P.media;
+    const { Modal } = P.modal;
+    const { Nav } = P.nav;
+
+    /* =====================================================
+       RF-04 / RF-05 / RF-16 · PROYECTOS
+       ===================================================== */
+    const Projects = (() => {
+        const grid = $('#projects-grid');
+        const countEl = $('#results-count');
+        const emptyEl = $('#projects-empty');
+        const quickModal = $('#quick-modal');
+        const detailModal = $('#detail-modal');
+        const detailDialog = $('#detail-dialog');
+        let currentFilter = 'todos';
+
+        function render() {
+            grid.innerHTML = PROJECTS.map((p) =>
+                '<article class="project-card" data-category="' + p.category.join(' ') + '" data-id="' + p.id + '">' +
+                imgTag(projectImage(p, 0), t('img.preview', { title: p.title })) +
+                '<div class="project-card__body">' +
+                '<div class="badges">' + catBadges(p) + '</div>' +
+                '<h3 class="project-card__title">' + escapeHTML(p.title) + '</h3>' +
+                '<p class="project-card__desc">' + escapeHTML(p.short) + '</p>' +
+                '<div class="badges">' + stackBadges(p.stack.slice(0, 3)) + '</div>' +
+                '<button type="button" class="btn btn-primary" data-detail="' + p.id + '">' + escapeHTML(t('projects.details')) + '</button>' +
+                '</div></article>'
+            ).join('');
+            applyFilter(currentFilter, false);
+        }
+
+        /** RF-16 · Filtrado instantáneo en cliente (data-filter ↔ data-category). */
+        function applyFilter(filter, animate = true) {
+            currentFilter = filter;
+            $$('.filter-btn').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+            let visible = 0;
+            $$('.project-card', grid).forEach((card) => {
+                const match = filter === 'todos' || card.dataset.category.split(' ').includes(filter);
+                if (match) {
+                    visible++;
+                    if (card.hidden || animate) {
+                        card.hidden = false;
+                        card.classList.remove('is-entering');
+                        if (animate) { void card.offsetWidth; card.classList.add('is-entering'); }
+                    }
+                } else {
+                    card.hidden = true;
+                }
+            });
+            countEl.textContent = t('projects.count', { n: visible, total: PROJECTS.length });
+            emptyEl.hidden = visible > 0;
+        }
+
+        function openQuick(id, opener) {
+            const p = projectById(id);
+            if (!p) return;
+            const img = $('#quick-img');
+            img.src = projectImage(p, 0);
+            img.alt = t('img.preview', { title: p.title });
+            $('#quick-cats').innerHTML = catBadges(p);
+            $('#quick-title').textContent = p.title;
+            $('#quick-desc').textContent = p.short;
+            $('#quick-stack').innerHTML = stackBadges(p.stack);
+            $('#quick-full').dataset.project = p.id;
+            Modal.open(quickModal, opener);
+        }
+
+        function openDetail(id, opener) {
+            const p = projectById(id);
+            if (!p) return;
+            detailDialog.dataset.project = p.id;
+            const thumbs = p.shots.map((caption, i) =>
+                '<button type="button" class="gallery__thumb" data-shot="' + i + '" aria-current="' + (i === 0) + '" aria-label="' +
+                escapeHTML(t('detail.shot', { n: i + 1, caption })) + '">' +
+                '<img src="' + projectImage(p, i) + '" alt="" width="640" height="360" loading="lazy" decoding="async"></button>'
+            ).join('');
+
+            detailDialog.innerHTML =
+                '<button class="modal__close" type="button" data-close aria-label="' + escapeHTML(t('detail.close')) + '">' + ICONS.close + '</button>' +
+                '<div class="gallery" aria-label="' + escapeHTML(t('detail.gallery')) + '" role="group">' +
+                '<img class="media-16x9" id="gallery-main" src="' + projectImage(p, 0) + '" alt="' +
+                escapeHTML(t('detail.shot', { n: 1, caption: p.shots[0] })) + '" width="640" height="360" loading="lazy" decoding="async">' +
+                '<p class="gallery__caption" id="gallery-caption">' + escapeHTML(p.shots[0]) + '</p>' +
+                '<div class="gallery__thumbs">' + thumbs + '</div>' +
+                '</div>' +
+                '<div class="modal__content">' +
+                '<div class="badges">' + catBadges(p) + '</div>' +
+                '<h2 id="detail-title">' + escapeHTML(p.title) + '</h2>' +
+                '<div class="detail-grid">' +
+                '<div>' +
+                '<h3>' + escapeHTML(t('detail.about')) + '</h3>' +
+                '<p>' + escapeHTML(p.description) + '</p>' +
+                '<h3 style="margin-top:20px">' + escapeHTML(t('detail.features')) + '</h3>' +
+                '<ul>' + p.features.map((f) => '<li>' + escapeHTML(f) + '</li>').join('') + '</ul>' +
+                '</div>' +
+                '<div>' +
+                '<h3>' + escapeHTML(t('detail.spec')) + '</h3>' +
+                '<dl class="spec-list">' +
+                '<dt>' + escapeHTML(t('detail.arch')) + '</dt><dd>' + escapeHTML(p.arch) + '</dd>' +
+                '<dt>' + escapeHTML(t('detail.langs')) + '</dt><dd>' + escapeHTML(p.langs.join(', ')) + '</dd>' +
+                '<dt>' + escapeHTML(t('detail.category')) + '</dt><dd>' + escapeHTML(p.category.map((c) => t('filter.' + c)).join(', ')) + '</dd>' +
+                '<dt>' + escapeHTML(t('detail.stack')) + '</dt><dd>' + escapeHTML(p.stack.join(', ')) + '</dd>' +
+                '</dl>' +
+                '<h3 style="margin-top:20px">' + escapeHTML(t('detail.deps')) + '</h3>' +
+                '<table class="deps-table"><thead><tr><th scope="col">' + escapeHTML(t('detail.dep')) + '</th><th scope="col">' +
+                escapeHTML(t('detail.version')) + '</th></tr></thead><tbody>' +
+                p.deps.map(([n, v]) => '<tr><td>' + escapeHTML(n) + '</td><td>' + escapeHTML(v) + '</td></tr>').join('') +
+                '</tbody></table>' +
+                '</div>' +
+                '</div>' +
+                '<div class="modal__actions">' +
+                '<a class="btn btn-primary" href="' + escapeHTML(p.repo) + '" target="_blank" rel="noopener noreferrer">' +
+                ICONS.github + '<span>' + escapeHTML(t('detail.repo')) + '</span></a>' +
+                '</div>' +
+                '</div>';
+
+            Modal.open(detailModal, opener);
+        }
+
+        // Visor de galería
+        detailDialog.addEventListener('click', (e) => {
+            const thumb = e.target.closest('.gallery__thumb');
+            if (!thumb) return;
+            const p = projectById(detailDialog.dataset.project);
+            const i = Number(thumb.dataset.shot);
+            if (!p) return;
+            const main = $('#gallery-main');
+            main.src = projectImage(p, i);
+            main.alt = t('detail.shot', { n: i + 1, caption: p.shots[i] });
+            $('#gallery-caption').textContent = p.shots[i];
+            $$('.gallery__thumb', detailDialog).forEach((b) => b.setAttribute('aria-current', String(b === thumb)));
+        });
+
+        // Delegación de eventos
+        $('.filters').addEventListener('click', (e) => {
+            const btn = e.target.closest('.filter-btn');
+            if (btn && btn.dataset.filter !== currentFilter) applyFilter(btn.dataset.filter);
+        });
+        grid.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-detail]');
+            if (btn) { detailDialog.dataset.project = btn.dataset.detail; openDetail(btn.dataset.detail, btn); }
+        });
+        $('#quick-full').addEventListener('click', (e) => {
+            const id = e.currentTarget.dataset.project;
+            Modal.close({ restoreFocus: false });
+            Nav.show('mis-proyectos', { focus: false });
+            const opener = $('.project-card[data-id="' + id + '"] [data-detail]', grid);
+            detailDialog.dataset.project = id;
+            openDetail(id, opener);
+        });
+
+        return { render, openQuick, openDetail };
+    })();
+    P.projects = { Projects };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { $, $$, escapeHTML, reducedMotion } = P.utils;
+    const { t } = P.i18n;
+    const { PROJECTS } = P.data;
+    const { projectImage, imgTag, catBadges, stackBadges } = P.media;
+    const bus = P.bus;
+    const { Projects } = P.projects;
+
+    /* =====================================================
+       DEV-FE-03 · CARRUSEL (RF-01)
+       Rotación cíclica 5000 ms, pausa en mouseenter/focus,
+       reanudación en mouseleave, soporte touch-swipe.
+       ===================================================== */
+    const Carousel = (() => {
+        const INTERVAL = 5000;
+        const SWIPE_THRESHOLD = 50;
+        const root = $('#featured-carousel');
+        const track = $('#carousel-track');
+        const dotsWrap = $('#carousel-dots');
+        const featured = PROJECTS.filter((p) => p.featured).slice(0, 5); // 3 a 5 tarjetas
+        const pauseReasons = new Set();
+        let index = 0;
+        let timer = null;
+        let slides = [];
+        let dots = [];
+
+        function render() {
+            track.innerHTML = featured.map((p, i) =>
+                '<div class="carousel__slide" role="group" aria-roledescription="diapositiva" aria-label="' +
+                escapeHTML(t('carousel.slide', { n: i + 1, total: featured.length })) + '">' +
+                '<button type="button" class="carousel__media" data-quick="' + p.id + '" aria-label="' +
+                escapeHTML(t('carousel.quick') + ': ' + p.title) + '">' +
+                imgTag(projectImage(p, 0), t('img.preview', { title: p.title }), '') + '</button>' +
+                '<div class="carousel__body">' +
+                '<div class="badges">' + catBadges(p) + '</div>' +
+                '<h3>' + escapeHTML(p.title) + '</h3>' +
+                '<p>' + escapeHTML(p.short) + '</p>' +
+                '<div class="badges">' + stackBadges(p.stack.slice(0, 4)) + '</div>' +
+                '<button type="button" class="btn btn-primary" data-quick="' + p.id + '">' + escapeHTML(t('carousel.quick')) + '</button>' +
+                '</div></div>'
+            ).join('');
+
+            dotsWrap.innerHTML = featured.map((p, i) =>
+                '<button type="button" class="carousel__dot" data-index="' + i + '" aria-label="' +
+                escapeHTML(t('carousel.goto', { n: i + 1, title: p.title })) + '"></button>'
+            ).join('');
+
+            slides = $$('.carousel__slide', track);
+            dots = $$('.carousel__dot', dotsWrap);
+            go(index, false);
+        }
+
+        function go(i, userInitiated = true) {
+            const n = slides.length;
+            if (!n) return;
+            index = (i + n) % n;
+            track.style.transform = 'translateX(' + (-index * 100) + '%)';
+            slides.forEach((s, k) => {
+                const active = k === index;
+                s.inert = !active;
+                s.setAttribute('aria-hidden', String(!active));
+            });
+            dots.forEach((d, k) => d.setAttribute('aria-current', String(k === index)));
+            if (userInitiated) restart();
+        }
+
+        function stop() { clearInterval(timer); timer = null; }
+        function start() {
+            stop();
+            if (pauseReasons.size === 0 && slides.length > 1) {
+                timer = setInterval(() => go(index + 1, false), INTERVAL);
+            }
+        }
+        function restart() { start(); }
+        function pause(reason) { pauseReasons.add(reason); stop(); }
+        function resume(reason) { pauseReasons.delete(reason); start(); }
+
+        // Controles
+        root.addEventListener('click', (e) => {
+            const arrow = e.target.closest('.carousel__arrow');
+            const dot = e.target.closest('.carousel__dot');
+            const quick = e.target.closest('[data-quick]');
+            if (arrow) go(index + Number(arrow.dataset.dir));
+            else if (dot) go(Number(dot.dataset.index));
+            else if (quick) Projects.openQuick(quick.dataset.quick, quick);
+        });
+
+        root.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1); }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1); }
+        });
+
+        // Pausa al hover / foco (WCAG 2.2.2)
+        root.addEventListener('mouseenter', () => pause('hover'));
+        root.addEventListener('mouseleave', () => resume('hover'));
+        root.addEventListener('focusin', () => pause('focus'));
+        root.addEventListener('focusout', (e) => { if (!root.contains(e.relatedTarget)) resume('focus'); });
+
+        // Touch-swipe
+        let touchX = null;
+        let touchY = null;
+        track.addEventListener('touchstart', (e) => {
+            touchX = e.touches[0].clientX;
+            touchY = e.touches[0].clientY;
+            pause('touch');
+        }, { passive: true });
+        track.addEventListener('touchend', (e) => {
+            if (touchX !== null) {
+                const dx = e.changedTouches[0].clientX - touchX;
+                const dy = e.changedTouches[0].clientY - touchY;
+                if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1));
+            }
+            touchX = touchY = null;
+            resume('touch');
+        }, { passive: true });
+
+        document.addEventListener('visibilitychange', () => {
+            document.hidden ? pause('tab') : resume('tab');
+        });
+
+        if (reducedMotion) pauseReasons.add('reduced-motion');
+
+        // Desacople vía bus: modales y cambio de vista pausan/reanudan el carrusel
+        bus.on('modal:open', () => pause('modal'));
+        bus.on('modal:close', () => resume('modal'));
+        bus.on('view:change', ({ id }) => { id === 'inicio' ? resume('hidden-view') : pause('hidden-view'); });
+
+        return { render, pause, resume };
+    })();
+    P.carousel = { Carousel };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { $, $$ } = P.utils;
+    const { I18n, t } = P.i18n;
+    const { Toast } = P.toast;
+    const { CONTACT_ENDPOINT } = P.config;
+
+    /* =====================================================
+       RF-06..RF-09 · RNF-06 · FORMULARIO DE CONTACTO
+       DEV-BE-01 · El endpoint se configura en js/config.js
+       (Formspree). Sin endpoint → modo demostración.
+       ===================================================== */
+    const Contact = (() => {
+        const DEMO_MODE = !CONTACT_ENDPOINT || location.protocol === 'file:';
+        // Expresión regular basada en RFC 5322 (forma práctica, exige dominio con TLD)
+        const EMAIL_RE = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+        const HTML_RE = /<\s*\/?\s*[a-z!][^>]*>|javascript\s*:|on\w+\s*=/i;
+        const CONTROL_RE = /[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g;
+
+        const form = $('#contact-form');
+        const submitBtn = $('#contact-submit');
+        const label = $('.btn-label', submitBtn);
+        const counter = $('#msg-counter');
+        const fields = $$('input:not([name="website"]), textarea', form);
+        let sending = false;
+
+        const normalize = (v) => v.replace(CONTROL_RE, '').trim();
+
+        function validateField(input) {
+            const value = normalize(input.value);
+            const min = Number(input.getAttribute('minlength')) || 0;
+            const max = Number(input.getAttribute('maxlength')) || Infinity;
+            let error = '';
+            if (value.length === 0) error = t('err.required');
+            else if (value.length < min) error = t('err.min', { n: min });
+            else if (value.length > max) error = t('err.max', { n: max });
+            else if (input.type === 'email' && !EMAIL_RE.test(value)) error = t('err.email');
+            else if (HTML_RE.test(value)) error = t('err.html');
+
+            const field = input.closest('.field');
+            const errEl = $('#err-' + input.name);
+            field.classList.toggle('is-invalid', Boolean(error));
+            input.setAttribute('aria-invalid', String(Boolean(error)));
+            errEl.textContent = error;
+            return !error;
+        }
+
+        function validateAll() {
+            let firstInvalid = null;
+            fields.forEach((f) => { if (!validateField(f) && !firstInvalid) firstInvalid = f; });
+            if (firstInvalid) firstInvalid.focus();
+            return !firstInvalid;
+        }
+
+        function setSending(state) {
+            sending = state;
+            submitBtn.disabled = state;
+            submitBtn.setAttribute('aria-busy', String(state));
+            label.textContent = state ? t('form.sending') : t('form.submit');
+            const icon = $('svg, .spinner', submitBtn);
+            if (state) icon.outerHTML = '<span class="spinner" aria-hidden="true"></span>';
+            else if (icon.classList.contains('spinner')) {
+                icon.outerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg>';
+            }
+        }
+
+        function resetForm() {
+            form.reset();
+            fields.forEach((f) => {
+                f.closest('.field').classList.remove('is-invalid');
+                f.removeAttribute('aria-invalid');
+                $('#err-' + f.name).textContent = '';
+            });
+            updateCounter();
+        }
+
+        function updateCounter() {
+            const ta = $('#f-mensaje');
+            counter.textContent = ta.value.length + ' / ' + ta.maxLength;
+        }
+
+        async function onSubmit(e) {
+            e.preventDefault();
+            if (sending) return; // bloqueo de envío múltiple
+            if (!validateAll()) {
+                Toast.show({ type: 'error', title: t('toast.invalidTitle'), message: t('toast.invalidText') });
+                return;
+            }
+
+            // Honeypot: si un bot lo rellenó, se simula éxito sin enviar nada
+            if ($('#f-website').value) { resetForm(); return; }
+
+            const payload = new FormData();
+            fields.forEach((f) => payload.append(f.name, normalize(f.value)));
+            payload.append('lang', I18n.lang);
+            // Compatibilidad Formspree: correo de respuesta y asunto del mensaje
+            payload.append('email', normalize($('#f-correo').value));
+            payload.append('_subject', 'Portafolio · ' + normalize($('#f-asunto').value));
+
+            setSending(true);
+            try {
+                if (DEMO_MODE) {
+                    // Sin endpoint configurado: se simula el envío (modo demostración)
+                    await new Promise((r) => setTimeout(r, 900));
+                    Toast.show({ title: t('toast.okTitle'), message: t('toast.demo') });
+                } else {
+                    const res = await fetch(CONTACT_ENDPOINT, {
+                        method: 'POST',
+                        body: payload,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    Toast.show({ title: t('toast.okTitle'), message: t('toast.okText') });
+                }
+                resetForm();
+            } catch (err) {
+                Toast.show({ type: 'error', title: t('toast.errTitle'), message: t('toast.errText') });
+            } finally {
+                setSending(false);
+            }
+        }
+
+        form.addEventListener('submit', onSubmit);
+        fields.forEach((f) => {
+            f.addEventListener('blur', () => { if (f.value) validateField(f); });
+            f.addEventListener('input', () => {
+                if (f.closest('.field').classList.contains('is-invalid')) validateField(f);
+            });
+        });
+        $('#f-mensaje').addEventListener('input', updateCounter);
+        document.addEventListener('i18n:change', () => { if (!sending) label.textContent = t('form.submit'); });
+
+        return {};
+    })();
+    P.contact = { Contact };
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+    <script>
+(function (P) {
+    'use strict';
+    const { DICTIONARIES, I18n } = P.i18n;
+    const { Carousel } = P.carousel;
+    const { Projects } = P.projects;
+    const { Tech } = P.technologies;
+    const { Modal } = P.modal;
+    const { Nav } = P.nav;
+
+    /* =====================================================
+       TECLADO GLOBAL · Escape (keyCode 27)
+       ===================================================== */
+    document.addEventListener('keydown', (e) => {
+        const isEscape = e.key === 'Escape' || e.keyCode === 27;
+        if (Modal.isOpen) {
+            if (isEscape) { e.preventDefault(); Modal.close(); }
+            else if (e.key === 'Tab') Modal.trapFocus(e);
+            return;
+        }
+        if (isEscape && Nav.isMenuOpen()) Nav.setMobileMenu(false, { focusToggle: true });
+        if (isEscape) Tech.closeAll();
+    });
+
+    /* =====================================================
+       ARRANQUE
+       ===================================================== */
+    function renderDynamic() {
+        Carousel.render();
+        Projects.render();
+        Tech.render();
+    }
+    document.addEventListener('i18n:change', renderDynamic);
+
+    const requestedLang = new URLSearchParams(location.search).get('lang');
+    if (requestedLang && requestedLang !== 'es' && DICTIONARIES[requestedLang]) {
+        I18n.apply(requestedLang); // dispara renderDynamic()
+    } else {
+        renderDynamic();
+    }
+    Nav.init();
+
+    // API pública mínima para la futura V2.1 (conmutador de idioma)
+    window.PortfolioI18n = Object.freeze({
+        setLang: (lang) => I18n.apply(lang),
+        get lang() { return I18n.lang; }
+    });
+})(window.Portfolio = window.Portfolio || {});
+
+    </script>
+</body>
+
+</html>
